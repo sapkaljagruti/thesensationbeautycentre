@@ -103,28 +103,36 @@
                         <div class="col-sm-8" id="view_name"></div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4">HSN Code :</label>
-                        <div class="col-sm-8" id="view_hsn_code"></div>
-                    </div>
-                    <div class="form-group">
                         <label class="col-sm-4">Quantity :</label>
                         <div class="col-sm-8" id="view_qty"></div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4">Price :</label>
+                        <label class="col-sm-4">Rate per no. :</label>
                         <div class="col-sm-8" id="view_price"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4">Input Tax :</label>
-                        <div class="col-sm-8" id="view_input_tax"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4">Output Tax :</label>
-                        <div class="col-sm-8" id="view_output_tax"></div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4">Description :</label>
                         <div class="col-sm-8" id="view_description"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4">HSN Code :</label>
+                        <div class="col-sm-8" id="view_hsn_code"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4">Calculation Type :</label>
+                        <div class="col-sm-8" id="view_calculation_type"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4">Taxability :</label>
+                        <div class="col-sm-8" id="view_taxability"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4">Integrated Tax :</label>
+                        <div class="col-sm-8" id="view_integrated_tax"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4">Cess :</label>
+                        <div class="col-sm-8" id="view_cess"></div>
                     </div>
                 </div>
             </div>

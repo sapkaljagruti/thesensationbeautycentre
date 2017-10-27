@@ -75,6 +75,26 @@ class ProductController {
                 }
 
                 $product['name'] = ucwords($product['name']);
+                $product['qty'] = $product['qty'] . ' Nos';
+                $product['price'] = 'Rs. ' . $product['price'];
+
+                if ($product['calculation_type'] == 'on_item_rate') {
+                    $product['calculation_type'] = 'On Item Rate';
+                } elseif (($product['calculation_type'] == 'on_value')) {
+                    $product['calculation_type'] = 'On Value';
+                }
+
+                if ($product['taxability'] == 'exempt') {
+                    $product['taxability'] = 'Exempt';
+                } elseif (($product['taxability'] == 'nil_rated')) {
+                    $product['taxability'] = 'Nil rated';
+                } elseif (($product['taxability'] == 'taxable')) {
+                    $product['taxability'] = 'Taxable';
+                }
+
+                $product['integrated_tax'] = $product['integrated_tax'] . ' %';
+                $product['cess'] = $product['cess'] . ' %';
+
                 $rows[] = $product;
             }
             echo json_encode($rows);
@@ -88,13 +108,6 @@ class ProductController {
         $extra_js_files = $this->extra_js_files;
 
         if (!empty($_POST)) {
-            echo "<pre>";
-            print_r($_POST);
-            $greater_than_arr = $_POST['greater_than'];
-            $greater_than_arr = array_diff($greater_than_arr, array(''));
-            echo "<pre>";
-            print_r($greater_than_arr);
-            exit();
             $errors = array();
 
             if (empty($errors)) {
@@ -108,15 +121,17 @@ class ProductController {
                 $hsn_code = !empty($_POST['hsn_code']) ? trim($_POST['hsn_code']) : NULL;
                 $calculation_type = $_POST['calculation_type'];
                 $taxability = $_POST['taxability'];
+                $cgst = !empty($_POST['cgst']) ? $_POST['cgst'] : '0.00';
+                $sgst = !empty($_POST['sgst']) ? $_POST['sgst'] : '0.00';
                 $integrated_tax = !empty($_POST['integrated_tax']) ? $_POST['integrated_tax'] : '0.00';
                 $cess = !empty($_POST['cess']) ? $_POST['cess'] : '0.00';
 
-                $product = $this->productobj->addproduct($product_category_id, $brand_id, $product_code, $name, $qty, $price, $description, $hsn_code, $calculation_type, $taxability, $integrated_tax, $cess);
+                $product = $this->productobj->addproduct($product_category_id, $brand_id, $product_code, $name, $qty, $price, $description, $hsn_code, $calculation_type, $taxability, $cgst, $sgst, $integrated_tax, $cess);
 
                 if ($product) {
-                    if ($calculation_type == 'on_item_rate') {
-                        $product_id = $product;
-                    }
+//                    if ($calculation_type == 'on_item_rate') {
+//                        $product_id = $product;
+//                    }
                     header('location: home.php?controller=product&action=getproducts');
                 } else {
                     array_push($errors, 'Something went wrong. Please try again later.');
@@ -165,10 +180,12 @@ class ProductController {
                 $hsn_code = !empty($_POST['hsn_code']) ? trim($_POST['hsn_code']) : NULL;
                 $calculation_type = $_POST['calculation_type'];
                 $taxability = $_POST['taxability'];
+                $cgst = !empty($_POST['cgst']) ? $_POST['cgst'] : '0.00';
+                $sgst = !empty($_POST['sgst']) ? $_POST['sgst'] : '0.00';
                 $integrated_tax = !empty($_POST['integrated_tax']) ? $_POST['integrated_tax'] : '0.00';
                 $cess = !empty($_POST['cess']) ? $_POST['cess'] : '0.00';
 
-                $product = $this->productobj->updateproduct($product_category_id, $brand_id, $product_code, $name, $qty, $price, $description, $hsn_code, $calculation_type, $taxability, $integrated_tax, $cess);
+                $product = $this->productobj->updateproduct($id, $product_category_id, $brand_id, $product_code, $name, $qty, $price, $description, $hsn_code, $calculation_type, $taxability, $cgst, $sgst, $integrated_tax, $cess);
 
                 if ($product) {
                     header('location: home.php?controller=product&action=getproducts');

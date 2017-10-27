@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 26, 2017 at 08:56 AM
+-- Generation Time: Oct 27, 2017 at 07:55 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -174,8 +174,8 @@ CREATE TABLE `brands` (
 --
 
 INSERT INTO `brands` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(9, 'test', '2017-09-13 12:42:20', '2017-09-13 12:42:20'),
-(11, 'kaka', '2017-09-29 15:31:09', '2017-09-29 15:31:09');
+(9, 'sensation', '2017-09-13 12:42:20', '2017-10-26 15:22:36'),
+(11, 'lakme', '2017-09-29 15:31:09', '2017-10-26 15:22:29');
 
 -- --------------------------------------------------------
 
@@ -382,7 +382,7 @@ CREATE TABLE `parties` (
 --
 
 INSERT INTO `parties` (`id`, `name`, `address`, `contact_person`, `email`, `mobile1`, `mobile2`, `residence_no`, `office_no`, `bank_name`, `bank_branch`, `ifsc_code`, `bank_account_no`, `pan`, `gst_state_code_id`, `gst_type_id`, `gstin`, `brand_ids`, `created_at`, `updated_at`) VALUES
-(16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '11,9', '2017-10-24 16:51:34', '2017-10-24 16:51:34');
+(16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '11', '2017-10-26 17:59:18', '2017-10-26 17:59:18');
 
 -- --------------------------------------------------------
 
@@ -403,9 +403,8 @@ CREATE TABLE `product_categories` (
 --
 
 INSERT INTO `product_categories` (`id`, `parent_id`, `name`, `created_at`, `updated_at`) VALUES
-(7, 0, 'test', '2017-09-15 10:59:15', '2017-09-15 10:59:15'),
-(8, 7, 'test1', '2017-09-15 10:59:22', '2017-09-15 10:59:22'),
-(9, 8, 'Test2', '2017-09-15 10:59:27', '2017-09-15 10:59:30');
+(10, 0, 'hair prodcuts', '2017-10-26 15:20:20', '2017-10-26 15:20:20'),
+(11, 10, 'hair spa products', '2017-10-26 15:20:41', '2017-10-26 15:20:41');
 
 -- --------------------------------------------------------
 
@@ -439,6 +438,8 @@ CREATE TABLE `products` (
   `hsn_code` varchar(255) DEFAULT NULL,
   `calculation_type` varchar(255) DEFAULT NULL,
   `taxability` varchar(255) DEFAULT NULL,
+  `cgst` varchar(255) DEFAULT NULL,
+  `sgst` varchar(255) DEFAULT NULL,
   `integrated_tax` varchar(255) DEFAULT NULL,
   `cess` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -449,8 +450,10 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `product_category_id`, `brand_id`, `product_code`, `name`, `qty`, `price`, `description`, `hsn_code`, `calculation_type`, `taxability`, `integrated_tax`, `cess`, `created_at`, `updated_at`) VALUES
-(4, 9, 9, '', 'test', 0, '0', '', '', 'on_value', 'taxable', '0.00', '0.00', '2017-09-29 11:25:10', '2017-09-29 11:25:10');
+INSERT INTO `products` (`id`, `product_category_id`, `brand_id`, `product_code`, `name`, `qty`, `price`, `description`, `hsn_code`, `calculation_type`, `taxability`, `cgst`, `sgst`, `integrated_tax`, `cess`, `created_at`, `updated_at`) VALUES
+(5, 10, 9, '', 'sensation smoothing shampoo', 1000, '750', '', '', 'on_value', 'nil_rated', NULL, NULL, '0.00', '0.00', '2017-10-26 16:07:58', '2017-10-26 16:31:11'),
+(6, 11, 11, '', 'test1', 0, '0', '', '', 'on_value', 'taxable', '9', '9', '0.00', '0.00', '2017-10-26 18:20:12', '2017-10-26 18:24:28'),
+(7, 11, 11, '', 'test2', 0, '0', '', '', 'on_value', 'taxable', '14', '14', '0.00', '0.00', '2017-10-26 18:24:45', '2017-10-26 18:24:45');
 
 -- --------------------------------------------------------
 
@@ -686,7 +689,7 @@ ALTER TABLE `parties`
 -- AUTO_INCREMENT for table `product_categories`
 --
 ALTER TABLE `product_categories`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `product_images`
 --
@@ -696,7 +699,7 @@ ALTER TABLE `product_images`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `purchase_types`
 --

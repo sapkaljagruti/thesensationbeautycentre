@@ -20,8 +20,8 @@ class Product {
         return $product;
     }
 
-    public function addproduct($product_category_id, $brand_id, $product_code, $name, $qty, $price, $description, $hsn_code, $calculation_type, $taxability, $integrated_tax, $cess) {
-        $product = $this->conn->query('INSERT INTO products(product_category_id, brand_id, product_code, name, qty, price, description, hsn_code, calculation_type, taxability, integrated_tax, cess) VALUES("' . $product_category_id . '", "' . $brand_id . '", "' . $product_code . '", "' . $name . '", "' . $qty . '", "' . $price . '", "' . $description . '", "' . $hsn_code . '", "' . $calculation_type . '", "' . $taxability . '", "' . $integrated_tax . '", "' . $cess . '")');
+    public function addproduct($product_category_id, $brand_id, $product_code, $name, $qty, $price, $description, $hsn_code, $calculation_type, $taxability, $cgst, $sgst, $integrated_tax, $cess) {
+        $product = $this->conn->query('INSERT INTO products(product_category_id, brand_id, product_code, name, qty, price, description, hsn_code, calculation_type, taxability, cgst, sgst, integrated_tax, cess) VALUES("' . $product_category_id . '", "' . $brand_id . '", "' . $product_code . '", "' . $name . '", "' . $qty . '", "' . $price . '", "' . $description . '", "' . $hsn_code . '", "' . $calculation_type . '", "' . $taxability . '", "' . $cgst . '", "' . $sgst . '", "' . $integrated_tax . '", "' . $cess . '")');
         if ($product === TRUE) {
             return mysqli_insert_id($this->conn);
         } else {
@@ -29,8 +29,8 @@ class Product {
         }
     }
 
-    public function updateproduct($product_category_id, $brand_id, $product_code, $name, $qty, $price, $description, $hsn_code, $calculation_type, $taxability, $integrated_tax, $cess) {
-        $product = $this->conn->query('UPDATE products SET product_category_id="' . $product_category_id . '", brand_id="' . $brand_id . '", product_code="' . $product_code . '", name="' . $name . '", hsn_code="' . $hsn_code . '", qty="' . $qty . '", price="' . $price . '", input_tax="' . $input_tax . '", output_tax="' . $output_tax . '", description="' . $description . '" WHERE id=' . $id);
+    public function updateproduct($id, $product_category_id, $brand_id, $product_code, $name, $qty, $price, $description, $hsn_code, $calculation_type, $taxability, $cgst, $sgst, $integrated_tax, $cess) {
+        $product = $this->conn->query('UPDATE products SET product_category_id="' . $product_category_id . '", brand_id="' . $brand_id . '", product_code="' . $product_code . '", name="' . $name . '" , qty="' . $qty . '", price="' . $price . '", description="' . $description . '", hsn_code="' . $hsn_code . '", calculation_type="' . $calculation_type . '", taxability="' . $taxability . '", cgst="' . $cgst . '", sgst="' . $sgst . '", integrated_tax="' . $integrated_tax . '", cess="' . $cess . '" WHERE id=' . $id);
         if ($product === TRUE) {
             return $id;
         } else {

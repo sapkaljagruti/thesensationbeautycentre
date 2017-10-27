@@ -108,7 +108,10 @@ if (isset($errors)) {
                     <div class="form-group">
                         <label for="qty" class="col-sm-2 control-label">Quantity</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="qty" name="qty" placeholder="Total Items" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['qty']) ? $_POST['qty'] : ''; ?>">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="qty" name="qty" placeholder="Quantity" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['qty']) ? $_POST['qty'] : ''; ?>">
+                                <span class="input-group-addon">Nos</span>
+                            </div>
                         </div>
                         <label for="price" class="col-sm-2 control-label">Rate Per No</label>
                         <div class="col-sm-4">
@@ -117,9 +120,9 @@ if (isset($errors)) {
                     </div>
                     <hr> <h4> GST Details </h5> <hr>
                         <div class="form-group">
-                            <label for="hsn_code" class="col-sm-2 control-label">HSN/SAC Code</label>
+                            <label for="hsn_code" class="col-sm-2 control-label">HSN Code</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="hsn_code" name="hsn_code" placeholder="HSN/SAC Code" value="<?php echo isset($_POST['hsn_code']) ? $_POST['hsn_code'] : ''; ?>">
+                                <input type="text" class="form-control" id="hsn_code" name="hsn_code" placeholder="HSN Code" value="<?php echo isset($_POST['hsn_code']) ? $_POST['hsn_code'] : ''; ?>">
                             </div>
                         </div>
                         <div class="form-group">
@@ -139,60 +142,60 @@ if (isset($errors)) {
                             <label for="calculation_type" class="col-sm-2 control-label">Calculation Type</label>
                             <div class="col-sm-4">
                                 <select class="form-control" id="calculation_type" name="calculation_type">
-                                    <option value="on_item_rate"<?php echo $on_item_rate_selected; ?>>On Item Rate</option>
+                                    <option value="on_item_rate"<?php echo $on_item_rate_selected; ?> disabled="disabled">On Item Rate</option>
                                     <option value="on_value"<?php echo $on_value_selected; ?>>On Value</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="row" id="item_rates_div" style="display: none;">
-                            <div class="col-md-12">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="item_rates_table">
-                                        <thead>
-                                            <tr>
-                                                <th colspan="2" style="text-align: center;">Rate</th>
-                                                <th>Tax Type</th>
-                                                <th>Integrated Tax Rate</th>
-                                                <th colspan="2" style="text-align: center;">Cess</th>
-                                            </tr>
-                                            <tr>
-                                                <th width='150px' style="font-weight: normal;">Grater Than</th>
-                                                <th width='150px' style="font-weight: normal;">Upto</th>
-                                                <th colspan="2" style="font-weight: normal;"></th>
-                                                <th style="font-weight: normal;">Valuation Type</th>
-                                                <th style="font-weight: normal;">Rate</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><input type="text" class="form-control greater_than first_item_rate" id="" name="greater_than[]" value="0" readonly="readonly" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/></td>
-                                                <td><input type="text" class="form-control upto" id="" name="upto[]" value="" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/></td>
-                                                <td>
-                                                    <select class="form-control tax_type" id="" name="tax_type[]">
-                                                        <option value="exempt">Exempt</option>
-                                                        <option value="nil_rated">Nil Rated</option>
-                                                        <option value="taxable" selected="selected">Taxable</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control integrated_tax" id="" name="integrated_tax_on_item_rate[]" value="" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/>
-                                                        <span class="input-group-addon">%</span>
+                        <!--                        <div class="row" id="item_rates_div" style="display: none;">
+                                                    <div class="col-md-12">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered" id="item_rates_table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th colspan="2" style="text-align: center;">Rate</th>
+                                                                        <th>Tax Type</th>
+                                                                        <th>Integrated Tax Rate</th>
+                                                                        <th colspan="2" style="text-align: center;">Cess</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th width='150px' style="font-weight: normal;">Grater Than</th>
+                                                                        <th width='150px' style="font-weight: normal;">Upto</th>
+                                                                        <th colspan="2" style="font-weight: normal;"></th>
+                                                                        <th style="font-weight: normal;">Valuation Type</th>
+                                                                        <th style="font-weight: normal;">Rate</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td><input type="text" class="form-control greater_than first_item_rate" id="" name="greater_than[]" value="0" readonly="readonly" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/></td>
+                                                                        <td><input type="text" class="form-control upto" id="" name="upto[]" value="" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/></td>
+                                                                        <td>
+                                                                            <select class="form-control tax_type" id="" name="tax_type[]">
+                                                                                <option value="exempt">Exempt</option>
+                                                                                <option value="nil_rated">Nil Rated</option>
+                                                                                <option value="taxable" selected="selected">Taxable</option>
+                                                                            </select>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="input-group">
+                                                                                <input type="text" class="form-control integrated_tax" id="" name="integrated_tax_on_item_rate[]" value="" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/>
+                                                                                <span class="input-group-addon">%</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td><input type="text" class="form-control" id="" name="" value="Based On Value" readonly="readonly"/></td>
+                                                                        <td>
+                                                                            <div class="input-group">
+                                                                                <input type="text" class="form-control cess" id="" name="cess_on_item_rate[]" value="" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/>
+                                                                                <span class="input-group-addon">%</span>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                     </div>
-                                                </td>
-                                                <td><input type="text" class="form-control" id="" name="" value="Based On Value" readonly="readonly"/></td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control cess" id="" name="cess_on_item_rate[]" value="" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/>
-                                                        <span class="input-group-addon">%</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                                                </div>-->
                         <div class="form-group">
                             <?php
                             $taxable_selected = ' selected="selected"';
@@ -224,15 +227,33 @@ if (isset($errors)) {
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="integrated_tax" class="col-sm-2 control-label">Integrated Tax</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="integrated_tax" name="integrated_tax" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['integrated_tax']) ? $_POST['integrated_tax'] : ''; ?>">
-                                <span style="margin-top: -27px; float: right; margin-right: -20px;">%</span>
+                            <label for="cgst" class="col-sm-1 control-label">Central Tax</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="cgst" name="cgst" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['cgst']) ? $_POST['cgst'] : ''; ?>">
+                                    <span class="input-group-addon">%</span>
+                                </div>
                             </div>
-                            <label for="cess" class="col-sm-2 control-label">Cess</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="cess" name="cess" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['cess']) ? $_POST['cess'] : ''; ?>">
-                                <span style="margin-top: -27px; float: right; margin-right: -20px;">%</span>
+                            <label for="sgst" class="col-sm-1 control-label">State Tax</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="sgst" name="sgst" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['sgst']) ? $_POST['sgst'] : ''; ?>">
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </div>
+                            <label for="integrated_tax" class="col-sm-1 control-label">Integrated Tax</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="integrated_tax" name="integrated_tax" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['integrated_tax']) ? $_POST['integrated_tax'] : ''; ?>">
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </div>
+                            <label for="cess" class="col-sm-1 control-label">Cess</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="cess" name="cess" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['cess']) ? $_POST['cess'] : ''; ?>">
+                                    <span class="input-group-addon">%</span>
+                                </div>
                             </div>
                         </div>
                 </div>
