@@ -269,7 +269,95 @@ $('#party_name').autocomplete({
 });
 $("#party_name").autocomplete("option", "appendTo", ".eventInsForm");
 
+$('#product_name').autocomplete({
+    source: function (request, response) {
+        $.ajax({
+            url: '?controller=product&action=findProductByTerm',
+            type: "POST",
+            dataType: "json",
+            data: {
+                term: request.term
+            },
+            success: function (data) {
+                if (data.length == 0) {
+                    $('#product_id').val('');
+                }
+                response($.map(data, function (item) {
+                    return {
+                        label: item.name,
+                        value: item.name,
+                        id: item.id,
+                        qty: item.qty,
+                        price: item.price,
+                        cgst: item.cgst,
+                        sgst: item.sgst,
+                        integrated_tax: item.integrated_tax
+                    }
+                }));
+            }
+        });
+    },
+    autoFocus: true,
+    minLength: 0,
+    select: function (event, ui) {
+        $('#product_id').val(ui.item.id);
+        $('#price').val(ui.item.price);
+    }
+});
+$("#product_name").autocomplete("option", "appendTo", ".eventInsForm");
+
+$(document).on('keyup', '#product_name', function () {
+    if ($(this).val() == '') {
+        $('#product_id').val('');
+    } else {
+        var product_name = $.trim($(this).val());
+        $('#overlay_product').show();
+        $.ajax({
+            url: '?controller=product&action=checkProductNameExist',
+            data: {
+                'product_name': product_name,
+            },
+            type: 'post',
+            success: function (response) {
+                if (response == '1') {
+
+                } else {
+                    $(this).val('');
+                    $('#product_id').val('');
+                }
+            },
+            error: function (xhr, status, error) {
+                showError('Something went wrong. Please try again later.', 5000);
+            },
+            complete: function () {
+                $('#overlay_product').hide();
+            }
+        });
+    }
+});
+
+function productEnterKeyEvent(e) {
+    if (e.keyCode == 13) {
+        var product_id = $.trim($('#product_id').val());
+        if (product_id == '') {
+            $('#product_name').val('');
+            $('#quantity').val('');
+            $('#price').val('');
+        }
+    }
+}
+
+$(document).on('focusout', '#product_name', function (e) {
+    var product_id = $.trim($('#product_id').val());
+    if (product_id == '') {
+        $('#product_name').val('');
+        $('#quantity').val('');
+        $('#price').val('');
+    }
+});
+
 $(function () {
+
     $("#date").inputmask("dd-mm-yyyy", {"placeholder": "dd-mm-yyyy"});
     $("#bill_date").inputmask("dd-mm-yyyy", {"placeholder": "dd-mm-yyyy"});
 
@@ -290,5 +378,61 @@ $(function () {
                 "searchable": false
             }
         ]
+    });
+});
+
+$(function () {
+    var t1 = $('#products_table').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "searching": true,
+        "ordering": true,
+        "order": [[0, "desc"]],
+        "info": true,
+        "autoWidth": false,
+        "aaSorting": [],
+        "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+        ],
+        "footerCallback": function (row, data, start, end, display) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function (i) {
+                return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Total over all pages
+            total = api
+                    .column(4)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+            $('#total_amount').val(total);
+            $('#total_amount_span').html(total);
+
+            // Total over this page
+            pageTotal = api
+                    .column(4, {page: 'current'})
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+            // Update footer
+            $(api.column(4).footer()).html(
+                    'Rs. ' + pageTotal + ' ( Rs. ' + total + ' total)'
+                    );
+        }
     });
 });

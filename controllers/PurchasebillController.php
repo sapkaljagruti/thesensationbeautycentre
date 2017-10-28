@@ -34,7 +34,7 @@ class PurchasebillController {
     }
 
     public function getbills() {
-        $page_header = 'Purchase Bills';
+        $page_header = 'Purchase Vouchers';
         $extra_js_files = $this->extra_js_files;
         $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
         $view_file = '/views/purchase_bills.php';
@@ -87,7 +87,7 @@ class PurchasebillController {
     }
 
     public function add() {
-        $page_header = 'Purchase Bill Entry';
+        $page_header = 'Purchase Voucher Entry';
         $extra_js_files = $this->extra_js_files;
 
         if (!empty($_POST)) {

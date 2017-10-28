@@ -47,6 +47,16 @@ class Product {
         }
     }
 
+    public function findProductByTerm($term) {
+        $product_res = $this->conn->query('SELECT * FROM products WHERE name LIKE "%' . $term . '%" LIMIT 10');
+        return $product_res;
+    }
+
+    public function checkProductNameExist($product_name) {
+        $product_res = $this->conn->query('SELECT * FROM products WHERE name="' . $product_name . '"');
+        return $product_res;
+    }
+
 }
 
 ?>

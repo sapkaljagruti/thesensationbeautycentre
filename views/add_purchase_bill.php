@@ -25,6 +25,9 @@ if (isset($errors)) {
             right center;
     }
 </style>
+<style>
+    .table-responsive { overflow-x: initial; }
+</style>
 <!-- form start -->
 <form class="form-horizontal" method="post">
     <div class="row">
@@ -175,18 +178,16 @@ if (isset($errors)) {
                         <label for="gst_type_id" class="col-sm-2 control-label">GST Type</label>
                         <div class="col-sm-4">
                             <select class="form-control" id="gst_type_id" name="gst_type_id">
-                                <option value="0">Unknown</option>
                                 <?php
                                 if (isset($gst_types)) {
-                                    $gst_type_selected = '';
                                     foreach ($gst_types as $gst_type) {
                                         if (isset($_POST['gst_type_id'])) {
                                             $gst_type_id = $_POST['gst_type_id'];
-                                            if ($gst_type_id == $gst_type['id']) {
-                                                $gst_type_selected = ' selected="selected"';
-                                            } else {
-                                                $gst_type_selected = '';
-                                            }
+                                        } else {
+                                            $gst_type_id = '3';
+                                        }
+                                        if ($gst_type_id == $gst_type['id']) {
+                                            $gst_type_selected = ' selected="selected"';
                                         } else {
                                             $gst_type_selected = '';
                                         }
@@ -222,18 +223,63 @@ if (isset($errors)) {
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label"> Product</label>
-                        <div class="col-sm-2">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Invoice No" value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>" required="required">
+                    <div class="row">
+                        <div class="form-group">
+                            <input type="hidden" name="product_id" id="product_id">
+                            <input type="hidden" name="price" id="price">
+                            <label for="name" class="col-sm-2 control-label"> Product</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Product Name" value="<?php echo isset($_POST['product_name']) ? $_POST['product_name'] : ''; ?>" required="required" onkeypress="return productEnterKeyEvent(event)">
+                            </div>
+                            <label for="name" class="col-sm-2 control-label">Quantity</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="product_qty" name="product_qty" placeholder="Quantity" value="<?php echo isset($_POST['product_qty']) ? $_POST['product_qty'] : ''; ?>" required="required">
+                                    <span class="input-group-addon">Nos</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-block btn-info" id="proceed_product"><i class="fa fa-plus"></i> Add</button>
+                            </div>
                         </div>
-                        <label for="name" class="col-sm-2 control-label">Quantity</label>
-                        <div class="col-sm-2">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Invoice No" value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>" required="required">
+                    </div>
+                    <div class="row" id="products_table_div">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table id="products_table" class="table table-bordered table-hover" role="grid" aria-describedby="products_table_info">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Rate Per Unit</th>
+                                            <th>Price</th>
+                                            <th data-orderable="false">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="5" style="text-align:right">CGST:</td>
+                                            <td>0.00</td>
+                                            <td>0.00</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="4" style="text-align:right">Sub Total:</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- /.box-body -->
+                <div id="overlay_product" class="overlay" style="display: none;">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
                 <!--                <div class="box-footer">
                                     <div class="form-group">
                                         <div class="col-sm-10 pull-right">

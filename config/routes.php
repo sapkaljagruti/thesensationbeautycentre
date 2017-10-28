@@ -13,7 +13,7 @@ $controllers = array(
     'Accountgroup' => ['getacgroups', 'getAcGroup', 'addgroup', 'updategroup', 'deleteacgroup'],
     'Account' => ['getacs', 'getac', 'addaccount', 'updateac', 'deleteac'],
     'Productcategory' => ['getcategories', 'addcategory', 'getcategory', 'updatecategory', 'deletecategory'],
-    'Product' => ['getproducts', 'getproduct', 'addproduct', 'updateproduct', 'deleteproduct'],
+    'Product' => ['getproducts', 'getproduct', 'addproduct', 'updateproduct', 'deleteproduct', 'findProductByTerm', 'checkProductNameExist'],
     'Party' => ['getall', 'add', 'update', 'get', 'deleteCutomer', 'getPartyNameByTerm'],
     'Purchasebill' => ['getbills', 'add', 'addproduct', 'updateproduct', 'deleteproduct'],
 );

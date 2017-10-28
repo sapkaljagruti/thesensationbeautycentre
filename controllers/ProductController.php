@@ -246,6 +246,44 @@ class ProductController {
         }
     }
 
+    public function findProductByTerm() {
+        $term = trim($_POST['term']);
+        $res = array();
+        $product_res = $this->productobj->findProductByTerm($term);
+        if ($product_res->num_rows > 0) {
+            while ($product = $product_res->fetch_assoc()) {
+                $res[] = [
+                    'id' => $product['id'],
+                    'product_category_id' => $product['product_category_id'],
+                    'brand_id' => $product['brand_id'],
+                    'product_code' => $product['product_code'],
+                    'name' => $product['name'],
+                    'qty' => $product['qty'],
+                    'price' => $product['price'],
+                    'description' => $product['description'],
+                    'hsn_code' => $product['hsn_code'],
+                    'calculation_type' => $product['calculation_type'],
+                    'taxability' => $product['taxability'],
+                    'cgst' => $product['cgst'],
+                    'sgst' => $product['sgst'],
+                    'integrated_tax' => $product['integrated_tax'],
+                    'cess' => $product['cess']
+                ];
+            }
+        }
+        echo json_encode($res);
+    }
+
+    public function checkProductNameExist() {
+        $product_name = trim($_POST['product_name']);
+        $product_res = $this->productobj->checkProductNameExist($product_name);
+        if ($product_res->num_rows > 0) {
+            echo '1';
+        } else {
+            echo '0';
+        }
+    }
+
 }
 
 ?>
