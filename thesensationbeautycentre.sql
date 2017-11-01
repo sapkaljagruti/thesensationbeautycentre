@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2017 at 07:55 AM
--- Server version: 10.1.26-MariaDB
--- PHP Version: 7.1.8
+-- Generation Time: Nov 01, 2017 at 02:28 AM
+-- Server version: 10.1.16-MariaDB
+-- PHP Version: 5.6.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -333,6 +331,30 @@ INSERT INTO `managers` (`id`, `name`, `email`, `mobile_nums`, `created_at`, `upd
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `old_purchase_types`
+--
+
+CREATE TABLE `old_purchase_types` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `old_purchase_types`
+--
+
+INSERT INTO `old_purchase_types` (`id`, `title`, `created_at`, `updated_at`) VALUES
+(1, 'input purchase', '2017-09-22 10:23:04', '2017-09-22 10:23:04'),
+(2, 'interstate purchase', '2017-09-22 10:23:04', '2017-09-22 10:23:04'),
+(3, 'interstate purchase gst', '2017-09-22 10:23:28', '2017-09-22 10:23:28'),
+(4, 'local purchase', '2017-09-22 10:23:28', '2017-09-22 10:23:28'),
+(5, 'local purchase gst', '2017-09-22 10:23:38', '2017-09-22 10:23:38');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `on_item_rate_values`
 --
 
@@ -358,7 +380,7 @@ CREATE TABLE `parties` (
   `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `address` text,
-  `contact_person` varchar(255) NOT NULL,
+  `contact_person` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `mobile1` varchar(255) DEFAULT NULL,
   `mobile2` varchar(255) DEFAULT NULL,
@@ -370,7 +392,7 @@ CREATE TABLE `parties` (
   `bank_account_no` varchar(255) DEFAULT NULL,
   `pan` varchar(255) DEFAULT NULL,
   `gst_state_code_id` int(11) DEFAULT '0',
-  `gst_type_id` int(11) NOT NULL DEFAULT '0',
+  `gst_type_id` int(11) DEFAULT '0',
   `gstin` varchar(255) DEFAULT NULL,
   `brand_ids` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -451,9 +473,8 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_category_id`, `brand_id`, `product_code`, `name`, `qty`, `price`, `description`, `hsn_code`, `calculation_type`, `taxability`, `cgst`, `sgst`, `integrated_tax`, `cess`, `created_at`, `updated_at`) VALUES
-(5, 10, 9, '', 'sensation smoothing shampoo', 1000, '750', '', '', 'on_value', 'nil_rated', NULL, NULL, '0.00', '0.00', '2017-10-26 16:07:58', '2017-10-26 16:31:11'),
-(6, 11, 11, '', 'test1', 0, '0', '', '', 'on_value', 'taxable', '9', '9', '0.00', '0.00', '2017-10-26 18:20:12', '2017-10-26 18:24:28'),
-(7, 11, 11, '', 'test2', 0, '0', '', '', 'on_value', 'taxable', '14', '14', '0.00', '0.00', '2017-10-26 18:24:45', '2017-10-26 18:24:45');
+(5, 10, 9, '', 'sensation smoothing shampoo', 1000, '750', '', '', 'on_value', 'nil_rated', '9', '9', '18.00', '0.00', '2017-10-26 16:07:58', '2017-10-27 15:36:00'),
+(6, 10, 9, '', 'sesnsation smoothing hair conditioner', 1500, '950', '', '', 'on_value', 'taxable', '9', '9', '18.00', '0.00', '2017-10-26 18:20:12', '2017-10-27 15:36:56');
 
 -- --------------------------------------------------------
 
@@ -473,11 +494,52 @@ CREATE TABLE `purchase_types` (
 --
 
 INSERT INTO `purchase_types` (`id`, `title`, `created_at`, `updated_at`) VALUES
-(1, 'input purchase', '2017-09-22 10:23:04', '2017-09-22 10:23:04'),
 (2, 'interstate purchase', '2017-09-22 10:23:04', '2017-09-22 10:23:04'),
-(3, 'interstate purchase gst', '2017-09-22 10:23:28', '2017-09-22 10:23:28'),
-(4, 'local purchase', '2017-09-22 10:23:28', '2017-09-22 10:23:28'),
-(5, 'local purchase gst', '2017-09-22 10:23:38', '2017-09-22 10:23:38');
+(4, 'local purchase', '2017-09-22 10:23:28', '2017-09-22 10:23:28');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `purchase_vouchers`
+--
+
+CREATE TABLE `purchase_vouchers` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `date` date DEFAULT NULL,
+  `invoice_no` varchar(255) DEFAULT NULL,
+  `invoice_date` date DEFAULT NULL,
+  `purchase_type_id` int(11) DEFAULT NULL,
+  `target_account` varchar(255) NOT NULL,
+  `party_id` int(11) DEFAULT NULL,
+  `party_name` varchar(255) DEFAULT NULL,
+  `party_address` text,
+  `party_contact_person` varchar(255) DEFAULT NULL,
+  `party_email` varchar(255) DEFAULT NULL,
+  `party_mobile1` varchar(255) DEFAULT NULL,
+  `party_mobile2` varchar(255) DEFAULT NULL,
+  `party_residence_no` varchar(255) DEFAULT NULL,
+  `party_office_no` varchar(255) DEFAULT NULL,
+  `party_bank_name` varchar(255) DEFAULT NULL,
+  `party_bank_branch` varchar(255) DEFAULT NULL,
+  `party_ifsc_code` varchar(255) DEFAULT NULL,
+  `party_bank_account_no` varchar(255) DEFAULT NULL,
+  `party_pan` varchar(255) DEFAULT NULL,
+  `party_gst_state_code_id` int(11) DEFAULT NULL,
+  `party_gst_type_id` int(11) DEFAULT NULL,
+  `party_gstin` varchar(255) DEFAULT NULL,
+  `products_data` longtext,
+  `total_cgst` double DEFAULT NULL,
+  `total_sgst` double DEFAULT NULL,
+  `total_igst` double DEFAULT NULL,
+  `total_amount` double DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchase_vouchers`
+--
+
+INSERT INTO `purchase_vouchers` (`id`, `date`, `invoice_no`, `invoice_date`, `purchase_type_id`, `target_account`, `party_id`, `party_name`, `party_address`, `party_contact_person`, `party_email`, `party_mobile1`, `party_mobile2`, `party_residence_no`, `party_office_no`, `party_bank_name`, `party_bank_branch`, `party_ifsc_code`, `party_bank_account_no`, `party_pan`, `party_gst_state_code_id`, `party_gst_type_id`, `party_gstin`, `products_data`, `total_cgst`, `total_sgst`, `total_igst`, `total_amount`) VALUES
+(3, '2017-11-01', '123', '2017-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '6_sesnsation smoothing hair conditioner_50 Nos_47500_9_9_18.00,5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 7650, 7650, 0, 100300);
 
 -- --------------------------------------------------------
 
@@ -580,6 +642,12 @@ ALTER TABLE `managers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `old_purchase_types`
+--
+ALTER TABLE `old_purchase_types`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `on_item_rate_values`
 --
 ALTER TABLE `on_item_rate_values`
@@ -613,6 +681,12 @@ ALTER TABLE `products`
 -- Indexes for table `purchase_types`
 --
 ALTER TABLE `purchase_types`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `purchase_vouchers`
+--
+ALTER TABLE `purchase_vouchers`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -676,6 +750,11 @@ ALTER TABLE `gst_types`
 ALTER TABLE `managers`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
+-- AUTO_INCREMENT for table `old_purchase_types`
+--
+ALTER TABLE `old_purchase_types`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
 -- AUTO_INCREMENT for table `on_item_rate_values`
 --
 ALTER TABLE `on_item_rate_values`
@@ -704,13 +783,17 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `purchase_types`
 --
 ALTER TABLE `purchase_types`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `purchase_vouchers`
+--
+ALTER TABLE `purchase_vouchers`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `staff_members`
 --
 ALTER TABLE `staff_members`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;COMMIT;
-
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

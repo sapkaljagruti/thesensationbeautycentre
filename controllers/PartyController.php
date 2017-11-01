@@ -291,6 +291,7 @@ class PartyController {
                     'ifsc_code' => $party['ifsc_code'],
                     'bank_account_no' => $party['bank_account_no'],
                     'pan' => $party['pan'],
+                    'gst_state_code_id' => $party['gst_state_code_id'],
                     'gst_type_id' => $party['gst_type_id'],
                     'gstin' => $party['gstin'],
                 ];

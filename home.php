@@ -2,6 +2,8 @@
 
 @session_start();
 
+date_default_timezone_set('Asia/Kolkata');
+
 $idletime = 3000; //after 60 seconds the user gets logged out
 
 if ((time() - $_SESSION['timestamp']) > $idletime) {

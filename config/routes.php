@@ -13,9 +13,9 @@ $controllers = array(
     'Accountgroup' => ['getacgroups', 'getAcGroup', 'addgroup', 'updategroup', 'deleteacgroup'],
     'Account' => ['getacs', 'getac', 'addaccount', 'updateac', 'deleteac'],
     'Productcategory' => ['getcategories', 'addcategory', 'getcategory', 'updatecategory', 'deletecategory'],
-    'Product' => ['getproducts', 'getproduct', 'addproduct', 'updateproduct', 'deleteproduct', 'findProductByTerm', 'checkProductNameExist'],
+    'Product' => ['getproducts', 'getproduct', 'addproduct', 'updateproduct', 'deleteproduct', 'findProductByTerm', 'checkProductNameExist', 'checkQty'],
     'Party' => ['getall', 'add', 'update', 'get', 'deleteCutomer', 'getPartyNameByTerm'],
-    'Purchasebill' => ['getbills', 'add', 'addproduct', 'updateproduct', 'deleteproduct'],
+    'Purchase' => ['getbills', 'add', 'addproduct', 'updateproduct', 'deleteproduct'],
 );
 
 // check that the requested controller and action are both allowed
@@ -64,8 +64,8 @@ if (array_key_exists($controller, $controllers)) {
             case 'Party':
                 $controller = new PartyController();
                 break;
-            case 'Purchasebill':
-                $controller = new PurchasebillController();
+            case 'Purchase':
+                $controller = new PurchaseController();
                 break;
         }
 

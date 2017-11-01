@@ -1,3 +1,8 @@
+<style>
+    #party_pan, #party_gstin {
+        text-transform: uppercase;
+    }
+</style>
 <?php
 if (isset($errors)) {
     ?>
@@ -34,7 +39,7 @@ if (isset($errors)) {
         <div class="col-md-12">
             <div class="box box-default">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Purchase Details</h3>
+                    <h3 class="box-title">Invoice Details</h3>
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                         </button>
@@ -46,17 +51,19 @@ if (isset($errors)) {
                         <?php
                         $today = date('d-m-Y');
                         ?>
-                        <label for="date" class="col-sm-2 control-label">Date</label>
+                        <label for="date" class="col-sm-2 control-label" id="date_label">Date</label>
                         <div class="col-sm-2">
                             <input type="text" class="form-control" id="date" name="date" placeholder="Date" value="<?php echo isset($_POST['date']) ? $_POST['date'] : $today; ?>" required="required">
+                            <span id="date_help_block" class="help-block"></span>
                         </div>
                         <label for="invoice_no" class="col-sm-2 control-label">Invoice No</label>
                         <div class="col-sm-2">
                             <input type="text" class="form-control" id="invoice_no" name="invoice_no" placeholder="Invoice No" value="<?php echo isset($_POST['invoice_no']) ? $_POST['invoice_no'] : ''; ?>" required="required">
                         </div>
-                        <label for="bill_date" class="col-sm-2 control-label">Bill Date</label>
+                        <label for="invoice_date" class="col-sm-2 control-label" id="invoice_date_label">Invoice Date</label>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control" id="bill_date" name="bill_date" placeholder="Bill Date" value="<?php echo isset($_POST['bill_date']) ? $_POST['bill_date'] : ''; ?>" required="required">
+                            <input type="text" class="form-control" id="invoice_date" name="invoice_date" placeholder="Invoice Date" value="<?php echo isset($_POST['invoice_date']) ? $_POST['invoice_date'] : ''; ?>" required="required">
+                            <span id="invoice_date_help_block" class="help-block"></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -67,6 +74,11 @@ if (isset($errors)) {
                                 if (isset($purchase_types)) {
                                     $purchase_type_selected = '';
                                     foreach ($purchase_types as $purchase_type) {
+                                        if (isset($_POST['purchase_type_id'])) {
+                                            $purchase_type_id = $_POST['purchase_type_id'];
+                                        } else {
+                                            $purchase_type_id = '';
+                                        }
                                         if ($purchase_type_id == $purchase_type['id']) {
                                             $purchase_type_selected = ' selected="selected"';
                                         } else {
@@ -80,17 +92,16 @@ if (isset($errors)) {
                                 ?>
                             </select>
                         </div>
+                        <label for="target_account" class="col-sm-2 control-label">Targer Account</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="target_account" name="target_account">
+                                <option value="asha">Asha</option>
+                                <option value="lakhan">Lakhan</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <!-- /.box-body -->
-                <!--                <div class="box-footer">
-                                    <div class="form-group">
-                                        <div class="col-sm-10 pull-right">
-                                            <button type="submit" class="btn btn-success">Save</button>
-                                            <a href="?controller=purchasebill&action=getbills" type="button" class="btn btn-default">Cancel</a>
-                                        </div>
-                                    </div>
-                                </div>-->
             </div>
             <!-- /.box -->
         </div>
@@ -113,76 +124,103 @@ if (isset($errors)) {
                         <div class="col-sm-4">
                             <input type="text" class="form-control" id="party_name" name="party_name" placeholder="Party Name" value="<?php echo isset($_POST['party_name']) ? $_POST['party_name'] : ''; ?>" required="required" onkeypress="return enterKeyEvent(event)">
                         </div>
-                        <label for="contact_person" class="col-sm-2 control-label">Contact Person</label>
+                        <label for="party_contact_person" class="col-sm-2 control-label">Contact Person</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="contact_person" name="contact_person" placeholder="Contact Person" value="<?php echo isset($_POST['contact_person']) ? $_POST['contact_person'] : ''; ?>" required="required">
+                            <input type="text" class="form-control" id="party_contact_person" name="party_contact_person" placeholder="Contact Person" value="<?php echo isset($_POST['party_contact_person']) ? $_POST['party_contact_person'] : ''; ?>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="address" class="col-sm-2 control-label">Address</label>
+                        <label for="party_address" class="col-sm-2 control-label">Address</label>
                         <div class="col-sm-4">
-                            <textarea class="form-control" rows="3" placeholder="Address" id="address" name="address"><?php echo isset($_POST['address']) ? $_POST['address'] : ''; ?></textarea>
+                            <textarea class="form-control" rows="3" placeholder="Address" id="party_address" name="party_address"><?php echo isset($_POST['party_address']) ? $_POST['party_address'] : ''; ?></textarea>
                         </div>
-                        <label for="email" class="col-sm-2 control-label">Email</label>
+                        <label for="party_email" class="col-sm-2 control-label">Email</label>
                         <div class="col-sm-4">
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="mobile1" class="col-sm-2 control-label">Mobile 1</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="mobile1" name="mobile1" placeholder="Enter Mobile No" maxlength="10" minlength="10" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['mobile1']) ? $_POST['mobile1'] : ''; ?>">
-                        </div>
-                        <label for="mobile2" class="col-sm-2 control-label">Mobile 2</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="mobile2" name="mobile2" placeholder="Enter Mobile No" maxlength="10" minlength="10" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['mobile2']) ? $_POST['mobile2'] : ''; ?>">
+                            <input type="party_email" class="form-control" id="party_email" name="party_email" placeholder="Email" value="<?php echo isset($_POST['party_email']) ? $_POST['party_email'] : ''; ?>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="residence_no" class="col-sm-2 control-label">Residence No</label>
+                        <label for="party_mobile1" class="col-sm-2 control-label">Mobile 1</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="residence_no" name="residence_no" placeholder="Enter Residence No" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['residence_no']) ? $_POST['residence_no'] : ''; ?>">
+                            <input type="text" class="form-control" id="party_mobile1" name="party_mobile1" placeholder="Enter Mobile No" maxlength="10" minlength="10" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['party_mobile1']) ? $_POST['party_mobile1'] : ''; ?>">
                         </div>
-                        <label for="office_no" class="col-sm-2 control-label">Office No</label>
+                        <label for="party_mobile2" class="col-sm-2 control-label">Mobile 2</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="office_no" name="office_no" placeholder="Enter Office Contact No" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" value="<?php echo isset($_POST['office_no']) ? $_POST['office_no'] : ''; ?>">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="bank_name" class="col-sm-2 control-label">Bank Name</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="bank_name" name="bank_name" placeholder="Bank Name" value="<?php echo isset($_POST['bank_name']) ? $_POST['bank_name'] : ''; ?>">
-                        </div>
-                        <label for="bank_branch" class="col-sm-2 control-label">Bank Branch</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="bank_branch" name="bank_branch" placeholder="Bank Branch" value="<?php echo isset($_POST['bank_branch']) ? $_POST['bank_branch'] : ''; ?>">
+                            <input type="text" class="form-control" id="party_mobile2" name="party_mobile2" placeholder="Enter Mobile No" maxlength="10" minlength="10" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['party_mobile2']) ? $_POST['party_mobile2'] : ''; ?>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="ifsc_code" class="col-sm-2 control-label">IFSC Code</label>
+                        <label for="party_residence_no" class="col-sm-2 control-label">Residence No</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="ifsc_code" name="ifsc_code" placeholder="Bank IFSC Code" value="<?php echo isset($_POST['ifsc_code']) ? $_POST['ifsc_code'] : ''; ?>">
+                            <input type="text" class="form-control" id="party_residence_no" name="party_residence_no" placeholder="Enter Residence No" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['party_residence_no']) ? $_POST['party_residence_no'] : ''; ?>">
                         </div>
-                        <label for="bank_account_no" class="col-sm-2 control-label">Bank A/C No</label>
+                        <label for="party_office_no" class="col-sm-2 control-label">Office No</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="bank_account_no" name="bank_account_no" placeholder="Bank A/C no" value="<?php echo isset($_POST['bank_account_no']) ? $_POST['bank_account_no'] : ''; ?>">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="pan" class="col-sm-2 control-label">PAN</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="pan" name="pan" placeholder="PAN" value="<?php echo isset($_POST['pan']) ? $_POST['pan'] : ''; ?>">
+                            <input type="text" class="form-control" id="party_office_no" name="party_office_no" placeholder="Enter Office Contact No" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" value="<?php echo isset($_POST['party_office_no']) ? $_POST['party_office_no'] : ''; ?>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="gst_type_id" class="col-sm-2 control-label">GST Type</label>
+                        <label for="party_bank_name" class="col-sm-2 control-label">Bank Name</label>
                         <div class="col-sm-4">
-                            <select class="form-control" id="gst_type_id" name="gst_type_id">
+                            <input type="text" class="form-control" id="party_bank_name" name="party_bank_name" placeholder="Bank Name" value="<?php echo isset($_POST['party_bank_name']) ? $_POST['party_bank_name'] : ''; ?>">
+                        </div>
+                        <label for="party_bank_branch" class="col-sm-2 control-label">Bank Branch</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="party_bank_branch" name="party_bank_branch" placeholder="Bank Branch" value="<?php echo isset($_POST['party_bank_branch']) ? $_POST['party_bank_branch'] : ''; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="party_ifsc_code" class="col-sm-2 control-label">IFSC Code</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="party_ifsc_code" name="party_ifsc_code" placeholder="Bank IFSC Code" value="<?php echo isset($_POST['party_ifsc_code']) ? $_POST['party_ifsc_code'] : ''; ?>">
+                        </div>
+                        <label for="party_bank_account_no" class="col-sm-2 control-label">Bank A/C No</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="party_bank_account_no" name="party_bank_account_no" placeholder="Bank A/C no" value="<?php echo isset($_POST['party_bank_account_no']) ? $_POST['party_bank_account_no'] : ''; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="party_pan" class="col-sm-2 control-label" id="pan_label">PAN</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="party_pan" name="party_pan" placeholder="PAN" value="<?php echo isset($_POST['party_pan']) ? $_POST['party_pan'] : ''; ?>">
+                            <span id="pan_help_block" class="help-block"></span>
+                        </div>
+                        <label for="party_gst_state_code_id" class="col-sm-2 control-label" id="state_label">State</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="party_gst_state_code_id" name="party_gst_state_code_id">
+                                <option value="0">Select State</option>
+                                <?php
+                                if (isset($gst_states)) {
+                                    foreach ($gst_states as $gst_state) {
+                                        if (isset($_POST['party_gst_state_code_id'])) {
+                                            $gst_state_code_id = $_POST['party_gst_state_code_id'];
+                                        } else {
+                                            $gst_state_code_id = '0';
+                                        }
+                                        if ($gst_state_code_id == $gst_state['state_code']) {
+                                            $gst_state_selected = ' selected="selected"';
+                                        } else {
+                                            $gst_state_selected = '';
+                                        }
+                                        ?>
+                                        <option value="<?php echo $gst_state['state_code']; ?>"<?php echo $gst_state_selected; ?>><?php echo $gst_state['state']; ?></option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
+                            <span id="state_help_block" class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="party_gst_type_id" class="col-sm-2 control-label">GST Type</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="party_gst_type_id" name="party_gst_type_id">
                                 <?php
                                 if (isset($gst_types)) {
                                     foreach ($gst_types as $gst_type) {
-                                        if (isset($_POST['gst_type_id'])) {
-                                            $gst_type_id = $_POST['gst_type_id'];
+                                        if (isset($_POST['party_gst_type_id'])) {
+                                            $gst_type_id = $_POST['party_gst_type_id'];
                                         } else {
                                             $gst_type_id = '3';
                                         }
@@ -199,9 +237,10 @@ if (isset($errors)) {
                                 ?>
                             </select>
                         </div>
-                        <label for="gstin" class="col-sm-2 control-label">GSTIN</label>
+                        <label for="party_gstin" class="col-sm-2 control-label" id="gstin_label">GSTIN</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="gstin" name="gstin" placeholder="GSTIN" value="<?php echo isset($_POST['gstin']) ? $_POST['gstin'] : ''; ?>">
+                            <input type="text" class="form-control" id="party_gstin" name="party_gstin" placeholder="GSTIN" value="<?php echo isset($_POST['party_gstin']) ? $_POST['party_gstin'] : ''; ?>" maxlength="15" minlength="15" oncopy="return false;" onpaste="return false;" autocomplete="off">
+                            <span id="gstin_help_block" class="help-block"></span>
                         </div>
                     </div>
                 </div>
@@ -227,16 +266,21 @@ if (isset($errors)) {
                         <div class="form-group">
                             <input type="hidden" name="product_id" id="product_id">
                             <input type="hidden" name="price" id="price">
-                            <label for="name" class="col-sm-2 control-label"> Product</label>
+                            <input type="hidden" name="cgst" id="cgst">
+                            <input type="hidden" name="sgst" id="sgst">
+                            <input type="hidden" name="igst" id="igst">
+                            <label for="product_name" class="col-sm-2 control-label" id="product_name_label"> Product</label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Product Name" value="<?php echo isset($_POST['product_name']) ? $_POST['product_name'] : ''; ?>" required="required" onkeypress="return productEnterKeyEvent(event)">
+                                <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Product Name" value="<?php echo isset($_POST['product_name']) ? $_POST['product_name'] : ''; ?>" onkeypress="return productEnterKeyEvent(event)">
+                                <span id="product_name_help_block" class="help-block"></span>
                             </div>
-                            <label for="name" class="col-sm-2 control-label">Quantity</label>
+                            <label for="product_qty" class="col-sm-2 control-label" id="product_qty_label">Quantity</label>
                             <div class="col-sm-2">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="product_qty" name="product_qty" placeholder="Quantity" value="<?php echo isset($_POST['product_qty']) ? $_POST['product_qty'] : ''; ?>" required="required">
-                                    <span class="input-group-addon">Nos</span>
+                                    <input type="text" class="form-control" id="product_qty" name="product_qty" placeholder="Quantity" value="<?php echo isset($_POST['product_qty']) ? $_POST['product_qty'] : ''; ?>" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
+                                    <span class="input-group-addon" id="product_qty_addon">Nos</span>
                                 </div>
+                                <span id="product_qty_help_block" class="help-block"></span>
                             </div>
                             <div class="col-sm-2">
                                 <button type="button" class="btn btn-block btn-info" id="proceed_product"><i class="fa fa-plus"></i> Add</button>
@@ -259,14 +303,49 @@ if (isset($errors)) {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td colspan="5" style="text-align:right">CGST:</td>
-                                            <td>0.00</td>
-                                            <td>0.00</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td style="text-align:right"><b>CGST:</b></td>
+                                            <td id="cgst_td">0.00</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td style="text-align:right"><b>SGST:</b></td>
+                                            <td id="sgst_td">0.00</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td style="text-align:right"><b>IGST:</b></td>
+                                            <td id="igst_td">0.00</td>
+                                            <td></td>
                                         </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="4" style="text-align:right">Sub Total:</th>
+                                            <th colspan="4" style="text-align:right">Total:</th>
                                             <th></th>
                                             <th></th>
                                         </tr>
@@ -280,16 +359,22 @@ if (isset($errors)) {
                 <div id="overlay_product" class="overlay" style="display: none;">
                     <i class="fa fa-refresh fa-spin"></i>
                 </div>
-                <!--                <div class="box-footer">
-                                    <div class="form-group">
-                                        <div class="col-sm-10 pull-right">
-                                            <button type="submit" class="btn btn-success">Save</button>
-                                            <a href="?controller=purchasebill&action=getbills" type="button" class="btn btn-default">Cancel</a>
-                                        </div>
-                                    </div>
-                                </div>-->
             </div>
             <!-- /.box -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <textarea style="display: none;" name="products_data" id="products_data"></textarea>
+            <input type="hidden" id="total_cgst" name="total_cgst" value="0.00"/>
+            <input type="hidden" id="total_sgst" name="total_sgst" value="0.00"/>
+            <input type="hidden" id="total_igst" name="total_igst" value="0.00"/>
+            <a type="button" class="btn btn-danger" href="?controller=purchase&action=getbills">
+                <i class="fa fa-fw fa-arrow-circle-left"></i> Cancel
+            </a>
+            <button type="submit" id="save" class="btn btn-success pull-right">
+                <i class="fa fa-credit-card"></i> Save
+            </button>
         </div>
     </div>
 </form>

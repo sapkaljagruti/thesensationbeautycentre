@@ -10,7 +10,7 @@
 
 <div class="row">
     <div class="col-md-2 pull-left">
-        <a class="btn btn-app" href="?controller=purchasebill&action=add">
+        <a class="btn btn-app" href="?controller=purchase&action=add">
             <i class="fa fa-plus"></i> New
         </a>
     </div>

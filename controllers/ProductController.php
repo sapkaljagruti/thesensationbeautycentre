@@ -284,6 +284,21 @@ class ProductController {
         }
     }
 
+    public function checkQty() {
+        $product_id = trim($_POST['product_id']);
+        $inputQty = trim($_POST['quantity']);
+        $finalQty = '';
+
+        $product_res = $this->productobj->getproduct($product_id);
+        if ($product_res->num_rows > 0) {
+            while ($product = $product_res->fetch_assoc()) {
+                $availableQty = $product['qty'];
+                $finalQty = ($availableQty - $inputQty) . ' Nos';
+            }
+        }
+        echo $finalQty;
+    }
+
 }
 
 ?>
