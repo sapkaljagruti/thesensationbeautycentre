@@ -12,15 +12,19 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/controllers/PartyController.php</file>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/controllers/PurchaseController.php</file>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/home.php</file>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/layout.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/public/js/sale_bills.js</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/models/SaleType.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/add_sale_bill.php</file>
             <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/add_purchase_bill.php</file>
             <file>file:/C:/xampp/htdocs/thesensationbeautycentre/config/routes.php</file>
             <file>file:/C:/xampp/htdocs/thesensationbeautycentre/public/js/purchase_bills.js</file>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/update_party.php</file>
             <file>file:/C:/xampp/htdocs/thesensationbeautycentre/models/Purchase.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/purchase_bills.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/controllers/PurchaseController.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/layout.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/models/Sale.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/controllers/SaleController.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/sale_bills.php</file>
         </group>
     </open-files>
 </project-private>

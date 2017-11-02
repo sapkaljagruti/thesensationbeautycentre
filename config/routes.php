@@ -15,7 +15,8 @@ $controllers = array(
     'Productcategory' => ['getcategories', 'addcategory', 'getcategory', 'updatecategory', 'deletecategory'],
     'Product' => ['getproducts', 'getproduct', 'addproduct', 'updateproduct', 'deleteproduct', 'findProductByTerm', 'checkProductNameExist', 'checkQty'],
     'Party' => ['getall', 'add', 'update', 'get', 'deleteCutomer', 'getPartyNameByTerm'],
-    'Purchase' => ['getbills', 'add', 'addproduct', 'updateproduct', 'deleteproduct'],
+    'Purchase' => ['getbills', 'checkInovieExist', 'add'],
+    'Sale' => ['getbills', 'checkInovieExist', 'add'],
 );
 
 // check that the requested controller and action are both allowed
@@ -66,6 +67,9 @@ if (array_key_exists($controller, $controllers)) {
                 break;
             case 'Purchase':
                 $controller = new PurchaseController();
+                break;
+            case 'Sale':
+                $controller = new SaleController();
                 break;
         }
 

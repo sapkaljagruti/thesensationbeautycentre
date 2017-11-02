@@ -1,19 +1,19 @@
 <?php
 
-class PurchaseController {
+class SaleController {
 
-    public $purchaseobj;
-    public $purchase_type_obj;
+    public $saleobj;
+    public $sale_type_obj;
     public $gst_obj;
     public $ex_ins_staff_members_nots;
 
     public function __construct() {
 
-        require_once 'models/Purchase.php';
-        $this->purchaseobj = new Purchase();
+        require_once 'models/Sale.php';
+        $this->saleobj = new Sale();
 
-        require_once 'models/PurchaseType.php';
-        $this->purchase_type_obj = new PurchaseType();
+        require_once 'models/SaleType.php';
+        $this->sale_type_obj = new SaleType();
 
         require_once 'models/Gst.php';
         $this->gst_obj = new Gst();
@@ -30,23 +30,28 @@ class PurchaseController {
             }
         }
 
-        $this->extra_js_files = array('plugins/jQueryUI/jquery-ui.js', 'plugins/datatables/jquery.dataTables.min.js', 'plugins/datatables/dataTables.bootstrap.min.js', 'plugins/input-mask/jquery.inputmask.js', 'plugins/input-mask/jquery.inputmask.date.extensions.js', 'plugins/input-mask/jquery.inputmask.extensions.js', 'js/purchase_bills.js');
+        $this->extra_js_files = array('plugins/jQueryUI/jquery-ui.js', 'plugins/datatables/jquery.dataTables.min.js', 'plugins/datatables/dataTables.bootstrap.min.js', 'plugins/input-mask/jquery.inputmask.js', 'plugins/input-mask/jquery.inputmask.date.extensions.js', 'plugins/input-mask/jquery.inputmask.extensions.js', 'js/sale_bills.js');
     }
 
     public function getbills() {
-        $page_header = 'Purchase Vouchers';
+        $page_header = 'Sales Vouchers';
         $extra_js_files = $this->extra_js_files;
-        $purchase_vouchers = $this->purchaseobj->getPurchaseVouchers();
+        $sale_vouchers = $this->saleobj->getSaleVouchers();
         $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
-        $view_file = '/views/purchase_bills.php';
+        $view_file = '/views/sale_bills.php';
         require_once APP_DIR . '/views/layout.php';
     }
+
+//    public function checkInovieExist($target_account, $invoice_no) {
+//        $sale_voucher = $this->saleobj->checkInovieExist($target_account, $invoice_no);
+//        return $sale_voucher;
+//    }
 
     public function checkInovieExist() {
         $target_account = trim($_POST['target_account']);
         $invoice_no = trim($_POST['invoice_no']);
-        $purchase_voucher = $this->purchaseobj->checkInovieExist($target_account, $invoice_no);
-        if ($purchase_voucher) {
+        $sale_voucher = $this->saleobj->checkInovieExist($target_account, $invoice_no);
+        if ($sale_voucher) {
             echo '1';
         } else {
             echo '0';
@@ -54,17 +59,24 @@ class PurchaseController {
     }
 
     public function add() {
-        $page_header = 'Purchase Voucher Entry';
+        $page_header = 'Sale Voucher Entry';
         $extra_js_files = $this->extra_js_files;
 
         if (!empty($_POST)) {
             $errors = array();
 
+//            $target_account = $_POST['target_account'];
+//            $invoice_no = trim($_POST['invoice_no']);
+//            $checkInovieExist = $this->checkInovieExist($target_account, $invoice_no);
+//            if ($checkInovieExist) {
+//                array_push($errors, 'This invoice already exist. Please change invoice no');
+//            }
+
             if (empty($errors)) {
-                $ledger_name = trim($_POST['ledger_name']);
-                $invoice_no = trim($_POST['invoice_no']);
-                $purchase_type_id = !empty($_POST['purchase_type_id']) ? trim($_POST['purchase_type_id']) : NULL;
                 $target_account = $_POST['target_account'];
+                $invoice_no = trim($_POST['invoice_no']);
+                $ledger_name = trim($_POST['ledger_name']);
+                $sale_type_id = !empty($_POST['sale_type_id']) ? trim($_POST['sale_type_id']) : NULL;
                 $party_id = !empty($_POST['party_id']) ? $_POST['party_id'] : NULL;
                 $party_name = !empty($_POST['party_name']) ? trim($_POST['party_name']) : NULL;
                 $party_address = !empty($_POST['party_address']) ? trim($_POST['party_address']) : NULL;
@@ -102,20 +114,20 @@ class PurchaseController {
                     $invoice_date = NULL;
                 }
 
-                $purchase_voucher = $this->purchaseobj->addPurchaseVoucher($date, $ledger_name, $invoice_no, $invoice_date, $purchase_type_id, $target_account, $party_id, $party_name, $party_address, $party_contact_person, $party_email, $party_mobile1, $party_mobile2, $party_residence_no, $party_office_no, $party_bank_name, $party_bank_branch, $party_ifsc_code, $party_bank_account_no, $party_pan, $party_gst_state_code_id, $party_gst_type_id, $party_gstin, $products_data, $total_cgst, $total_sgst, $total_igst, $total_amount);
-                if ($purchase_voucher) {
-                    header('location: home.php?controller=purchase&action=getbills');
+                $sale_voucher = $this->saleobj->addSaleVoucher($date, $ledger_name, $invoice_no, $invoice_date, $sale_type_id, $target_account, $party_id, $party_name, $party_address, $party_contact_person, $party_email, $party_mobile1, $party_mobile2, $party_residence_no, $party_office_no, $party_bank_name, $party_bank_branch, $party_ifsc_code, $party_bank_account_no, $party_pan, $party_gst_state_code_id, $party_gst_type_id, $party_gstin, $products_data, $total_cgst, $total_sgst, $total_igst, $total_amount);
+                if ($sale_voucher) {
+                    header('location: home.php?controller=sale&action=getbills');
                 } else {
                     array_push($errors, 'Something went wrong. Please try again later.');
                 }
             }
         }
 
-        $purchase_types_res = $this->purchase_type_obj->getTypes();
-        if ($purchase_types_res->num_rows > 0) {
-            while ($purchase_type = mysqli_fetch_assoc($purchase_types_res)) {
-                $purchase_type['title'] = ucwords($purchase_type['title']);
-                $purchase_types[] = $purchase_type;
+        $sale_types_res = $this->sale_type_obj->getTypes();
+        if ($sale_types_res->num_rows > 0) {
+            while ($sale_type = mysqli_fetch_assoc($sale_types_res)) {
+                $sale_type['title'] = ucwords($sale_type['title']);
+                $sale_types[] = $sale_type;
             }
         }
 
@@ -136,7 +148,7 @@ class PurchaseController {
         }
 
         $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
-        $view_file = '/views/add_purchase_bill.php';
+        $view_file = '/views/add_sale_bill.php';
         require_once APP_DIR . '/views/layout.php';
     }
 

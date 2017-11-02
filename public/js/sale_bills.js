@@ -38,18 +38,18 @@ function isValidDate(str) {
 
 $(document).on('change', '.select-all', function (e) {
     var status = this.checked;
-    $('input[name="select_purchase_vouchers[]"]').each(function () {
+    $('input[name="select_sale_vouchers[]"]').each(function () {
         this.checked = status;
     });
     $('#delete_selected').attr('disabled', !(status));
 });
 
-$(document).on('change', 'input[name="select_purchase_vouchers[]"]', function (e) {
+$(document).on('change', 'input[name="select_sale_vouchers[]"]', function (e) {
     if (this.checked == false) {
         $(".select-all")[0].checked = false;
     }
 
-    if ($('input[name="select_purchase_vouchers[]"]:checked').length > 0) {
+    if ($('input[name="select_sale_vouchers[]"]:checked').length > 0) {
         $('#delete_selected').prop('disabled', false);
     } else {
         $('#delete_selected').prop('disabled', true);
@@ -85,7 +85,7 @@ $(document).on('click', '#delete', function () {
             data: {'id': data_to_delete},
             success: function (response) {
                 if ($.trim(response) == 'deleted') {
-                    var table = $('#purchase_vouchers_table').DataTable();
+                    var table = $('#sale_vouchers_table').DataTable();
                     table.row($('#tr_' + data_to_delete)).remove().draw(false);
                     showSuccess('Customer was removed.', 10000);
                 } else {
@@ -103,7 +103,7 @@ $(document).on('click', '#delete', function () {
         });
     } else if (delete_type == 'multiple') {
         var data_to_delete = [];
-        $('input[name="select_purchase_vouchers[]"]:checked').each(function () {
+        $('input[name="select_sale_vouchers[]"]:checked').each(function () {
             data_to_delete.push($(this).attr('data-id'));
         });
         $('#loader').show();
@@ -113,7 +113,7 @@ $(document).on('click', '#delete', function () {
             data: {'id': data_to_delete},
             dataType: "json",
             success: function (response) {
-                var table = $('#purchase_vouchers_table').DataTable();
+                var table = $('#sale_vouchers_table').DataTable();
                 for (var j in response) {
                     table.row($('#tr_' + response[j])).remove().draw(false);
                 }
@@ -178,13 +178,13 @@ $(document).on('focusout', '#party_name', function (e) {
     }
 });
 
-$(document).on('change', '#purchase_type_id', function () {
-    var purchase_type = $(this).find('option:selected').text();
+$(document).on('change', '#sale_type_id', function () {
+    var sale_type = $(this).find('option:selected').text();
 
     if ($("tr[id^='tr_']").length) {
         var table = $('#products_table').DataTable();
 
-        if (purchase_type == 'Local Purchase') {
+        if (sale_type == 'Local Sale') {
             table.cell('#igst_td').data('0.00').draw();
 
             var old_cgst_val = parseFloat($('#cgst_td').html());
@@ -215,7 +215,7 @@ $(document).on('change', '#purchase_type_id', function () {
 
             var sgst_td_html = old_sgst_val + parseFloat(new_sgst_val);
             table.cell('#sgst_td').data(sgst_td_html).draw();
-        } else if (purchase_type == 'Interstate Purchase') {
+        } else if (sale_type == 'Interstate Sale') {
             table.cell('#cgst_td').data('0.00').draw();
             table.cell('#sgst_td').data('0.00').draw();
 
@@ -414,7 +414,7 @@ $(document).on('click', '#proceed_product', function () {
     var sgst = $('#sgst').val();
     var igst = $('#igst').val();
     var quantity = $('#product_qty').val();
-    var purchase_type = $('#purchase_type_id option:selected').text();
+    var sale_type = $('#sale_type_id option:selected').text();
 
     if (product_name == '') {
         $('#product_name').css('border-color', '#dd4b39');
@@ -473,7 +473,7 @@ $(document).on('click', '#proceed_product', function () {
 
                 var table = $('#products_table').DataTable();
 
-                if (purchase_type == 'Local Purchase') {
+                if (sale_type == 'Local Sale') {
                     var old_cgst_val = parseFloat($('#cgst_td').html());
                     var new_cgst_val = (parseFloat(data_price) * parseFloat(cgst)) / 100;
                     var cgst_td_html = old_cgst_val + parseFloat(new_cgst_val);
@@ -485,7 +485,7 @@ $(document).on('click', '#proceed_product', function () {
                     table.cell('#sgst_td').data(sgst_td_html).draw();
 
                     table.cell('#igst_td').data('0.00').draw();
-                } else if (purchase_type == 'Interstate Purchase') {
+                } else if (sale_type == 'Interstate Sale') {
                     var old_igst_val = parseFloat($('#igst_td').html());
                     var new_igst_val = (parseFloat(data_price) * parseFloat(igst)) / 100;
                     var igst_td_html = old_igst_val + parseFloat(new_igst_val);
@@ -540,9 +540,9 @@ $(document).on('click', '.delete_product', function (e) {
     var table = $('#products_table').DataTable();
     table.row($('#tr_' + data_id)).remove().draw(false);
 
-    var purchase_type = $('#purchase_type_id option:selected').text();
+    var sale_type = $('#sale_type_id option:selected').text();
 
-    if (purchase_type == 'Local Purchase') {
+    if (sale_type == 'Local Sale') {
         table.cell('#igst_td').data('0.00').draw();
 
         var old_cgst_val = parseFloat('0.00');
@@ -573,7 +573,7 @@ $(document).on('click', '.delete_product', function (e) {
 
         var sgst_td_html = old_sgst_val + parseFloat(new_sgst_val);
         table.cell('#sgst_td').data(sgst_td_html).draw();
-    } else if (purchase_type == 'Interstate Purchase') {
+    } else if (sale_type == 'Interstate Sale') {
         table.cell('#cgst_td').data('0.00').draw();
         table.cell('#sgst_td').data('0.00').draw();
 
@@ -604,7 +604,7 @@ $(function () {
     $("#invoice_date").inputmask("dd-mm-yyyy", {"placeholder": "dd-mm-yyyy"});
     $('#delete_selected').attr('disabled', true);
 
-    var t = $('#purchase_vouchers_table').DataTable({
+    var t = $('#sale_vouchers_table').DataTable({
         "paging": true,
         "lengthChange": true,
         "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
@@ -638,7 +638,7 @@ $(document).on('focusout', '#invoice_no', function () {
         $('#overlay_product').show();
         $('#overlay_party').show();
         $.ajax({
-            url: '?controller=purchase&action=checkInovieExist',
+            url: '?controller=sale&action=checkInovieExist',
             data: {
                 'target_account': target_account,
                 'invoice_no': invoice_no
@@ -673,7 +673,7 @@ $(document).on('focusout', '#invoice_no', function () {
 $(document).on('submit', 'form', function () {
     var proceed = 1;
     var product_details = [];
-
+    
     var valid_invoice_no = $('#valid_invoice_no').val();
 
     if (valid_invoice_no == '0') {

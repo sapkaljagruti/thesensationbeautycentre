@@ -57,9 +57,9 @@ if (isset($errors)) {
                             <input type="text" class="form-control" id="date" name="date" placeholder="Date" value="<?php echo isset($_POST['date']) ? $_POST['date'] : $today; ?>" required="required">
                             <span id="date_help_block" class="help-block"></span>
                         </div>
-                        <label for="ledger_name" class="col-sm-2 control-label">Purchase Ledger</label>
+                        <label for="ledger_name" class="col-sm-2 control-label">Sales Ledger</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="ledger_name" name="ledger_name" placeholder="Purchase Ledger" value="" required="required">
+                            <input type="text" class="form-control" id="ledger_name" name="ledger_name" placeholder="Sale Ledger" value="" required="required">
                         </div>
                     </div>
                     <div class="form-group">
@@ -76,25 +76,25 @@ if (isset($errors)) {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="purchase_type_id" class="col-sm-2 control-label">Purchase Type</label>
+                        <label for="sale_type_id" class="col-sm-2 control-label">Sale Type</label>
                         <div class="col-sm-4">
-                            <select class="form-control" id="purchase_type_id" name="purchase_type_id">
+                            <select class="form-control" id="sale_type_id" name="sale_type_id">
                                 <?php
-                                if (isset($purchase_types)) {
-                                    $purchase_type_selected = '';
-                                    foreach ($purchase_types as $purchase_type) {
-                                        if (isset($_POST['purchase_type_id'])) {
-                                            $purchase_type_id = $_POST['purchase_type_id'];
+                                if (isset($sale_types)) {
+                                    $sale_type_selected = '';
+                                    foreach ($sale_types as $sale_type) {
+                                        if (isset($_POST['sale_type_id'])) {
+                                            $sale_type_id = $_POST['sale_type_id'];
                                         } else {
-                                            $purchase_type_id = '';
+                                            $sale_type_id = '';
                                         }
-                                        if ($purchase_type_id == $purchase_type['id']) {
-                                            $purchase_type_selected = ' selected="selected"';
+                                        if ($sale_type_id == $sale_type['id']) {
+                                            $sale_type_selected = ' selected="selected"';
                                         } else {
-                                            $purchase_type_selected = '';
+                                            $sale_type_selected = '';
                                         }
                                         ?>
-                                        <option value="<?php echo $purchase_type['id']; ?>"<?php echo $purchase_type_selected; ?>><?php echo $purchase_type['title']; ?></option>
+                                        <option value="<?php echo $sale_type['id']; ?>"<?php echo $sale_type_selected; ?>><?php echo $sale_type['title']; ?></option>
                                         <?php
                                     }
                                 }
@@ -384,7 +384,7 @@ if (isset($errors)) {
             <input type="hidden" id="total_cgst" name="total_cgst" value="0.00"/>
             <input type="hidden" id="total_sgst" name="total_sgst" value="0.00"/>
             <input type="hidden" id="total_igst" name="total_igst" value="0.00"/>
-            <a type="button" class="btn btn-danger" href="?controller=purchase&action=getbills">
+            <a type="button" class="btn btn-danger" href="?controller=sale&action=getbills">
                 <i class="fa fa-fw fa-arrow-circle-left"></i> Cancel
             </a>
             <button type="submit" id="save" class="btn btn-success pull-right">

@@ -13,7 +13,7 @@
         <!-- /.box -->
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a class="btn btn-app" href="?controller=purchase&action=add">
+                <a class="btn btn-app" href="?controller=sale&action=add">
                     <i class="fa fa-plus"></i> New
                 </a>
                 <button class="btn btn-app" id="delete_selected">
@@ -27,7 +27,7 @@
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="table-responsive">
-                    <table id="purchase_vouchers_table" class="table table-bordered table-hover" role="grid" aria-describedby="purchase_vouchers_table_info">
+                    <table id="sale_vouchers_table" class="table table-bordered table-hover" role="grid" aria-describedby="sale_vouchers_table_info">
                         <thead>
                             <tr>
                                 <th>Id</th>
@@ -40,22 +40,22 @@
                             </tr>
                         </thead>
                         <?php
-                        if (isset($purchase_vouchers)) {
-                            if ($purchase_vouchers->num_rows > 0) {
+                        if (isset($sale_vouchers)) {
+                            if ($sale_vouchers->num_rows > 0) {
                                 ?>
                                 <tbody>
                                     <?php
-                                    while ($purchase_voucher = $purchase_vouchers->fetch_assoc()) {
+                                    while ($sale_voucher = $sale_vouchers->fetch_assoc()) {
                                         ?>
-                                        <tr id="tr_<?php echo $purchase_voucher['id']; ?>">
-                                            <td><?php echo $purchase_voucher['id']; ?></td>
-                                            <td><input type="checkbox" name="select_purchase_vouchers[]" data-id="<?php echo $purchase_voucher['id']; ?>"></td>
-                                            <td><?php echo $purchase_voucher['ledger_name']; ?></td>
-                                            <td><?php echo $purchase_voucher['invoice_no']; ?></td>
+                                        <tr id="tr_<?php echo $sale_voucher['id']; ?>">
+                                            <td><?php echo $sale_voucher['id']; ?></td>
+                                            <td><input type="checkbox" name="select_sale_vouchers[]" data-id="<?php echo $sale_voucher['id']; ?>"></td>
+                                            <td><?php echo $sale_voucher['ledger_name']; ?></td>
+                                            <td><?php echo $sale_voucher['invoice_no']; ?></td>
 <!--                                            <td>
-                                                <a href="?controller=party&action=get&id=<?php echo $purchase_voucher['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-eye"></i> View</a>
-                                                <a href="?controller=party&action=update&id=<?php echo $purchase_voucher['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-pencil-square-o"></i> Edit</a>
-                                                <a href="" class="delete btn btn-default" data-id="<?php echo $purchase_voucher['id']; ?>"><i class="fa fa-fw fa-trash"></i> Delete</a>
+                                                <a href="?controller=party&action=get&id=<?php echo $sale_voucher['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-eye"></i> View</a>
+                                                <a href="?controller=party&action=update&id=<?php echo $sale_voucher['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-pencil-square-o"></i> Edit</a>
+                                                <a href="" class="delete btn btn-default" data-id="<?php echo $sale_voucher['id']; ?>"><i class="fa fa-fw fa-trash"></i> Delete</a>
                                             </td>-->
                                         </tr>
                                         <?php

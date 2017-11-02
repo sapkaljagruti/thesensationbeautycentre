@@ -68,7 +68,7 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Transactions <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="?controller=purchase&action=getbills">Purchase Voucher</a></li>
-                                        <li><a href="?controller=product&action=getproducts">Sales Voucher</a></li>
+                                        <li><a href="?controller=sale&action=getbills">Sales Voucher</a></li>
                                         <li><a href="?controller=product&action=getproducts">Debit Note</a></li>
                                         <li><a href="?controller=product&action=getproducts">Credit Note</a></li>
                                         <li><a href="?controller=product&action=getproducts">Journal Voucher</a></li>
