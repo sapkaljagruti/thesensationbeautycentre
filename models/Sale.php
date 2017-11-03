@@ -38,22 +38,14 @@ class Sale {
         }
     }
 
-    public function updateCustomer($id, $name, $gender, $address, $mobile1, $mobile2, $residence_no, $office_no, $dob, $doa, $email) {
-        $customer = $this->conn->query('UPDATE customers SET name="' . $name . '", gender="' . $gender . '", address="' . $address . '", mobile1="' . $mobile1 . '", mobile2="' . $mobile2 . '", residence_no="' . $residence_no . '", office_no="' . $office_no . '", dob="' . $dob . '", doa="' . $doa . '" WHERE id=' . $id);
-        if ($customer === TRUE) {
-            return $id;
-        } else {
-            return FALSE;
-        }
+    public function findLedgerByTerm($term, $party_id) {
+        $sale_vouchers_res = $this->conn->query('SELECT * FROM sale_vouchers WHERE ledger_name LIKE "%' . $term . '%" AND party_id="' . $party_id . '" LIMIT 10');
+        return $sale_vouchers_res;
     }
 
-    public function deleteCutomer($id) {
-        $customer = $this->conn->query('DELETE FROM customers WHERE id=' . $id);
-        if ($customer === TRUE) {
-            return $id;
-        } else {
-            return FALSE;
-        }
+    public function checkLedgerNameExist($ledger_name, $party_id) {
+        $sale_vouchers_res = $this->conn->query('SELECT * FROM sale_vouchers WHERE ledger_name="' . $ledger_name . '" AND party_id="' . $party_id . '"');
+        return $sale_vouchers_res;
     }
 
 }

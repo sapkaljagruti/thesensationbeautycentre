@@ -54,7 +54,7 @@
                                         <li><a href="?controller=party&action=getall">Party Master</a></li>
                                         <li><a href="?controller=brand&action=getBrands">Brand Master</a></li>
                                         <li><a href="?controller=accountgroup&action=getacgroups">Account Group Master</a></li>
-                                        <li><a href="?controller=account&action=getacs">Account Master</a></li>
+                                        <li><a href="?controller=account&action=getacs">Ledger Master</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
@@ -69,8 +69,8 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="?controller=purchase&action=getbills">Purchase Voucher</a></li>
                                         <li><a href="?controller=sale&action=getbills">Sales Voucher</a></li>
-                                        <li><a href="?controller=product&action=getproducts">Debit Note</a></li>
-                                        <li><a href="?controller=product&action=getproducts">Credit Note</a></li>
+                                        <li><a href="?controller=creditnotes&action=getall">Credit Note</a></li>
+                                        <li><a href="?controller=debitnotes&action=getall">Debit Note</a></li>
                                         <li><a href="?controller=product&action=getproducts">Journal Voucher</a></li>
                                         <li><a href="?controller=product&action=getproducts">Cash Book</a></li>
                                         <li><a href="?controller=product&action=getproducts">Bank Book</a></li>

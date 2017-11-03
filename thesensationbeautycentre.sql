@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.7.0
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 02, 2017 at 01:23 AM
--- Server version: 10.1.16-MariaDB
--- PHP Version: 5.6.24
+-- Generation Time: Nov 03, 2017 at 04:12 AM
+-- Server version: 10.1.26-MariaDB
+-- PHP Version: 7.1.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -88,7 +90,7 @@ INSERT INTO `account_groups` (`id`, `parent_id`, `name`, `created_at`, `updated_
 CREATE TABLE `accounts` (
   `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(50) NOT NULL,
-  `account_no` varchar(255) NOT NULL,
+  `account_no` varchar(255) DEFAULT NULL,
   `account_group_id` int(11) DEFAULT NULL,
   `opening_type` varchar(255) DEFAULT NULL,
   `opening_amount` varchar(255) DEFAULT NULL,
@@ -101,6 +103,13 @@ CREATE TABLE `accounts` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `accounts`
+--
+
+INSERT INTO `accounts` (`id`, `name`, `account_no`, `account_group_id`, `opening_type`, `opening_amount`, `contact_person`, `address`, `mobile1`, `mobile2`, `office_no`, `email`, `created_at`, `updated_at`) VALUES
+(1, 'Furniture', '', 64, 'dr', '0.00', '', '', '', '', '', '', '2017-11-02 13:26:59', '2017-11-02 13:30:12');
 
 -- --------------------------------------------------------
 
@@ -178,6 +187,31 @@ INSERT INTO `brands` (`id`, `name`, `created_at`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `credit_notes`
+--
+
+CREATE TABLE `credit_notes` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `credit_note_no` varchar(255) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
+  `sales_invoice_data` longtext,
+  `narration` text,
+  `total_amount` double DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `credit_notes`
+--
+
+INSERT INTO `credit_notes` (`id`, `credit_note_no`, `date`, `party_id`, `sales_invoice_data`, `narration`, `total_amount`, `created_at`, `updated_at`) VALUES
+(1, '123', '2017-11-02', 16, '1_600', '', 600, '2017-11-02 12:13:19', '2017-11-02 12:13:19');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `customers`
 --
 
@@ -205,6 +239,33 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`id`, `name`, `gender`, `area`, `city`, `pincode`, `mobile1`, `mobile2`, `residence_no`, `office_no`, `dob`, `doa`, `email`, `created_at`, `upadted_at`) VALUES
 (16, 'jagruti', 'female', 'surat', '', '394510', '9327434007', '', '', '', '1992-06-22', '', '', '2017-10-24 16:01:03', '2017-10-24 16:01:43');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `debit_notes`
+--
+
+CREATE TABLE `debit_notes` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `debit_note_no` varchar(255) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
+  `purchase_invoice_data` longtext,
+  `narration` text,
+  `total_amount` double DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `debit_notes`
+--
+
+INSERT INTO `debit_notes` (`id`, `debit_note_no`, `date`, `party_id`, `purchase_invoice_data`, `narration`, `total_amount`, `created_at`, `updated_at`) VALUES
+(1, '123', '2017-11-02', 16, '3_600', '', 600, '2017-11-02 13:08:41', '2017-11-02 13:08:41'),
+(2, '123', '2017-11-02', 16, '3_1200', '', 1200, '2017-11-02 13:09:32', '2017-11-02 13:09:32'),
+(3, '1234', '2017-11-02', 16, '3_600', '', 600, '2017-11-02 13:11:26', '2017-11-02 13:11:26');
 
 -- --------------------------------------------------------
 
@@ -473,8 +534,8 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_category_id`, `brand_id`, `product_code`, `name`, `qty`, `price`, `description`, `hsn_code`, `calculation_type`, `taxability`, `cgst`, `sgst`, `integrated_tax`, `cess`, `created_at`, `updated_at`) VALUES
-(5, 10, 9, '', 'sensation smoothing shampoo', 1000, '750', '', '', 'on_value', 'nil_rated', '9', '9', '18.00', '0.00', '2017-10-26 16:07:58', '2017-10-27 15:36:00'),
-(6, 10, 9, '', 'sesnsation smoothing hair conditioner', 1500, '950', '', '', 'on_value', 'taxable', '9', '9', '18.00', '0.00', '2017-10-26 18:20:12', '2017-10-27 15:36:56');
+(5, 10, 9, '', 'sensation smoothing shampoo', 1100, '750', '', '', 'on_value', 'nil_rated', '9', '9', '18.00', '0.00', '2017-10-26 16:07:58', '2017-11-02 09:35:59'),
+(6, 10, 9, '', 'sesnsation smoothing hair conditioner', 1500, '950', '', '', 'on_value', 'taxable', '9', '9', '18.00', '0.00', '2017-10-26 18:20:12', '2017-11-02 09:35:59');
 
 -- --------------------------------------------------------
 
@@ -532,18 +593,22 @@ CREATE TABLE `purchase_vouchers` (
   `total_cgst` double DEFAULT NULL,
   `total_sgst` double DEFAULT NULL,
   `total_igst` double DEFAULT NULL,
-  `total_amount` double DEFAULT NULL
+  `total_amount` double DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `purchase_vouchers`
 --
 
-INSERT INTO `purchase_vouchers` (`id`, `date`, `ledger_name`, `invoice_no`, `invoice_date`, `purchase_type_id`, `target_account`, `party_id`, `party_name`, `party_address`, `party_contact_person`, `party_email`, `party_mobile1`, `party_mobile2`, `party_residence_no`, `party_office_no`, `party_bank_name`, `party_bank_branch`, `party_ifsc_code`, `party_bank_account_no`, `party_pan`, `party_gst_state_code_id`, `party_gst_type_id`, `party_gstin`, `products_data`, `total_cgst`, `total_sgst`, `total_igst`, `total_amount`) VALUES
-(3, '2017-11-01', 'Domestic purchase', '123', '2017-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '6_sesnsation smoothing hair conditioner_50 Nos_47500_9_9_18.00,5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 7650, 7650, 0, 100300),
-(4, '2017-11-02', 'ww', '123', '2014-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 3375, 3375, 0, 44250),
-(5, '2017-11-02', 'domestic sales', '123', '2017-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 3375, 3375, 0, 44250),
-(6, '2017-11-02', 'domestic sales', '123', '2017-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_40 Nos_30000_9_9_18.00', 2700, 2700, 0, 35400);
+INSERT INTO `purchase_vouchers` (`id`, `date`, `ledger_name`, `invoice_no`, `invoice_date`, `purchase_type_id`, `target_account`, `party_id`, `party_name`, `party_address`, `party_contact_person`, `party_email`, `party_mobile1`, `party_mobile2`, `party_residence_no`, `party_office_no`, `party_bank_name`, `party_bank_branch`, `party_ifsc_code`, `party_bank_account_no`, `party_pan`, `party_gst_state_code_id`, `party_gst_type_id`, `party_gstin`, `products_data`, `total_cgst`, `total_sgst`, `total_igst`, `total_amount`, `created_at`, `updated_at`) VALUES
+(3, '2017-11-01', 'Domestic purchase', '123', '2017-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '6_sesnsation smoothing hair conditioner_50 Nos_47500_9_9_18.00,5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 7650, 7650, 0, 100300, '2017-11-02 09:54:16', '2017-11-02 09:54:16'),
+(4, '2017-11-02', 'ww', '123', '2014-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 3375, 3375, 0, 44250, '2017-11-02 09:54:16', '2017-11-02 09:54:16'),
+(7, '2017-11-02', 'domestic purchase', '1234', '2017-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '6_sesnsation smoothing hair conditioner_50 Nos_47500_9_9_18.00,5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 7650, 7650, 0, 100300, '2017-11-02 09:54:16', '2017-11-02 09:54:16'),
+(8, '2017-11-02', 'domestic purchase', '12345', '2017-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '6_sesnsation smoothing hair conditioner_50 Nos_47500_9_9_18.00,5_sensation smoothing shampoo_100 Nos_75000_9_9_18.00', 14400, 14400, 0, 151300, '2017-11-02 09:54:16', '2017-11-02 09:54:16'),
+(9, '2017-11-02', 'test', '123456', '2017-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_100 Nos_75000_9_9_18.00_1100 Nos', 10125, 10125, 0, 95250, '2017-11-02 09:54:16', '2017-11-02 09:54:16'),
+(10, '2017-11-02', 'domestic purchase', '127', '2017-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '6_sesnsation smoothing hair conditioner_50 Nos_47500_9_9_18.00_1550 Nos,5_sensation smoothing shampoo_150 Nos_112500_9_9_18.00_1150 Nos', 24525, 24525, 0, 209050, '2017-11-02 09:54:16', '2017-11-02 09:54:16');
 
 -- --------------------------------------------------------
 
@@ -601,28 +666,31 @@ CREATE TABLE `sale_vouchers` (
   `total_cgst` double DEFAULT NULL,
   `total_sgst` double DEFAULT NULL,
   `total_igst` double DEFAULT NULL,
-  `total_amount` double DEFAULT NULL
+  `total_amount` double DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `sale_vouchers`
 --
 
-INSERT INTO `sale_vouchers` (`id`, `date`, `ledger_name`, `invoice_no`, `invoice_date`, `sale_type_id`, `target_account`, `party_id`, `party_name`, `party_address`, `party_contact_person`, `party_email`, `party_mobile1`, `party_mobile2`, `party_residence_no`, `party_office_no`, `party_bank_name`, `party_bank_branch`, `party_ifsc_code`, `party_bank_account_no`, `party_pan`, `party_gst_state_code_id`, `party_gst_type_id`, `party_gstin`, `products_data`, `total_cgst`, `total_sgst`, `total_igst`, `total_amount`) VALUES
-(1, '2017-11-02', 'domestic sales', '123', '2017-08-31', 1, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 3375, 3375, 0, 44250),
-(5, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250),
-(6, '2017-11-02', 'ww', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250),
-(7, '2017-11-02', 'ww', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250),
-(8, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250),
-(9, '2017-11-02', 'domestic sales', '123', '2010-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250),
-(10, '2017-11-02', 'domestic sales', '123', '2017-08-12', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250),
-(11, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250),
-(12, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250),
-(13, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250),
-(14, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250),
-(15, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_40 Nos_30000_9_9_18.00', 0, 0, 5400, 35400),
-(16, '2017-11-02', 'domestic sales', '123', '2017-08-12', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_5 Nos_3750_9_9_18.00', 0, 0, 675, 4425),
-(17, '2017-11-02', 'domestic sales', '123', '0000-00-00', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '', 0, 0, 0, 0);
+INSERT INTO `sale_vouchers` (`id`, `date`, `ledger_name`, `invoice_no`, `invoice_date`, `sale_type_id`, `target_account`, `party_id`, `party_name`, `party_address`, `party_contact_person`, `party_email`, `party_mobile1`, `party_mobile2`, `party_residence_no`, `party_office_no`, `party_bank_name`, `party_bank_branch`, `party_ifsc_code`, `party_bank_account_no`, `party_pan`, `party_gst_state_code_id`, `party_gst_type_id`, `party_gstin`, `products_data`, `total_cgst`, `total_sgst`, `total_igst`, `total_amount`, `created_at`, `updated_at`) VALUES
+(1, '2017-11-02', 'domestic sales', '123', '2017-08-31', 1, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 3375, 3375, 0, 44250, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(5, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(6, '2017-11-02', 'ww', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(7, '2017-11-02', 'ww', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(8, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(9, '2017-11-02', 'domestic sales', '123', '2010-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(10, '2017-11-02', 'domestic sales', '123', '2017-08-12', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(11, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(12, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(13, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(14, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 0, 0, 6750, 44250, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(15, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_40 Nos_30000_9_9_18.00', 0, 0, 5400, 35400, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(16, '2017-11-02', 'domestic sales', '123', '2017-08-12', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_5 Nos_3750_9_9_18.00', 0, 0, 675, 4425, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(17, '2017-11-02', 'domestic sales', '123', '0000-00-00', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '', 0, 0, 0, 0, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(18, '2017-11-02', 'domestic sales', '1234', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '6_sesnsation smoothing hair conditioner_50 Nos_47500_9_9_18.00_1500 Nos,5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00_1100 Nos', 0, 0, 15300, 100300, '2017-11-02 09:54:43', '2017-11-02 09:54:43');
 
 -- --------------------------------------------------------
 
@@ -695,9 +763,21 @@ ALTER TABLE `brands`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `credit_notes`
+--
+ALTER TABLE `credit_notes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `customers`
 --
 ALTER TABLE `customers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `debit_notes`
+--
+ALTER TABLE `debit_notes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -803,7 +883,7 @@ ALTER TABLE `account_groups`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `admins`
 --
@@ -820,10 +900,20 @@ ALTER TABLE `branches`
 ALTER TABLE `brands`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
+-- AUTO_INCREMENT for table `credit_notes`
+--
+ALTER TABLE `credit_notes`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+--
+-- AUTO_INCREMENT for table `debit_notes`
+--
+ALTER TABLE `debit_notes`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `distributors`
 --
@@ -883,7 +973,7 @@ ALTER TABLE `purchase_types`
 -- AUTO_INCREMENT for table `purchase_vouchers`
 --
 ALTER TABLE `purchase_vouchers`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `sale_types`
 --
@@ -893,12 +983,13 @@ ALTER TABLE `sale_types`
 -- AUTO_INCREMENT for table `sale_vouchers`
 --
 ALTER TABLE `sale_vouchers`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `staff_members`
 --
 ALTER TABLE `staff_members`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

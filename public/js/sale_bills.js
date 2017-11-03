@@ -469,6 +469,8 @@ $(document).on('click', '#proceed_product', function () {
             },
             type: 'post',
             success: function (finalQty) {
+                finalQty = $.trim(finalQty);
+
                 var data_price = quantity * price;
 
                 var table = $('#products_table').DataTable();
@@ -500,6 +502,7 @@ $(document).on('click', '#proceed_product', function () {
                     table.cell('#tr_' + product_id, ':eq(1)').data(product_name + '</br>' + '<font color="red">' + finalQty + ' in stock.').draw();
                     table.cell('#tr_' + product_id, ':eq(2)').data(quantity + ' Nos').draw();
                     table.cell('#tr_' + product_id, ':eq(4)').data(data_price).draw();
+                    $('#tr_' + product_id).attr('data-finalqty', finalQty);
                 } else {
                     var table = $('#products_table').DataTable();
 
@@ -510,6 +513,7 @@ $(document).on('click', '#proceed_product', function () {
                     $(rowNode).attr('data-sgst', sgst);
                     $(rowNode).attr('data-igst', igst);
                     $(rowNode).attr('data-name', product_name);
+                    $(rowNode).attr('data-finalqty', finalQty);
                     $(rowNode).attr('class', 'products');
                 }
                 $('#products_table_div').fadeIn();
@@ -673,7 +677,7 @@ $(document).on('focusout', '#invoice_no', function () {
 $(document).on('submit', 'form', function () {
     var proceed = 1;
     var product_details = [];
-    
+
     var valid_invoice_no = $('#valid_invoice_no').val();
 
     if (valid_invoice_no == '0') {
@@ -791,7 +795,8 @@ $(document).on('submit', 'form', function () {
             var data_cgst = $(this).attr('data-cgst');
             var data_sgst = $(this).attr('data-sgst');
             var data_igst = $(this).attr('data-igst');
-            product_details.push(data_id + '_' + data_name + '_' + qty + '_' + data_price + '_' + data_cgst + '_' + data_sgst + '_' + data_igst);
+            var data_finalqty = $(this).attr('data-finalqty');
+            product_details.push(data_id + '_' + data_name + '_' + qty + '_' + data_price + '_' + data_cgst + '_' + data_sgst + '_' + data_igst + '_' + data_finalqty);
         });
         $('#products_data').val(product_details);
         $('#total_cgst').val($('#cgst_td').html());

@@ -13,10 +13,12 @@ $controllers = array(
     'Accountgroup' => ['getacgroups', 'getAcGroup', 'addgroup', 'updategroup', 'deleteacgroup'],
     'Account' => ['getacs', 'getac', 'addaccount', 'updateac', 'deleteac'],
     'Productcategory' => ['getcategories', 'addcategory', 'getcategory', 'updatecategory', 'deletecategory'],
-    'Product' => ['getproducts', 'getproduct', 'addproduct', 'updateproduct', 'deleteproduct', 'findProductByTerm', 'checkProductNameExist', 'checkQty'],
-    'Party' => ['getall', 'add', 'update', 'get', 'deleteCutomer', 'getPartyNameByTerm'],
-    'Purchase' => ['getbills', 'checkInovieExist', 'add'],
-    'Sale' => ['getbills', 'checkInovieExist', 'add'],
+    'Product' => ['getproducts', 'getproduct', 'addproduct', 'updateproduct', 'deleteproduct', 'findProductByTerm', 'checkProductNameExist', 'checkQty', 'checkQtyForPurhase'],
+    'Party' => ['getall', 'add', 'update', 'get', 'deleteCutomer', 'getPartyNameByTerm', 'getById'],
+    'Purchase' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist'],
+    'Sale' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist'],
+    'Creditnotes' => ['getall', 'add', 'checkCreditNoteExist'],
+    'Debitnotes' => ['getall', 'add', 'checkDebitNoteExist'],
 );
 
 // check that the requested controller and action are both allowed
@@ -70,6 +72,12 @@ if (array_key_exists($controller, $controllers)) {
                 break;
             case 'Sale':
                 $controller = new SaleController();
+                break;
+            case 'Creditnotes':
+                $controller = new CreditNotesController();
+                break;
+            case 'Debitnotes':
+                $controller = new DebitNotesController();
                 break;
         }
 

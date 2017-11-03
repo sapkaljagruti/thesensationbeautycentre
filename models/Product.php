@@ -57,6 +57,15 @@ class Product {
         return $product_res;
     }
 
+    public function updateProductQty($qty, $id) {
+        $product = $this->conn->query('UPDATE products SET qty="' . $qty . '" WHERE id=' . $id);
+        if ($product === TRUE) {
+            return $id;
+        } else {
+            return FALSE;
+        }
+    }
+
 }
 
 ?>

@@ -45,17 +45,11 @@ if (isset($account_details)) {
                             <input type="hidden" id="id" name="id" value=""<?php echo $id; ?>/>
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label for="name" class="col-sm-2 control-label">Account Name</label>
+                                    <label for="name" class="col-sm-2 control-label">Ledger Name</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<?php echo $name; ?>" required="required">
                                     </div>
-                                    <label for="account_no" class="col-sm-2 control-label">Account No</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="account_no" name="account_no" placeholder="Account No" value="<?php echo $account_no; ?>" required="required">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="account_group_id" class="col-sm-2 control-label">Account Group</label>
+                                    <label for="account_group_id" class="col-sm-2 control-label">Under Group</label>
                                     <div class="col-sm-2">
                                         <select class="form-control" id="account_group_id" name="account_group_id">
                                             <option value='0'>Select Group</option>
@@ -77,6 +71,12 @@ if (isset($account_details)) {
                                             }
                                             ?>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: none;">
+                                    <label for="account_no" class="col-sm-2 control-label">Account No</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="account_no" name="account_no" placeholder="Account No" value="<?php echo $account_no; ?>">
                                     </div>
                                     <label for="opening_type" class="col-sm-2 control-label">Opening Type</label>
                                     <div class="col-sm-2">

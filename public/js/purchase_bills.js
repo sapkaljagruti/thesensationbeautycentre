@@ -462,13 +462,14 @@ $(document).on('click', '#proceed_product', function () {
 
         $('#overlay_product').show();
         $.ajax({
-            url: '?controller=product&action=checkQty',
+            url: '?controller=product&action=checkQtyForPurhase',
             data: {
                 'product_id': product_id,
                 'quantity': quantity,
             },
             type: 'post',
             success: function (finalQty) {
+                finalQty = $.trim(finalQty);
                 var data_price = quantity * price;
 
                 var table = $('#products_table').DataTable();
@@ -497,19 +498,21 @@ $(document).on('click', '#proceed_product', function () {
 
                 if ($('#tr_' + product_id).length) {
                     var table = $('#products_table').DataTable();
-                    table.cell('#tr_' + product_id, ':eq(1)').data(product_name + '</br>' + '<font color="red">' + finalQty + ' in stock.').draw();
+                    table.cell('#tr_' + product_id, ':eq(1)').data(product_name + '</br>' + '<font color="green">' + finalQty + ' in stock.').draw();
                     table.cell('#tr_' + product_id, ':eq(2)').data(quantity + ' Nos').draw();
                     table.cell('#tr_' + product_id, ':eq(4)').data(data_price).draw();
+                    $('#tr_' + product_id).attr('data-finalqty', finalQty);
                 } else {
                     var table = $('#products_table').DataTable();
 
-                    var rowNode = table.row.add([product_id, product_name + '</br>' + '<font color="red">' + finalQty + ' in stock.', quantity + ' Nos', price, data_price, '<a href="" class="delete_product" data-id="' + product_id + '"> <i class="fa fa-fw fa-trash"></i></a>']).draw().node();
+                    var rowNode = table.row.add([product_id, product_name + '</br>' + '<font color="green">' + finalQty + ' in stock.', quantity + ' Nos', price, data_price, '<a href="" class="delete_product" data-id="' + product_id + '"> <i class="fa fa-fw fa-trash"></i></a>']).draw().node();
                     $(rowNode).attr('id', 'tr_' + product_id);
                     $(rowNode).attr('data-id', product_id);
                     $(rowNode).attr('data-cgst', cgst);
                     $(rowNode).attr('data-sgst', sgst);
                     $(rowNode).attr('data-igst', igst);
                     $(rowNode).attr('data-name', product_name);
+                    $(rowNode).attr('data-finalqty', finalQty);
                     $(rowNode).attr('class', 'products');
                 }
                 $('#products_table_div').fadeIn();
@@ -791,7 +794,8 @@ $(document).on('submit', 'form', function () {
             var data_cgst = $(this).attr('data-cgst');
             var data_sgst = $(this).attr('data-sgst');
             var data_igst = $(this).attr('data-igst');
-            product_details.push(data_id + '_' + data_name + '_' + qty + '_' + data_price + '_' + data_cgst + '_' + data_sgst + '_' + data_igst);
+            var data_finalqty = $(this).attr('data-finalqty');
+            product_details.push(data_id + '_' + data_name + '_' + qty + '_' + data_price + '_' + data_cgst + '_' + data_sgst + '_' + data_igst + '_' + data_finalqty);
         });
         $('#products_data').val(product_details);
         $('#total_cgst').val($('#cgst_td').html());

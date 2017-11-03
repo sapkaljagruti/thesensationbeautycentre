@@ -30,7 +30,7 @@ class AccountController {
     }
 
     public function getacs() {
-        $page_header = 'Accounts';
+        $page_header = 'Ledgers';
         $extra_js_files = $this->extra_js_files;
         $accounts_res = $this->accountobj->getacs();
         if ($accounts_res->num_rows > 0) {
@@ -75,7 +75,7 @@ class AccountController {
     }
 
     public function addaccount() {
-        $page_header = 'Account Master Entry';
+        $page_header = 'Ledger Creation';
         $extra_js_files = $this->extra_js_files;
 
         if (!empty($_POST)) {
@@ -118,7 +118,7 @@ class AccountController {
     }
 
     public function updateac() {
-        $page_header = 'Update Account Details';
+        $page_header = 'Update Ledger Details';
         $extra_js_files = $this->extra_js_files;
 
         $id = trim($_GET['id']);

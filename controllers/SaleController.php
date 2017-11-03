@@ -5,6 +5,7 @@ class SaleController {
     public $saleobj;
     public $sale_type_obj;
     public $gst_obj;
+    public $productobj;
     public $ex_ins_staff_members_nots;
 
     public function __construct() {
@@ -17,6 +18,9 @@ class SaleController {
 
         require_once 'models/Gst.php';
         $this->gst_obj = new Gst();
+
+        require_once 'models/Product.php';
+        $this->productobj = new Product();
 
         require_once 'models/Staff.php';
         $this->staffobj = new Staff();
@@ -41,11 +45,6 @@ class SaleController {
         $view_file = '/views/sale_bills.php';
         require_once APP_DIR . '/views/layout.php';
     }
-
-//    public function checkInovieExist($target_account, $invoice_no) {
-//        $sale_voucher = $this->saleobj->checkInovieExist($target_account, $invoice_no);
-//        return $sale_voucher;
-//    }
 
     public function checkInovieExist() {
         $target_account = trim($_POST['target_account']);
@@ -116,6 +115,14 @@ class SaleController {
 
                 $sale_voucher = $this->saleobj->addSaleVoucher($date, $ledger_name, $invoice_no, $invoice_date, $sale_type_id, $target_account, $party_id, $party_name, $party_address, $party_contact_person, $party_email, $party_mobile1, $party_mobile2, $party_residence_no, $party_office_no, $party_bank_name, $party_bank_branch, $party_ifsc_code, $party_bank_account_no, $party_pan, $party_gst_state_code_id, $party_gst_type_id, $party_gstin, $products_data, $total_cgst, $total_sgst, $total_igst, $total_amount);
                 if ($sale_voucher) {
+                    $products_data_arr = explode(',', $products_data);
+                    foreach ($products_data_arr as $product) {
+                        $product_arr = explode('_', $product);
+                        $product_id = $product_arr[0];
+                        $product_qty_arr = explode(' ', $product_arr[7]);
+                        $product_qty = $product_qty_arr[0];
+                        $product = $this->productobj->updateProductQty($product_qty, $product_id);
+                    }
                     header('location: home.php?controller=sale&action=getbills');
                 } else {
                     array_push($errors, 'Something went wrong. Please try again later.');
@@ -152,157 +159,33 @@ class SaleController {
         require_once APP_DIR . '/views/layout.php';
     }
 
-    public function updatestaff() {
-        $page_header = 'Update Staff Member Details';
-        $extra_js_files = $this->extra_js_files;
-
-        $id = trim($_GET['id']);
-
-        if (!empty($_POST)) {
-            $errors = array();
-
-            if (!empty($_POST['dob'])) {
-                $post_dob = date_create($_POST['dob']);
-
-                if (!$post_dob) {
-                    array_push($errors, 'Please enter proper date of birth.');
-                }
-            }
-            if (!empty($_POST['doa'])) {
-                $post_doa = date_create($_POST['doa']);
-
-                if (!$post_doa) {
-                    array_push($errors, 'Please enter proper date of anniversary.');
-                }
-            }
-
-            if (!empty($_POST['insurance_from'])) {
-                $post_insurance_from = date_create($_POST['insurance_from']);
-
-                if (!$post_insurance_from) {
-                    array_push($errors, 'Please enter proper insurance from date.');
-                }
-            }
-
-            if (!empty($_POST['insurance_to'])) {
-                $post_insurance_to = date_create($_POST['insurance_to']);
-
-                if (!$post_insurance_to) {
-                    array_push($errors, 'Please enter proper insurance to date.');
-                }
-            }
-
-            if (empty($errors)) {
-                $staff_code = !empty($_POST['staff_code']) ? trim($_POST['staff_code']) : NULL;
-                $name = trim($_POST['name']);
-                $designation = !empty($_POST['designation']) ? trim($_POST['designation']) : NULL;
-                $gender = $_POST['gender'];
-                $address = !empty($_POST['address']) ? $_POST['address'] : NULL;
-                $permanent_address = !empty($_POST['permanent_address']) ? $_POST['permanent_address'] : NULL;
-                $mobile1 = !empty($_POST['mobile1']) ? trim($_POST['mobile1']) : NULL;
-                $mobile2 = !empty($_POST['mobile2']) ? trim($_POST['mobile2']) : NULL;
-                $residence_no = !empty($_POST['residence_no']) ? trim($_POST['residence_no']) : NULL;
-
-                if (!empty($_POST['dob'])) {
-                    $post_dob = date_create($_POST['dob']);
-                    $dob = date_format($post_dob, 'Y-m-d');
-                } else {
-                    $dob = NULL;
-                }
-
-                if (!empty($_POST['doa'])) {
-                    $post_doa = date_create($_POST['doa']);
-                    $doa = date_format($post_doa, 'Y-m-d');
-                } else {
-                    $doa = NULL;
-                }
-
-                $email = !empty($_POST['email']) ? trim($_POST['email']) : NULL;
-                $insurance_name = !empty($_POST['insurance_name']) ? trim($_POST['insurance_name']) : NULL;
-
-                if (!empty($_POST['insurance_from'])) {
-                    $post_insurance_from = date_create($_POST['insurance_from']);
-                    $insurance_from = date_format($post_insurance_from, 'Y-m-d');
-                } else {
-                    $insurance_from = NULL;
-                }
-
-                if (!empty($_POST['insurance_to'])) {
-                    $post_insurance_to = date_create($_POST['insurance_to']);
-                    $insurance_to = date_format($post_insurance_to, 'Y-m-d');
-                } else {
-                    $insurance_to = NULL;
-                }
-
-                $staff_member = $this->staffobj->updatestaff($id, $staff_code, $name, $designation, $gender, $address, $permanent_address, $mobile1, $mobile2, $residence_no, $dob, $doa, $email, $insurance_name, $insurance_from, $insurance_to);
-
-                if ($staff_member) {
-                    header('location: home.php?controller=staff&action=getstaffmembers');
-                } else {
-                    array_push($errors, 'Something went wrong. Please try again later.');
-                }
+    public function findLedgerByTerm() {
+        $term = trim($_POST['term']);
+        $party_id = trim($_POST['party_id']);
+        $res = array();
+        $sale_vouchers_res = $this->saleobj->findLedgerByTerm($term, $party_id);
+        if ($sale_vouchers_res->num_rows > 0) {
+            while ($sale_voucher = $sale_vouchers_res->fetch_assoc()) {
+                $res[] = [
+                    'id' => $sale_voucher['id'],
+                    'ledger_name' => $sale_voucher['ledger_name'],
+                    'invoice_no' => $sale_voucher['invoice_no'],
+                    'invoice_date' => $sale_voucher['invoice_date'],
+                    'total_amount' => $sale_voucher['total_amount']
+                ];
             }
         }
-
-        $staff_member = $this->staffobj->getstaffmember($id);
-        if ($staff_member->num_rows == 1) {
-            while ($c = mysqli_fetch_assoc($staff_member)) {
-                if (!empty($c['dob'])) {
-                    $dob = date_create($c['dob']);
-                    $c['dob'] = date_format($dob, 'd-m-Y');
-                } else {
-                    $c['dob'] = '';
-                }
-
-                if (!empty($c['doa'])) {
-                    $doa = date_create($c['doa']);
-                    $c['doa'] = date_format($doa, 'd-m-Y');
-                } else {
-                    $c['doa'] = '';
-                }
-
-                if (!empty($c['insurance_from'])) {
-                    $insurance_from = date_create($c['insurance_from']);
-                    $c['insurance_from'] = date_format($insurance_from, 'd-m-Y');
-                } else {
-                    $c['insurance_from'] = '';
-                }
-
-                if (!empty($c['insurance_to'])) {
-                    $insurance_to = date_create($c['insurance_to']);
-                    $c['insurance_to'] = date_format($insurance_to, 'd-m-Y');
-                } else {
-                    $c['insurance_to'] = '';
-                }
-
-                $staff_member_detail[] = $c;
-            }
-
-            $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
-            $view_file = '/views/update_staff_member.php';
-            require_once APP_DIR . '/views/layout.php';
-        } else {
-            header('location: home.php?controller=error&action=index');
-        }
+        echo json_encode($res);
     }
 
-    public function deletestaff() {
-        if (is_array($_POST['id'])) {
-            $ids = $_POST['id'];
-            $deleted = array();
-            foreach ($ids as $id) {
-                $staff_member = $this->staffobj->deletestaff($id);
-                if ($staff_member) {
-                    array_push($deleted, $id);
-                }
-            }
-            echo json_encode($deleted);
+    public function checkLedgerNameExist() {
+        $ledger_name = trim($_POST['ledger_name']);
+        $party_id = trim($_POST['party_id']);
+        $sale_vouchers_res = $this->saleobj->checkLedgerNameExist($ledger_name, $party_id);
+        if ($sale_vouchers_res->num_rows > 0) {
+            echo '1';
         } else {
-            $id = $_POST['id'];
-            $staff_member = $this->staffobj->deletestaff($id);
-            if ($staff_member) {
-                echo 'deleted';
-            }
+            echo '0';
         }
     }
 

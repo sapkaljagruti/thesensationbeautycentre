@@ -34,8 +34,7 @@
                                 <th data-orderable="false" width="20px">
                                     <input type="checkbox" class="select-all">
                                 </th>                                
-                                <th>Account Name</th>
-                                <th>Account No</th>
+                                <th>Ledger Name</th>
                                 <th>Contact Person</th>
                                 <th>Mobile1</th>
                                 <th>Mobile2</th>
@@ -54,7 +53,6 @@
                                             <td><?php echo $account['id']; ?></td>
                                             <td><input type="checkbox" name="select_accounts[]" data-id="<?php echo $account['id']; ?>"></td>
                                             <td><?php echo ucwords($account['name']); ?></td>
-                                            <td><?php echo $account['account_no']; ?></td>
                                             <td><?php echo ucwords($account['contact_person']); ?></td>
                                             <td><?php echo $account['mobile1']; ?></td>
                                             <td><?php echo $account['mobile2']; ?></td>
@@ -98,22 +96,22 @@
                         <label class="col-sm-4">Account Name :</label>
                         <div class="col-sm-8" id="view_name"></div>
                     </div>
-                    <div class="form-group">
+<!--                    <div class="form-group">
                         <label class="col-sm-4">Account No :</label>
                         <div class="col-sm-8" id="view_account_no"></div>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <label class="col-sm-4">Group :</label>
                         <div class="col-sm-8" id="view_account_group"></div>
                     </div>
-                    <div class="form-group">
+<!--                    <div class="form-group">
                         <label class="col-sm-4">Opening Type :</label>
                         <div class="col-sm-8" id="view_opening_type"></div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4">Opening Amount :</label>
                         <div class="col-sm-8" id="view_opening_amount"></div>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <label class="col-sm-4">Contact Person :</label>
                         <div class="col-sm-8" id="view_contact_person"></div>
