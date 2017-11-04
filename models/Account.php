@@ -11,7 +11,7 @@ class Account {
     }
 
     public function getacs() {
-        $accounts = $this->conn->query('SELECT * FROM accounts ORDER BY id DESC');
+        $accounts = $this->conn->query('SELECT * FROM accounts WHERE id!="3" ORDER BY id DESC');
         return $accounts;
     }
 
@@ -45,6 +45,11 @@ class Account {
         } else {
             return FALSE;
         }
+    }
+
+    public function getContraLedgers() {
+        $ledger_accounts_res = $this->conn->query('SELECT * FROM accounts WHERE id="3" OR account_group_id="29" ORDER BY id DESC');
+        return $ledger_accounts_res;
     }
 
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 03, 2017 at 04:12 AM
+-- Generation Time: Nov 04, 2017 at 08:07 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -34,6 +34,7 @@ CREATE TABLE `account_groups` (
   `id` int(11) UNSIGNED NOT NULL,
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL,
+  `is_default` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -42,44 +43,44 @@ CREATE TABLE `account_groups` (
 -- Dumping data for table `account_groups`
 --
 
-INSERT INTO `account_groups` (`id`, `parent_id`, `name`, `created_at`, `updated_at`) VALUES
-(26, 0, 'Non Revenue - Primary Groups', '2017-10-24 17:01:07', '2017-10-25 12:35:54'),
-(27, 0, 'Capital Account', '2017-10-24 17:01:28', '2017-10-24 17:01:28'),
-(28, 0, 'Current Assets', '2017-10-24 17:02:10', '2017-10-24 17:02:10'),
-(29, 28, 'Bank Accounts', '2017-10-24 17:03:43', '2017-10-24 17:03:43'),
-(30, 29, 'Current account', '2017-10-24 17:04:07', '2017-10-24 17:04:07'),
-(31, 29, 'savings account', '2017-10-24 17:04:30', '2017-10-24 17:04:30'),
-(32, 28, 'Cash-in hand', '2017-10-24 17:04:58', '2017-10-24 17:04:58'),
-(33, 28, 'Deposits (Asset)', '2017-10-24 17:05:14', '2017-10-24 17:05:14'),
-(34, 28, 'Loans & Advances (Asset)', '2017-10-25 12:24:47', '2017-10-25 12:24:47'),
-(36, 28, 'Stock-in-hand', '2017-10-25 12:26:18', '2017-10-25 12:26:18'),
-(38, 28, 'Integrated Accounts-cum-Invent', '2017-10-25 12:34:52', '2017-10-25 12:34:52'),
-(39, 28, 'Non-integrated Accounts-cum-In', '2017-10-26 10:26:27', '2017-10-26 10:26:27'),
-(40, 28, 'Sundry Debtors', '2017-10-26 10:27:07', '2017-10-26 10:27:07'),
-(41, 0, 'Current Liabilities', '2017-10-26 10:27:44', '2017-10-26 10:27:44'),
-(42, 41, 'Duties and Taxes', '2017-10-26 10:28:02', '2017-10-26 10:28:02'),
-(43, 41, 'Provisions', '2017-10-26 10:28:36', '2017-10-26 10:28:54'),
-(44, 41, 'Sundry Creditors', '2017-10-26 10:29:03', '2017-10-26 10:29:03'),
-(45, 0, 'Investments', '2017-10-26 10:29:16', '2017-10-26 10:29:16'),
-(46, 0, 'Loans (Liability)', '2017-10-26 10:30:04', '2017-10-26 10:30:04'),
-(47, 46, 'Bank OD Accounts [Bank OCC Accounts]', '2017-10-26 10:30:18', '2017-10-26 10:49:53'),
-(48, 46, 'Bank OCC A/c', '2017-10-26 10:30:38', '2017-10-26 10:50:12'),
-(49, 46, 'Secured Loans', '2017-10-26 10:31:15', '2017-10-26 10:31:15'),
-(50, 46, 'Unsecured Loans', '2017-10-26 10:31:31', '2017-10-26 10:31:31'),
-(51, 0, 'Suspense Account', '2017-10-26 10:32:23', '2017-10-26 10:32:23'),
-(52, 51, 'Loans and Advances (Asset) Group', '2017-10-26 10:32:39', '2017-10-26 10:45:30'),
-(53, 0, 'Miscellaneous Expenses (Asset)', '2017-10-26 10:32:53', '2017-10-26 10:32:53'),
-(55, 0, 'Branch/Divisions', '2017-10-26 10:33:24', '2017-10-26 10:33:24'),
-(56, 0, 'Revenue - Primary Groups', '2017-10-26 10:33:38', '2017-10-26 10:42:54'),
-(57, 0, 'Sales Account', '2017-10-26 10:34:10', '2017-10-26 10:34:10'),
-(58, 0, 'Purchase Account', '2017-10-26 10:34:44', '2017-10-26 10:34:44'),
-(59, 0, 'Direct Income [Income Direct]', '2017-10-26 10:35:05', '2017-10-26 10:35:05'),
-(60, 0, 'Indirect Income [Income Indirect]', '2017-10-26 10:36:22', '2017-10-26 10:42:03'),
-(61, 0, 'Direct Expenses [Expenses Direct]', '2017-10-26 10:36:34', '2017-10-26 10:41:50'),
-(62, 0, 'Indirect Expenses [Expenses Indirect]', '2017-10-26 10:36:50', '2017-10-26 10:41:43'),
-(63, 0, 'Common and Possible Errors in Grouping and Account Classification', '2017-10-26 10:37:04', '2017-10-26 10:40:53'),
-(64, 0, 'Debtor/Creditor classification', '2017-10-26 10:37:16', '2017-10-26 10:37:16'),
-(65, 0, 'Opening Two Accounts Of The Same Party', '2017-10-26 10:37:26', '2017-10-26 10:41:06');
+INSERT INTO `account_groups` (`id`, `parent_id`, `name`, `is_default`, `created_at`, `updated_at`) VALUES
+(26, 0, 'Non Revenue - Primary Groups', 1, '2017-10-24 17:01:07', '2017-11-03 10:31:40'),
+(27, 0, 'Capital Account', 1, '2017-10-24 17:01:28', '2017-11-03 10:31:40'),
+(28, 0, 'Current Assets', 1, '2017-10-24 17:02:10', '2017-11-03 10:31:40'),
+(29, 28, 'Bank Accounts', 1, '2017-10-24 17:03:43', '2017-11-03 10:31:40'),
+(30, 29, 'Current account', 1, '2017-10-24 17:04:07', '2017-11-03 10:31:40'),
+(31, 29, 'savings account', 1, '2017-10-24 17:04:30', '2017-11-03 10:31:40'),
+(32, 28, 'Cash-in hand', 1, '2017-10-24 17:04:58', '2017-11-03 10:31:40'),
+(33, 28, 'Deposits (Asset)', 1, '2017-10-24 17:05:14', '2017-11-03 10:31:40'),
+(34, 28, 'Loans & Advances (Asset)', 1, '2017-10-25 12:24:47', '2017-11-03 10:31:40'),
+(36, 28, 'Stock-in-hand', 1, '2017-10-25 12:26:18', '2017-11-03 10:31:40'),
+(38, 28, 'Integrated Accounts-cum-Invent', 1, '2017-10-25 12:34:52', '2017-11-03 10:31:40'),
+(39, 28, 'Non-integrated Accounts-cum-In', 1, '2017-10-26 10:26:27', '2017-11-03 10:31:40'),
+(40, 28, 'Sundry Debtors', 1, '2017-10-26 10:27:07', '2017-11-03 10:31:40'),
+(41, 0, 'Current Liabilities', 1, '2017-10-26 10:27:44', '2017-11-03 10:31:40'),
+(42, 41, 'Duties and Taxes', 1, '2017-10-26 10:28:02', '2017-11-03 10:31:40'),
+(43, 41, 'Provisions', 1, '2017-10-26 10:28:36', '2017-11-03 10:31:40'),
+(44, 41, 'Sundry Creditors', 1, '2017-10-26 10:29:03', '2017-11-03 10:31:40'),
+(45, 0, 'Investments', 1, '2017-10-26 10:29:16', '2017-11-03 10:31:40'),
+(46, 0, 'Loans (Liability)', 1, '2017-10-26 10:30:04', '2017-11-03 10:31:40'),
+(47, 46, 'Bank OD Accounts [Bank OCC Accounts]', 1, '2017-10-26 10:30:18', '2017-11-03 10:31:40'),
+(48, 46, 'Bank OCC A/c', 1, '2017-10-26 10:30:38', '2017-11-03 10:31:40'),
+(49, 46, 'Secured Loans', 1, '2017-10-26 10:31:15', '2017-11-03 10:31:40'),
+(50, 46, 'Unsecured Loans', 1, '2017-10-26 10:31:31', '2017-11-03 10:31:40'),
+(51, 0, 'Suspense Account', 1, '2017-10-26 10:32:23', '2017-11-03 10:31:40'),
+(52, 51, 'Loans and Advances (Asset) Group', 1, '2017-10-26 10:32:39', '2017-11-03 10:31:40'),
+(53, 0, 'Miscellaneous Expenses (Asset)', 1, '2017-10-26 10:32:53', '2017-11-03 10:31:40'),
+(55, 0, 'Branch/Divisions', 1, '2017-10-26 10:33:24', '2017-11-03 10:31:40'),
+(56, 0, 'Revenue - Primary Groups', 1, '2017-10-26 10:33:38', '2017-11-03 10:31:40'),
+(57, 0, 'Sales Account', 1, '2017-10-26 10:34:10', '2017-11-03 10:31:40'),
+(58, 0, 'Purchase Account', 1, '2017-10-26 10:34:44', '2017-11-03 10:31:40'),
+(59, 0, 'Direct Income [Income Direct]', 1, '2017-10-26 10:35:05', '2017-11-03 10:31:40'),
+(60, 0, 'Indirect Income [Income Indirect]', 1, '2017-10-26 10:36:22', '2017-11-03 10:31:40'),
+(61, 0, 'Direct Expenses [Expenses Direct]', 1, '2017-10-26 10:36:34', '2017-11-03 10:31:40'),
+(62, 0, 'Indirect Expenses [Expenses Indirect]', 1, '2017-10-26 10:36:50', '2017-11-03 10:31:40'),
+(63, 0, 'Common and Possible Errors in Grouping and Account Classification', 1, '2017-10-26 10:37:04', '2017-11-03 10:31:40'),
+(64, 0, 'Debtor/Creditor classification', 1, '2017-10-26 10:37:16', '2017-11-03 10:31:40'),
+(65, 0, 'Opening Two Accounts Of The Same Party', 1, '2017-10-26 10:37:26', '2017-11-03 10:31:40');
 
 -- --------------------------------------------------------
 
@@ -109,7 +110,10 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `name`, `account_no`, `account_group_id`, `opening_type`, `opening_amount`, `contact_person`, `address`, `mobile1`, `mobile2`, `office_no`, `email`, `created_at`, `updated_at`) VALUES
-(1, 'Furniture', '', 64, 'dr', '0.00', '', '', '', '', '', '', '2017-11-02 13:26:59', '2017-11-02 13:30:12');
+(1, 'Furniture', '', 64, 'dr', '0.00', '', '', '', '', '', '', '2017-11-02 13:26:59', '2017-11-02 13:30:12'),
+(2, 'Bank Of Baroda Account', '', 29, 'dr', '0.00', '', '', '', '', '', '', '2017-11-03 09:07:18', '2017-11-03 09:07:18'),
+(3, 'Cash', '', 53, 'dr', '0.00', '', '', '', '', '', '', '2017-11-03 09:07:45', '2017-11-03 10:08:49'),
+(4, 'HDFC Account', '', 29, 'dr', '0.00', '', '', '', '', '', '', '2017-11-03 11:09:17', '2017-11-03 11:09:17');
 
 -- --------------------------------------------------------
 
@@ -183,6 +187,29 @@ CREATE TABLE `brands` (
 INSERT INTO `brands` (`id`, `name`, `created_at`, `updated_at`) VALUES
 (9, 'sensation', '2017-09-13 12:42:20', '2017-10-26 15:22:36'),
 (11, 'lakme', '2017-09-29 15:31:09', '2017-10-26 15:22:29');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contra_vouchers`
+--
+
+CREATE TABLE `contra_vouchers` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `date` date DEFAULT NULL,
+  `entry_data` longtext,
+  `total_amount` double DEFAULT NULL,
+  `narration` text,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `contra_vouchers`
+--
+
+INSERT INTO `contra_vouchers` (`id`, `date`, `entry_data`, `total_amount`, `narration`, `created_at`, `updated_at`) VALUES
+(1, '2017-11-03', 'cr_4_500,dr_3_500', 500, '', '2017-11-03 15:41:33', '2017-11-03 15:41:33');
 
 -- --------------------------------------------------------
 
@@ -763,6 +790,12 @@ ALTER TABLE `brands`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `contra_vouchers`
+--
+ALTER TABLE `contra_vouchers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `credit_notes`
 --
 ALTER TABLE `credit_notes`
@@ -883,7 +916,7 @@ ALTER TABLE `account_groups`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `admins`
 --
@@ -899,6 +932,11 @@ ALTER TABLE `branches`
 --
 ALTER TABLE `brands`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
+-- AUTO_INCREMENT for table `contra_vouchers`
+--
+ALTER TABLE `contra_vouchers`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `credit_notes`
 --

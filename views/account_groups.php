@@ -48,12 +48,26 @@
                                         ?>
                                         <tr id="tr_<?php echo $account_group['id']; ?>">
                                             <td><?php echo $account_group['id']; ?></td>
-                                            <td><input type="checkbox" name="select_ac_groups[]" data-id="<?php echo $account_group['id']; ?>"></td>
+                                            <td>
+                                                <?php
+                                                if ($account_group['is_default'] == '0') {
+                                                    ?>
+                                                    <input type="checkbox" name="select_ac_groups[]" data-id="<?php echo $account_group['id']; ?>">
+                                                    <?php
+                                                }
+                                                ?>
+                                            </td>
                                             <td><?php echo ucwords($account_group['name']); ?></td>
                                             <td>
                                                 <a href="" class="view btn btn-default" data-id="<?php echo $account_group['id']; ?>"><i class="fa fa-fw fa-eye"></i> View</a>
-                                                <a href="" class="edit btn btn-default" data-id="<?php echo $account_group['id']; ?>"><i class="fa fa-fw fa-pencil-square-o"></i> Edit</a>
-                                                <a href="" class="delete btn btn-default" data-id="<?php echo $account_group['id']; ?>"><i class="fa fa-fw fa-trash"></i> Delete</a>
+                                                <?php
+                                                if ($account_group['is_default'] == '0') {
+                                                    ?>
+                                                    <a href="" class="edit btn btn-default" data-id="<?php echo $account_group['id']; ?>"><i class="fa fa-fw fa-pencil-square-o"></i> Edit</a>
+                                                    <a href="" class="delete btn btn-default" data-id="<?php echo $account_group['id']; ?>"><i class="fa fa-fw fa-trash"></i> Delete</a>
+                                                    <?php
+                                                }
+                                                ?>
                                             </td>
                                         </tr>
                                         <?php

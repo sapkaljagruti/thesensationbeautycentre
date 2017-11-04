@@ -71,9 +71,8 @@
                                         <li><a href="?controller=sale&action=getbills">Sales Voucher</a></li>
                                         <li><a href="?controller=creditnotes&action=getall">Credit Note</a></li>
                                         <li><a href="?controller=debitnotes&action=getall">Debit Note</a></li>
+                                        <li><a href="?controller=contra&action=getall">Contra Voucher</a></li>
                                         <li><a href="?controller=product&action=getproducts">Journal Voucher</a></li>
-                                        <li><a href="?controller=product&action=getproducts">Cash Book</a></li>
-                                        <li><a href="?controller=product&action=getproducts">Bank Book</a></li>
                                     </ul>
                                     <!--                                    <ul class="dropdown-menu">
                                                                             <li class="dropdown-submenu">
