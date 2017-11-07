@@ -90,36 +90,6 @@ class ContraController {
         require_once APP_DIR . '/views/layout.php';
     }
 
-    public function findLedgerByTerm() {
-        $term = trim($_POST['term']);
-        $party_id = trim($_POST['party_id']);
-        $res = array();
-        $contra_vouchers_res = $this->contraobj->findLedgerByTerm($term, $party_id);
-        if ($contra_vouchers_res->num_rows > 0) {
-            while ($contra_voucher = $contra_vouchers_res->fetch_assoc()) {
-                $res[] = [
-                    'id' => $contra_voucher['id'],
-                    'ledger_name' => $contra_voucher['ledger_name'],
-                    'invoice_no' => $contra_voucher['invoice_no'],
-                    'invoice_date' => $contra_voucher['invoice_date'],
-                    'total_amount' => $contra_voucher['total_amount']
-                ];
-            }
-        }
-        echo json_encode($res);
-    }
-
-    public function checkLedgerNameExist() {
-        $ledger_name = trim($_POST['ledger_name']);
-        $party_id = trim($_POST['party_id']);
-        $contra_vouchers_res = $this->contraobj->checkLedgerNameExist($ledger_name, $party_id);
-        if ($contra_vouchers_res->num_rows > 0) {
-            echo '1';
-        } else {
-            echo '0';
-        }
-    }
-
 }
 
 ?>

@@ -52,6 +52,16 @@ class Account {
         return $ledger_accounts_res;
     }
 
+    public function getAcsByTerm($term) {
+        $accounts_res = $this->conn->query('SELECT * FROM accounts WHERE name LIKE "%' . $term . '%"');
+        return $accounts_res;
+    }
+
+    public function checkLedgerNameExist($ledger_name) {
+        $accounts_res = $this->conn->query('SELECT * FROM accounts WHERE ledger_name="' . $ledger_name . '"');
+        return $accounts_res;
+    }
+
 }
 
 ?>

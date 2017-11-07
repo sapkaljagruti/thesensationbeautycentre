@@ -20,6 +20,7 @@ $controllers = array(
     'Creditnotes' => ['getall', 'add', 'checkCreditNoteExist'],
     'Debitnotes' => ['getall', 'add', 'checkDebitNoteExist'],
     'Contra' => ['getall', 'add', 'checkDebitNoteExist'],
+    'Journal' => ['getall', 'add', 'getAllAccounts', 'checkLedgerNameExist'],
 );
 
 // check that the requested controller and action are both allowed
@@ -82,6 +83,9 @@ if (array_key_exists($controller, $controllers)) {
                 break;
             case 'Contra':
                 $controller = new ContraController();
+                break;
+            case 'Journal':
+                $controller = new JournalController();
                 break;
         }
 

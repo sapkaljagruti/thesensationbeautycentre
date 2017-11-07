@@ -54,6 +54,16 @@ class AccountGroup {
         }
     }
 
+    public function getAcGroupsByTerm($term) {
+        $account_groups_res = $this->conn->query('SELECT * FROM account_groups WHERE name LIKE "%' . $term . '%"');
+        return $account_groups_res;
+    }
+
+    public function checkLedgerNameExist($ledger_name) {
+        $account_groups_res = $this->conn->query('SELECT * FROM account_groups WHERE ledger_name="' . $ledger_name . '"');
+        return $account_groups_res;
+    }
+
 }
 
 ?>

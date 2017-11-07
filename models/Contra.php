@@ -29,16 +29,6 @@ class Contra {
         }
     }
 
-    public function findLedgerByTerm($term, $party_id) {
-        $contra_vouchers_res = $this->conn->query('SELECT * FROM contra_vouchers WHERE ledger_name LIKE "%' . $term . '%" AND party_id="' . $party_id . '" LIMIT 10');
-        return $contra_vouchers_res;
-    }
-
-    public function checkLedgerNameExist($ledger_name, $party_id) {
-        $contra_vouchers_res = $this->conn->query('SELECT * FROM contra_vouchers WHERE ledger_name="' . $ledger_name . '" AND party_id="' . $party_id . '"');
-        return $contra_vouchers_res;
-    }
-
 }
 
 ?>
