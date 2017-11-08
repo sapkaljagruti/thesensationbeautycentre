@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2017 at 08:07 AM
+-- Generation Time: Nov 08, 2017 at 08:28 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -209,7 +209,8 @@ CREATE TABLE `contra_vouchers` (
 --
 
 INSERT INTO `contra_vouchers` (`id`, `date`, `entry_data`, `total_amount`, `narration`, `created_at`, `updated_at`) VALUES
-(1, '2017-11-03', 'cr_4_500,dr_3_500', 500, '', '2017-11-03 15:41:33', '2017-11-03 15:41:33');
+(1, '2017-11-03', 'cr_4_500,dr_3_500', 500, '', '2017-11-03 15:41:33', '2017-11-03 15:41:33'),
+(2, '2017-11-06', 'cr_4_500,dr_3_200,dr_2_300', 500, '', '2017-11-06 11:54:48', '2017-11-06 11:54:48');
 
 -- --------------------------------------------------------
 
@@ -397,6 +398,29 @@ INSERT INTO `gst_types` (`id`, `title`, `created_at`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `journal_vouchers`
+--
+
+CREATE TABLE `journal_vouchers` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `date` date DEFAULT NULL,
+  `entry_data` longtext,
+  `total_amount` double DEFAULT NULL,
+  `narration` text,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `journal_vouchers`
+--
+
+INSERT INTO `journal_vouchers` (`id`, `date`, `entry_data`, `total_amount`, `narration`, `created_at`, `updated_at`) VALUES
+(2, '2017-11-06', 'cr_4_500,dr_3_500', 500, '', '2017-11-06 13:01:25', '2017-11-06 13:01:25');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `managers`
 --
 
@@ -561,7 +585,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_category_id`, `brand_id`, `product_code`, `name`, `qty`, `price`, `description`, `hsn_code`, `calculation_type`, `taxability`, `cgst`, `sgst`, `integrated_tax`, `cess`, `created_at`, `updated_at`) VALUES
-(5, 10, 9, '', 'sensation smoothing shampoo', 1100, '750', '', '', 'on_value', 'nil_rated', '9', '9', '18.00', '0.00', '2017-10-26 16:07:58', '2017-11-02 09:35:59'),
+(5, 10, 9, '', 'sensation smoothing shampoo', 1100, '750', '', '', 'on_value', 'nil_rated', '9', '14', '18.00', '0.00', '2017-10-26 16:07:58', '2017-11-07 12:35:24'),
 (6, 10, 9, '', 'sesnsation smoothing hair conditioner', 1500, '950', '', '', 'on_value', 'taxable', '9', '9', '18.00', '0.00', '2017-10-26 18:20:12', '2017-11-02 09:35:59');
 
 -- --------------------------------------------------------
@@ -717,7 +741,8 @@ INSERT INTO `sale_vouchers` (`id`, `date`, `ledger_name`, `invoice_no`, `invoice
 (15, '2017-11-02', 'domestic sales', '123', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_40 Nos_30000_9_9_18.00', 0, 0, 5400, 35400, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
 (16, '2017-11-02', 'domestic sales', '123', '2017-08-12', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_5 Nos_3750_9_9_18.00', 0, 0, 675, 4425, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
 (17, '2017-11-02', 'domestic sales', '123', '0000-00-00', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '', 0, 0, 0, 0, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
-(18, '2017-11-02', 'domestic sales', '1234', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '6_sesnsation smoothing hair conditioner_50 Nos_47500_9_9_18.00_1500 Nos,5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00_1100 Nos', 0, 0, 15300, 100300, '2017-11-02 09:54:43', '2017-11-02 09:54:43');
+(18, '2017-11-02', 'domestic sales', '1234', '2017-08-31', 2, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '6_sesnsation smoothing hair conditioner_50 Nos_47500_9_9_18.00_1500 Nos,5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00_1100 Nos', 0, 0, 15300, 100300, '2017-11-02 09:54:43', '2017-11-02 09:54:43'),
+(19, '2017-11-06', 'test', '1', '2017-11-03', 2, 'lakhan', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00_1050 Nos', 0, 0, 6750, 44250, '2017-11-06 15:10:37', '2017-11-06 15:10:37');
 
 -- --------------------------------------------------------
 
@@ -832,6 +857,12 @@ ALTER TABLE `gst_types`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `journal_vouchers`
+--
+ALTER TABLE `journal_vouchers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `managers`
 --
 ALTER TABLE `managers`
@@ -936,7 +967,7 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT for table `contra_vouchers`
 --
 ALTER TABLE `contra_vouchers`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `credit_notes`
 --
@@ -967,6 +998,11 @@ ALTER TABLE `gst_state_codes`
 --
 ALTER TABLE `gst_types`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `journal_vouchers`
+--
+ALTER TABLE `journal_vouchers`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `managers`
 --
@@ -1021,7 +1057,7 @@ ALTER TABLE `sale_types`
 -- AUTO_INCREMENT for table `sale_vouchers`
 --
 ALTER TABLE `sale_vouchers`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `staff_members`
 --
