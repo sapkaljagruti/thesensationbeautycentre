@@ -31,8 +31,65 @@ function ucwords(str) {
     });
 }
 
+$(document).on('focusout', '#name', function () {
+    var name = $('#name').val();
+    var save_type = $.trim($('#save_type').val());
+    
+    var id = '';
+    if (save_type == 'add') {
+        id = '';
+    } else if (save_type == 'edit') {
+        id = $.trim($('#id').val());
+    }
+
+    if ($.trim(name) == '') {
+        $('#is_valid_name').val('0');
+        $('#name').css('border-color', '#dd4b39');
+        $('#name_label').css('color', '#dd4b39');
+        $('#name_help_block').html('<font color="#dd4b39">Please enter party name</font>');
+    } else {
+        $('.overlay').show();
+        $.ajax({
+            url: '?controller=party&action=checkPartyNameExist',
+            data: {
+                'name': name,
+                'id': id
+            },
+            type: 'post',
+            success: function (response) {
+                response = $.trim(response);
+                if (response == '1') {
+                    $('#is_valid_name').val('0');
+                    $('#name').css('border-color', '#dd4b39');
+                    $('#name_label').css('color', '#dd4b39');
+                    $('#name_help_block').html('<font color="#dd4b39">This party name already exists.</font>');
+                } else {
+                    $('#is_valid_name').val('1');
+                    $('#name').css('border-color', 'rgb(210, 214, 222)');
+                    $('#name_label').css('color', 'black');
+                    $('#name_help_block').html('');
+                }
+            },
+            error: function (xhr, status, error) {
+                showError('Something went wrong. Please try again later.', 5000);
+            },
+            complete: function () {
+                $('.overlay').hide();
+            }
+        });
+    }
+});
+
 $(document).on('submit', 'form', function () {
     var proceed = 1;
+
+
+    var is_valid_name = $('#is_valid_name').val();
+
+    if (is_valid_name == '0') {
+        proceed = 0;
+    }
+
     var panVal = $('#pan').val();
     if ($.trim(panVal) != '') {
         var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
@@ -151,14 +208,14 @@ $(document).on('click', '#delete', function () {
         var data_to_delete = $('#data_to_delete').val();
         $('#loader').show();
         $.ajax({
-            url: '?controller=customer&action=deleteCutomer',
+            url: '?controller=party&action=delete',
             type: "POST",
             data: {'id': data_to_delete},
             success: function (response) {
                 if ($.trim(response) == 'deleted') {
                     var table = $('#parties_table').DataTable();
                     table.row($('#tr_' + data_to_delete)).remove().draw(false);
-                    showSuccess('Customer was removed.', 10000);
+                    showSuccess('Party was removed.', 10000);
                 } else {
                     showError(response, 10000);
                 }
@@ -179,7 +236,7 @@ $(document).on('click', '#delete', function () {
         });
         $('#loader').show();
         $.ajax({
-            url: '?controller=customer&action=deleteCutomer',
+            url: '?controller=party&action=delete',
             type: "POST",
             data: {'id': data_to_delete},
             dataType: "json",
@@ -189,7 +246,7 @@ $(document).on('click', '#delete', function () {
                     table.row($('#tr_' + response[j])).remove().draw(false);
                 }
                 if (data_to_delete.length == response.length) {
-                    showSuccess('Selected customers were removed.', 10000);
+                    showSuccess('Selected parties were removed.', 10000);
                     $('#delete_selected').attr('disabled', true);
                 }
                 $(".select-all")[0].checked = false;
@@ -210,6 +267,9 @@ $(function () {
     $("#membership_to").inputmask("dd-mm-yyyy", {"placeholder": "dd-mm-yyyy"});
     $("#dob").inputmask("dd-mm-yyyy", {"placeholder": "dd-mm-yyyy"});
     $("#doa").inputmask("dd-mm-yyyy", {"placeholder": "dd-mm-yyyy"});
+
+//    Initialize Select2 Elements
+    $(".select2").select2();
     var t = $('#parties_table').DataTable({
         "paging": true,
         "lengthChange": true,

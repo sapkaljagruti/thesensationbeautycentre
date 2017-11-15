@@ -16,9 +16,9 @@
                 <a class="btn btn-app" href="?controller=party&action=add">
                     <i class="fa fa-plus"></i> New
                 </a>
-<!--                <button class="btn btn-app" id="delete_selected">
+                <button class="btn btn-app" id="delete_selected">
                     <i class="fa fa-trash-o"></i> Delete Selected
-                </button>-->
+                </button>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                 </div>
@@ -59,7 +59,7 @@
                                             <td>
                                                 <a href="?controller=party&action=get&id=<?php echo $party['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-eye"></i> View</a>
                                                 <a href="?controller=party&action=update&id=<?php echo $party['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-pencil-square-o"></i> Edit</a>
-            <!--                                                <a href="" class="delete btn btn-default" data-id="<?php echo $party['id']; ?>"><i class="fa fa-fw fa-trash"></i> Delete</a>-->
+                                                <a href="" class="delete btn btn-default" data-id="<?php echo $party['id']; ?>"><i class="fa fa-fw fa-trash"></i> Delete</a>
                                             </td>
                                         </tr>
                                         <?php

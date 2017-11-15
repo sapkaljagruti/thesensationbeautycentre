@@ -13,7 +13,7 @@
         <!-- Ionicons -->
         <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">-->
         <!-- Theme style -->
-        <link href="public/css/admin.min.css" rel="stylesheet">
+        <link href="public/css/admin.css" rel="stylesheet">
         <link href="public/css/skin-black-light.min.css" rel="stylesheet">
         <style>
             .dropdown-submenu {
@@ -53,8 +53,7 @@
                                         <li><a href="?controller=staff&action=getstaffmembers">Staff Master</a></li>
                                         <li><a href="?controller=party&action=getall">Party Master</a></li>
                                         <li><a href="?controller=brand&action=getBrands">Brand Master</a></li>
-                                        <li><a href="?controller=accountgroup&action=getacgroups">Account Group Master</a></li>
-                                        <li><a href="?controller=account&action=getacs">Ledger Master</a></li>
+                                        <li><a href="?controller=accountgroup&action=getall">Account Group Master</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
@@ -102,11 +101,11 @@
                                     </ul>
                                 </li>
                             </ul>
-                            <form class="navbar-form navbar-left" role="search">
+<!--                            <form class="navbar-form navbar-left" role="search">
                                 <div class="form-group">
                                     <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
                                 </div>
-                            </form>
+                            </form>-->
                         </div>
                         <!-- /.navbar-collapse -->
                         <!-- Navbar Right Menu -->
@@ -234,6 +233,13 @@
                     $(this).next('ul').toggle();
                     e.stopPropagation();
                     e.preventDefault();
+                });
+                $('form').on('keyup keypress', function (e) {
+                    var keyCode = e.keyCode || e.which;
+                    if (keyCode === 13) {
+                        e.preventDefault();
+                        return false;
+                    }
                 });
             });
         </script>

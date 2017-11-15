@@ -30,7 +30,7 @@ class PartyController {
             }
         }
 
-        $this->extra_js_files = array('plugins/datatables/jquery.dataTables.min.js', 'plugins/datatables/dataTables.bootstrap.min.js', 'plugins/input-mask/jquery.inputmask.js', 'plugins/input-mask/jquery.inputmask.date.extensions.js', 'plugins/input-mask/jquery.inputmask.extensions.js', 'js/parties.js');
+        $this->extra_js_files = array('plugins/datatables/jquery.dataTables.min.js', 'plugins/datatables/dataTables.bootstrap.min.js', 'plugins/input-mask/jquery.inputmask.js', 'plugins/input-mask/jquery.inputmask.date.extensions.js', 'plugins/input-mask/jquery.inputmask.extensions.js', 'plugins/select2/select2.full.js', 'js/parties.js');
     }
 
     public function getall() {
@@ -116,8 +116,14 @@ class PartyController {
         if (!empty($_POST)) {
             $errors = array();
 
+            $name = strtolower(trim($_POST['name']));
+
+            $nameExistsRes = $this->partyobj->checkPartyNameExist(NULL, $name);
+            if ($nameExistsRes) {
+                array_push($errors, 'Party name already exists. Please try with different name.');
+            }
+
             if (empty($errors)) {
-                $name = trim($_POST['name']);
                 $address = !empty($_POST['address']) ? $_POST['address'] : NULL;
                 $contact_person = trim($_POST['contact_person']);
                 $email = !empty($_POST['email']) ? trim($_POST['email']) : NULL;
@@ -182,8 +188,14 @@ class PartyController {
         if (!empty($_POST)) {
             $errors = array();
 
+            $name = strtolower(trim($_POST['name']));
+
+            $nameExistsRes = $this->partyobj->checkPartyNameExist($id, $name);
+            if ($nameExistsRes) {
+                array_push($errors, 'Party name already exists. Please try with different name.');
+            }
+
             if (empty($errors)) {
-                $name = trim($_POST['name']);
                 $address = !empty($_POST['address']) ? $_POST['address'] : NULL;
                 $contact_person = trim($_POST['contact_person']);
                 $email = !empty($_POST['email']) ? trim($_POST['email']) : NULL;
@@ -249,12 +261,12 @@ class PartyController {
         }
     }
 
-    public function deleteCutomer() {
+    public function delete() {
         if (is_array($_POST['id'])) {
             $ids = $_POST['id'];
             $deleted = array();
             foreach ($ids as $id) {
-                $party = $this->customerobj->deleteCutomer($id);
+                $party = $this->partyobj->delete($id);
                 if ($party) {
                     array_push($deleted, $id);
                 }
@@ -262,7 +274,7 @@ class PartyController {
             echo json_encode($deleted);
         } else {
             $id = $_POST['id'];
-            $party = $this->customerobj->deleteCutomer($id);
+            $party = $this->partyobj->delete($id);
             if ($party) {
                 echo 'deleted';
             }
@@ -359,6 +371,17 @@ class PartyController {
                 $parties[] = $party;
             }
             echo json_encode($parties);
+        }
+    }
+
+    public function checkPartyNameExist() {
+        $id = !empty(trim($_POST['id'])) ? trim($_POST['id']) : NULL;
+        $name = strtolower(trim($_POST['name']));
+        $party_res = $this->partyobj->checkPartyNameExist($id, $name);
+        if ($party_res) {
+            echo '1';
+        } else {
+            echo '0';
         }
     }
 

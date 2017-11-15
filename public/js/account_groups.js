@@ -7,6 +7,16 @@ function allowOnlyNumber(evt) {
     return true;
 }
 
+function allowOnlyNumberWithDecimal(evt) {
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode != 46 && charCode > 31
+            && (charCode < 48 || charCode > 57))
+        return false;
+
+    return true;
+}
+
+
 function showSuccess(msg, timeout) {
     $('.alert').removeClass('alert-danger');
     $('.alert').addClass('alert-success');
@@ -53,165 +63,6 @@ $(document).on('change', 'input[name="select_ac_groups[]"]', function (e) {
         $('#delete_selected').prop('disabled', false);
     } else {
         $('#delete_selected').prop('disabled', true);
-    }
-});
-
-$(document).on('hidden.bs.modal', '#add_edit_modal', function (e) {
-    $('#name').val('');
-    $('#name').next('span').html('');
-    $('#name').closest('div .form-group').removeClass('has-error');
-
-    var last_removed_parent_id = $('#last_removed_parent_id').val();
-    var last_removed_parent_name = $('#last_removed_parent_name').val();
-
-    if (last_removed_parent_id != '') {
-        $('#parent_id').append("<option value='" + last_removed_parent_id + "'>" + last_removed_parent_name + "</option>");
-    }
-
-    $('#parent_id').val('0');
-
-    $('#last_removed_parent_id').val('');
-    $('#last_removed_parent_name').val('');
-
-    $('#save_type').val('add');
-});
-
-$(document).on('click', '.view', function (e) {
-    e.preventDefault();
-    var data_id = $(this).attr('data-id');
-    $('#loader').show();
-    $.ajax({
-        url: '?controller=accountgroup&action=getAcGroup',
-        type: "POST",
-        data: {'id': data_id},
-        dataType: "json",
-        success: function (response) {
-            $.each(response, function (item, obj) {
-                $('#view_name').html(ucwords(obj.name));
-            });
-            $("#view_modal").modal('show');
-        },
-        error: function (xhr, status, error) {
-            showError('Something went wrong. Please try again later.', 5000);
-        },
-        complete: function () {
-            $('#loader').hide();
-        }
-    });
-});
-
-$(document).on('click', '.edit', function (e) {
-    e.preventDefault();
-    var data_id = $(this).attr('data-id');
-
-    $('#loader').show();
-    $.ajax({
-        url: '?controller=accountgroup&action=getAcGroup',
-        type: "POST",
-        data: {'id': data_id},
-        dataType: "json",
-        success: function (response) {
-            $.each(response, function (item, obj) {
-                $('#last_removed_parent_id').val(data_id);
-                $('#last_removed_parent_name').val($('#parent_id option[value="' + data_id + '"]').text());
-
-                $('#parent_id option[value="' + data_id + '"]').remove();
-
-                $('#id').val(data_id);
-                $('#name').val(obj.name);
-                $('#parent_id').val(obj.parent_id);
-            });
-            $('#save_type').val('edit');
-            $("#add_edit_modal").modal('show');
-        },
-        error: function (xhr, status, error) {
-            showError('Something went wrong. Please try again later.', 5000);
-        },
-        complete: function () {
-            $('#loader').hide();
-        }
-    });
-});
-
-$(document).on('click', '#save', function () {
-    var proceed = 1;
-
-    var name = $('#name').val();
-
-    if (name == '') {
-        $('#name_help_block').html('Please enter group name');
-        $('#name_div').closest('div .form-group').addClass('has-error');
-        proceed = 0;
-    } else {
-        $('#name_help_block').html('');
-        $('#name_div').closest('div .form-group').removeClass('has-error');
-    }
-
-    if (proceed != 0) {
-        var parent_id = $('#parent_id').val();
-        var save_type = $('#save_type').val();
-        if (save_type == 'add') {
-            $.ajax({
-                url: '?controller=accountgroup&action=addgroup',
-                type: "POST",
-                data: {
-                    'name': name,
-                    'parent_id': parent_id
-                },
-                success: function (response) {
-                    response = $.trim(response);
-                    $('#add_edit_modal').modal('hide');
-                    if (response != 0) {
-                        var table = $('#ac_groups_table').DataTable();
-
-                        var rowNode = table.row.add([response, '<input type="checkbox" name="select_ac_groups[]" data-id="' + response + '">', ucwords(name), '<a href="" class="view btn btn-default" data-id="' + response + '"><i class="fa fa-fw fa-eye"></i> View</a>' + ' <a href="" class="edit btn btn-default" data-id="' + response + '"> <i class="fa fa-fw fa-pencil-square-o"></i> Edit</a> <a href="" class="delete btn btn-default" data-id="' + response + '"> <i class="fa fa-fw fa-trash"></i> Delete</a>']).draw().node();
-
-                        $(rowNode).attr('id', 'tr_' + response);
-                        $('#parent_id').append("<option value='" + response + "'>" + ucwords(name) + "</option>");
-                        showSuccess('New group was added successfully.', 5000);
-                    } else {
-                        showError('Something went wrong. Please try again later.', 5000);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    $('#add_edit_modal').modal('hide');
-                    showError('Something went wrong. Please try again later.', 5000);
-                },
-                complete: function () {
-                    $('#loader').hide();
-                }
-            });
-        } else if (save_type == 'edit') {
-            var id = $('#id').val();
-            $.ajax({
-                url: '?controller=accountgroup&action=updategroup',
-                type: "POST",
-                data: {
-                    'id': id,
-                    'name': name,
-                    'parent_id': parent_id
-                },
-                success: function (response) {
-                    response = $.trim(response);
-                    $('#add_edit_modal').modal('hide');
-                    if (response != 0) {
-                        var table = $('#ac_groups_table').DataTable();
-                        table.cell('#tr_' + response, ':eq(2)').data(ucwords(name)).draw();
-                        $('#last_removed_parent_name').val(ucwords(name));
-                        showSuccess('Group detail was updated successfully.', 5000);
-                    } else {
-                        showError('Something went wrong. Please try again later.', 5000);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    $('#add_edit_modal').modal('hide');
-                    showError('Something went wrong. Please try again later.', 5000);
-                },
-                complete: function () {
-                    $('#loader').hide();
-                }
-            });
-        }
     }
 });
 
@@ -295,6 +146,197 @@ $(document).on('click', '#delete', function () {
                 $('#loader').hide();
             }
         });
+    }
+});
+
+$(document).on('focusout', '#name', function () {
+    var name = $('#name').val();
+    var save_type = $.trim($('#save_type').val());
+
+    var id = '';
+    if (save_type == 'add') {
+        id = '';
+    } else if (save_type == 'edit') {
+        id = $.trim($('#id').val());
+    }
+
+    if ($.trim(name) == '') {
+        $('#is_valid_name').val('0');
+        $('#name').css('border-color', '#dd4b39');
+        $('#name_label').css('color', '#dd4b39');
+        $('#name_help_block').html('<font color="#dd4b39">Please enter group name</font>');
+    } else {
+        $('.overlay').show();
+        $.ajax({
+            url: '?controller=accountgroup&action=checkNameExist',
+            data: {
+                'name': name,
+                'id': id
+            },
+            type: 'post',
+            success: function (response) {
+                response = $.trim(response);
+                if (response == '1') {
+                    $('#is_valid_name').val('0');
+                    $('#name').css('border-color', '#dd4b39');
+                    $('#name_label').css('color', '#dd4b39');
+                    $('#name_help_block').html('<font color="#dd4b39">This name already exists.</font>');
+                } else {
+                    $('#is_valid_name').val('1');
+                    $('#name').css('border-color', 'rgb(210, 214, 222)');
+                    $('#name_label').css('color', 'black');
+                    $('#name_help_block').html('');
+                }
+            },
+            error: function (xhr, status, error) {
+                showError('Something went wrong. Please try again later.', 5000);
+            },
+            complete: function () {
+                $('.overlay').hide();
+            }
+        });
+    }
+});
+
+$(document).on('change', '#parent_id', function () {
+    var parent_id = $('option:selected', this).attr('data-parent-id');
+    if (parent_id != '0') {
+        $('.overlay').show();
+        $.ajax({
+            url: '?controller=accountgroup&action=getParentName',
+            type: "POST",
+            data: {'parent_id': parent_id},
+            success: function (response) {
+                response = $.trim(response);
+                if (response == '0') {
+                    $('#group_parent').html('');
+                } else {
+                    $('#group_parent').html('<font color="blue"><i>' + response + '</i></font>');
+                }
+            },
+            error: function (xhr, status, error) {
+                $('#group_parent').html('');
+                showError('Something went wrong. Please try again later.', 5000);
+            },
+            complete: function () {
+                $('.overlay').hide();
+            }
+        });
+    } else {
+        $('#group_parent').html('');
+    }
+});
+
+$(function () {
+    var parent_id = $('option:selected', '#parent_id').attr('data-parent-id');
+    if (parent_id != '0') {
+        $('.overlay').show();
+        $.ajax({
+            url: '?controller=accountgroup&action=getParentName',
+            type: "POST",
+            data: {'parent_id': parent_id},
+            success: function (response) {
+                response = $.trim(response);
+                if (response == '0') {
+                    $('#group_parent').html('');
+                } else {
+                    $('#group_parent').html('<font color="blue"><i>' + response + '</i></font>');
+                }
+            },
+            error: function (xhr, status, error) {
+                $('#group_parent').html('');
+                showError('Something went wrong. Please try again later.', 5000);
+            },
+            complete: function () {
+                $('.overlay').hide();
+            }
+        });
+    } else {
+        $('#group_parent').html('');
+    }
+});
+
+$(document).on('submit', 'form', function () {
+    var proceed = 1;
+
+    var is_valid_name = $('#is_valid_name').val();
+
+    if (is_valid_name == '0') {
+        proceed = 0;
+    }
+
+
+    var panVal = $('#pan').val();
+    if ($.trim(panVal) != '') {
+        var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+        if (!(regpan.test(panVal))) {
+            $('#pan_label').css('color', '#dd4b39');
+            $('#pan').css('border-color', '#dd4b39');
+            $('#pan_help_block').html('<font color="#dd4b39">Please enter valid PAN</font>');
+            proceed = 0;
+        } else {
+            $('#pan_label').css('color', 'black');
+            $('#pan').css('border-color', 'rgb(210, 214, 222)');
+            $('#pan_help_block').html('');
+        }
+    } else {
+        $('#pan_label').css('color', 'black');
+        $('#pan').css('border-color', 'rgb(210, 214, 222)');
+        $('#pan_help_block').html('');
+    }
+
+    var gstin = $('#gstin').val();
+    if ($.trim(gstin) != '') {
+
+        var gst_state_code_id = $('#gst_state_code_id').val();
+        var proceed_state = 1;
+        var gstin_sate = gstin.substring(0, 2);
+        if (gst_state_code_id != gstin_sate) {
+            proceed_state = 0;
+        }
+
+        var proceed_pan = 1;
+        var gstin_pan = gstin.substring(2, 12).toUpperCase();
+        if (panVal.toUpperCase() != gstin_pan) {
+            proceed_pan = 0;
+        }
+
+        var proceed_entity_number = 1;
+        var regent = /^[1-9]\d*$/;
+        var num_of_entity = gstin.substring(12, 13);
+        if (!(regent.test(num_of_entity))) {
+            proceed_entity_number = 0;
+        }
+
+        var proceed_z = 1;
+        var default_z = gstin.substring(13, 14).toUpperCase();
+        if (default_z != 'Z') {
+            proceed_z = 0;
+        }
+
+        var proceed_check_sum = 1;
+        var regchecksum = /^[0-9a-zA-Z]+$/;
+        var check_sum = gstin.substring(14, 15);
+        if (!(regchecksum.test(check_sum))) {
+            proceed_check_sum = 0;
+        }
+
+        if ($.trim(panVal) == '' || gst_state_code_id == '0' || proceed_state == 0 || proceed_pan == 0 || proceed_entity_number == 0 || proceed_z == 0 || proceed_check_sum == 0) {
+            $('#gstin_label').css('color', '#dd4b39');
+            $('#gstin').css('border-color', '#dd4b39');
+            $('#gstin_help_block').html('<font color="#dd4b39">Invalid GSTIN</font>');
+            proceed = 0;
+        } else {
+            $('#gstin_label').css('color', 'black');
+            $('#gstin').css('border-color', 'rgb(210, 214, 222)');
+            $('#gstin_help_block').html('');
+        }
+    }
+
+    if (proceed != 0) {
+        return true;
+    } else {
+        return false;
     }
 });
 

@@ -55,7 +55,7 @@ class ProductcategoryController {
     }
 
     public function addcategory() {
-        $name = trim($_POST['name']);
+        $name = strtolower(trim($_POST['name']));
         $parent_id = trim($_POST['parent_id']);
         $product_category = $this->productcategoryobj->addcategory($name, $parent_id);
         if ($product_category) {
@@ -67,7 +67,7 @@ class ProductcategoryController {
 
     public function updatecategory() {
         $id = trim($_POST['id']);
-        $name = trim($_POST['name']);
+        $name = strtolower(trim($_POST['name']));
         $parent_id = trim($_POST['parent_id']);
 
         $product_category = $this->productcategoryobj->updatecategory($id, $name, $parent_id);
@@ -97,6 +97,17 @@ class ProductcategoryController {
             } else {
                 echo 'You cannot delete this category.';
             }
+        }
+    }
+
+    public function checkNameExist() {
+        $id = !empty(trim($_POST['id'])) ? trim($_POST['id']) : NULL;
+        $name = strtolower(trim($_POST['name']));
+        $product_category_res = $this->productcategoryobj->checkNameExist($id, $name);
+        if ($product_category_res) {
+            echo '1';
+        } else {
+            echo '0';
         }
     }
 

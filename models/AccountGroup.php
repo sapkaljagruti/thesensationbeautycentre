@@ -10,8 +10,13 @@ class AccountGroup {
         $this->conn = $db->connect();
     }
 
-    public function getAccountGroups() {
-        $account_groups = $this->conn->query('SELECT * FROM account_groups ORDER BY id DESC');
+    public function getall() {
+        $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" ORDER BY id DESC');
+        return $account_groups;
+    }
+
+    public function getallExceptThis($id) {
+        $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" AND id!="' . $id . '" ORDER BY id DESC');
         return $account_groups;
     }
 
@@ -20,8 +25,8 @@ class AccountGroup {
         return $account_group;
     }
 
-    public function addGroup($name, $parent_id) {
-        $account_group = $this->conn->query('INSERT INTO account_groups(name, parent_id) VALUES("' . $name . '", ' . $parent_id . ')');
+    public function add($name, $parent_id, $opening_balance, $contact_person, $area, $city, $pincode, $gst_state_code_id, $email, $mobile1, $mobile2, $bank_name, $bank_branch, $ifsc_code, $bank_account_no, $pan, $gst_type_id, $gstin) {
+        $account_group = $this->conn->query('INSERT INTO account_groups(name, parent_id, opening_balance, contact_person, area, city, pincode, gst_state_code_id, email, mobile1, mobile2, bank_name, bank_branch, ifsc_code, bank_account_no, pan, gst_type_id, gstin) VALUES("' . $name . '", "' . $parent_id . '", "' . $opening_balance . '", "' . $contact_person . '", "' . $area . '", "' . $city . '", "' . $pincode . '", "' . $gst_state_code_id . '", "' . $email . '", "' . $mobile1 . '", "' . $mobile2 . '", "' . $bank_name . '", "' . $bank_branch . '", "' . $ifsc_code . '", "' . $bank_account_no . '", "' . $pan . '", "' . $gst_type_id . '", "' . $gstin . '")');
         if ($account_group === TRUE) {
             return mysqli_insert_id($this->conn);
         } else {
@@ -29,8 +34,8 @@ class AccountGroup {
         }
     }
 
-    public function updategroup($id, $name, $parent_id) {
-        $account_group = $this->conn->query('UPDATE account_groups SET name="' . $name . '", parent_id=' . $parent_id . ' WHERE id=' . $id);
+    public function update($id, $name, $parent_id, $opening_balance, $contact_person, $area, $city, $pincode, $gst_state_code_id, $email, $mobile1, $mobile2, $bank_name, $bank_branch, $ifsc_code, $bank_account_no, $pan, $gst_type_id, $gstin) {
+        $account_group = $this->conn->query('UPDATE account_groups SET name="' . $name . '", parent_id="' . $parent_id . '", opening_balance="' . $opening_balance . '", contact_person="' . $contact_person . '", area="' . $area . '", city="' . $city . '", pincode="' . $pincode . '", gst_state_code_id="' . $gst_state_code_id . '", email="' . $email . '", mobile1="' . $mobile1 . '", mobile2="' . $mobile2 . '", bank_name="' . $bank_name . '", bank_branch="' . $bank_branch . '", ifsc_code="' . $ifsc_code . '", bank_account_no="' . $bank_account_no . '", pan="' . $pan . '", gst_type_id="' . $gst_type_id . '", gstin="' . $gstin . '" WHERE id=' . $id);
         if ($account_group === TRUE) {
             return $id;
         } else {
@@ -39,18 +44,11 @@ class AccountGroup {
     }
 
     public function deleteacgroup($id) {
-        $account_groups_res = $this->conn->query('SELECT * FROM account_groups WHERE parent_id=' . $id);
-        $accounts_res = $this->conn->query('SELECT * FROM accounts WHERE account_group_id=' . $id);
-
-        if ($account_groups_res->num_rows > 0 || $accounts_res->num_rows > 0) {
-            return FALSE;
+        $account_group = $this->conn->query('UPDATE account_groups SET is_deleted="1" WHERE id=' . $id);
+        if ($account_group) {
+            return $id;
         } else {
-            $account_group = $this->conn->query('DELETE FROM account_groups WHERE id=' . $id);
-            if ($account_group === TRUE) {
-                return $id;
-            } else {
-                return FALSE;
-            }
+            return FALSE;
         }
     }
 
@@ -62,6 +60,20 @@ class AccountGroup {
     public function checkLedgerNameExist($ledger_name) {
         $account_groups_res = $this->conn->query('SELECT * FROM account_groups WHERE ledger_name="' . $ledger_name . '"');
         return $account_groups_res;
+    }
+
+    public function checkNameExist($id, $name) {
+        if (empty($id)) {
+            $group_res = $this->conn->query('SELECT * FROM account_groups WHERE name="' . $name . '" AND is_deleted!="1"');
+        } else {
+            $group_res = $this->conn->query('SELECT * FROM account_groups WHERE name="' . $name . '" AND id!="' . $id . '" AND is_deleted!="1"');
+        }
+
+        if ($group_res->num_rows > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
 }

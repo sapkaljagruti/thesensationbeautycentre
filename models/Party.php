@@ -11,7 +11,7 @@ class Party {
     }
 
     public function getall() {
-        $parties = $this->conn->query('SELECT * FROM parties ORDER BY id DESC');
+        $parties = $this->conn->query('SELECT * FROM parties WHERE is_deleted!="1" ORDER BY id DESC');
         return $parties;
     }
 
@@ -38,8 +38,8 @@ class Party {
         }
     }
 
-    public function deleteCutomer($id) {
-        $party = $this->conn->query('DELETE FROM parties WHERE id=' . $id);
+    public function delete($id) {
+        $party = $this->conn->query('UPDATE parties SET is_deleted="1" WHERE id=' . $id);
         if ($party === TRUE) {
             return $id;
         } else {
@@ -50,6 +50,20 @@ class Party {
     public function getPartyNameByTerm($term) {
         $party_res = $this->conn->query('SELECT * FROM parties WHERE name LIKE "%' . $term . '%" LIMIT 10');
         return $party_res;
+    }
+
+    public function checkPartyNameExist($id, $name) {
+        if (empty($id)) {
+            $party_res = $this->conn->query('SELECT * FROM parties WHERE name="' . $name . '" AND is_deleted!="1"');
+        } else {
+            $party_res = $this->conn->query('SELECT * FROM parties WHERE name="' . $name . '" AND id!="' . $id . '" AND is_deleted!="1"');
+        }
+
+        if ($party_res->num_rows > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
 }

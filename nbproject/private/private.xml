@@ -5,22 +5,28 @@
             <url>models/AccountGroup.php</url>
             <bookmark id="1">
                 <name/>
-                <line>42</line>
+                <line>45</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/contra_vouchers.php</file>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/public/js/purchase_bills.js</file>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/controllers/ContraController.php</file>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/public/js/credit_notes.js</file>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/public/js/contra_vouchers.js</file>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/add_contra_voucher.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/controllers/PartyController.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/brands.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/public/js/brands.js</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/models/Party.php</file>
             <file>file:/C:/xampp/htdocs/thesensationbeautycentre/config/routes.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/controllers/BrandController.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/models/Brand.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/models/ProductCategory.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/public/js/parties.js</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/add_party.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/controllers/ProductcategoryController.php</file>
             <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/layout.php</file>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/models/Contra.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/update_party.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/product_categories.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/public/js/product_categories.js</file>
         </group>
     </open-files>
 </project-private>

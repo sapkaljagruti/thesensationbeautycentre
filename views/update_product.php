@@ -97,10 +97,12 @@ if (isset($product_details)) {
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" id="product_code" name="product_code" placeholder="Product Code" value="<?php echo $product_code; ?>">
                                     </div>
-                                    <label for="name" class="col-sm-2 control-label">Product Name</label>
+                                    <label for="name" class="col-sm-2 control-label" id="name_label">Product Name</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<?php echo $name; ?>" required="required">
+                                        <span id="name_help_block" class="help-block"></span>
                                     </div>
+                                    <input type="hidden" id="valid_name" value="0"/>
                                 </div>
                                 <div class="form-group">
                                     <label for="description" class="col-sm-2 control-label">Description</label>
@@ -221,34 +223,34 @@ if (isset($product_details)) {
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="cgst" class="col-sm-1 control-label">Central Tax</label>
+                                        <label for="cgst" class="col-sm-2 control-label">Central Tax</label>
                                         <div class="col-sm-2">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="cgst" name="cgst" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo $cgst; ?>">
                                                 <span class="input-group-addon">%</span>
                                             </div>
                                         </div>
-                                        <label for="sgst" class="col-sm-1 control-label">State Tax</label>
+                                        <label for="sgst" class="col-sm-2 control-label">State Tax</label>
                                         <div class="col-sm-2">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="sgst" name="sgst" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo $sgst; ?>">
                                                 <span class="input-group-addon">%</span>
                                             </div>
                                         </div>
-                                        <label for="integrated_tax" class="col-sm-1 control-label">Integrated Tax</label>
+                                        <label for="integrated_tax" class="col-sm-2 control-label">Integrated Tax</label>
                                         <div class="col-sm-2">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="integrated_tax" name="integrated_tax" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo $integrated_tax; ?>">
                                                 <span class="input-group-addon">%</span>
                                             </div>
                                         </div>
-                                        <label for="cess" class="col-sm-1 control-label">Cess</label>
+<!--                                        <label for="cess" class="col-sm-1 control-label">Cess</label>
                                         <div class="col-sm-2">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="cess" name="cess" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo $cess; ?>">
                                                 <span class="input-group-addon">%</span>
                                             </div>
-                                        </div>
+                                        </div>-->
                                     </div>
                             </div>
                             <!-- /.box-body -->

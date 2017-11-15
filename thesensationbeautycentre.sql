@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2017 at 08:28 AM
--- Server version: 10.1.26-MariaDB
--- PHP Version: 7.1.8
+-- Generation Time: Nov 15, 2017 at 01:34 AM
+-- Server version: 10.1.16-MariaDB
+-- PHP Version: 5.6.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -34,7 +32,24 @@ CREATE TABLE `account_groups` (
   `id` int(11) UNSIGNED NOT NULL,
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL,
+  `opening_balance` double DEFAULT NULL,
+  `contact_person` varchar(255) DEFAULT NULL,
+  `area` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `pincode` varchar(255) DEFAULT NULL,
+  `gst_state_code_id` int(11) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `mobile1` varchar(255) DEFAULT NULL,
+  `mobile2` varchar(255) DEFAULT NULL,
+  `bank_name` varchar(255) DEFAULT NULL,
+  `bank_branch` varchar(255) DEFAULT NULL,
+  `ifsc_code` varchar(255) DEFAULT NULL,
+  `bank_account_no` varchar(255) DEFAULT NULL,
+  `pan` varchar(255) DEFAULT NULL,
+  `gst_type_id` int(11) DEFAULT NULL,
+  `gstin` varchar(255) DEFAULT NULL,
   `is_default` tinyint(1) NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -43,77 +58,44 @@ CREATE TABLE `account_groups` (
 -- Dumping data for table `account_groups`
 --
 
-INSERT INTO `account_groups` (`id`, `parent_id`, `name`, `is_default`, `created_at`, `updated_at`) VALUES
-(26, 0, 'Non Revenue - Primary Groups', 1, '2017-10-24 17:01:07', '2017-11-03 10:31:40'),
-(27, 0, 'Capital Account', 1, '2017-10-24 17:01:28', '2017-11-03 10:31:40'),
-(28, 0, 'Current Assets', 1, '2017-10-24 17:02:10', '2017-11-03 10:31:40'),
-(29, 28, 'Bank Accounts', 1, '2017-10-24 17:03:43', '2017-11-03 10:31:40'),
-(30, 29, 'Current account', 1, '2017-10-24 17:04:07', '2017-11-03 10:31:40'),
-(31, 29, 'savings account', 1, '2017-10-24 17:04:30', '2017-11-03 10:31:40'),
-(32, 28, 'Cash-in hand', 1, '2017-10-24 17:04:58', '2017-11-03 10:31:40'),
-(33, 28, 'Deposits (Asset)', 1, '2017-10-24 17:05:14', '2017-11-03 10:31:40'),
-(34, 28, 'Loans & Advances (Asset)', 1, '2017-10-25 12:24:47', '2017-11-03 10:31:40'),
-(36, 28, 'Stock-in-hand', 1, '2017-10-25 12:26:18', '2017-11-03 10:31:40'),
-(38, 28, 'Integrated Accounts-cum-Invent', 1, '2017-10-25 12:34:52', '2017-11-03 10:31:40'),
-(39, 28, 'Non-integrated Accounts-cum-In', 1, '2017-10-26 10:26:27', '2017-11-03 10:31:40'),
-(40, 28, 'Sundry Debtors', 1, '2017-10-26 10:27:07', '2017-11-03 10:31:40'),
-(41, 0, 'Current Liabilities', 1, '2017-10-26 10:27:44', '2017-11-03 10:31:40'),
-(42, 41, 'Duties and Taxes', 1, '2017-10-26 10:28:02', '2017-11-03 10:31:40'),
-(43, 41, 'Provisions', 1, '2017-10-26 10:28:36', '2017-11-03 10:31:40'),
-(44, 41, 'Sundry Creditors', 1, '2017-10-26 10:29:03', '2017-11-03 10:31:40'),
-(45, 0, 'Investments', 1, '2017-10-26 10:29:16', '2017-11-03 10:31:40'),
-(46, 0, 'Loans (Liability)', 1, '2017-10-26 10:30:04', '2017-11-03 10:31:40'),
-(47, 46, 'Bank OD Accounts [Bank OCC Accounts]', 1, '2017-10-26 10:30:18', '2017-11-03 10:31:40'),
-(48, 46, 'Bank OCC A/c', 1, '2017-10-26 10:30:38', '2017-11-03 10:31:40'),
-(49, 46, 'Secured Loans', 1, '2017-10-26 10:31:15', '2017-11-03 10:31:40'),
-(50, 46, 'Unsecured Loans', 1, '2017-10-26 10:31:31', '2017-11-03 10:31:40'),
-(51, 0, 'Suspense Account', 1, '2017-10-26 10:32:23', '2017-11-03 10:31:40'),
-(52, 51, 'Loans and Advances (Asset) Group', 1, '2017-10-26 10:32:39', '2017-11-03 10:31:40'),
-(53, 0, 'Miscellaneous Expenses (Asset)', 1, '2017-10-26 10:32:53', '2017-11-03 10:31:40'),
-(55, 0, 'Branch/Divisions', 1, '2017-10-26 10:33:24', '2017-11-03 10:31:40'),
-(56, 0, 'Revenue - Primary Groups', 1, '2017-10-26 10:33:38', '2017-11-03 10:31:40'),
-(57, 0, 'Sales Account', 1, '2017-10-26 10:34:10', '2017-11-03 10:31:40'),
-(58, 0, 'Purchase Account', 1, '2017-10-26 10:34:44', '2017-11-03 10:31:40'),
-(59, 0, 'Direct Income [Income Direct]', 1, '2017-10-26 10:35:05', '2017-11-03 10:31:40'),
-(60, 0, 'Indirect Income [Income Indirect]', 1, '2017-10-26 10:36:22', '2017-11-03 10:31:40'),
-(61, 0, 'Direct Expenses [Expenses Direct]', 1, '2017-10-26 10:36:34', '2017-11-03 10:31:40'),
-(62, 0, 'Indirect Expenses [Expenses Indirect]', 1, '2017-10-26 10:36:50', '2017-11-03 10:31:40'),
-(63, 0, 'Common and Possible Errors in Grouping and Account Classification', 1, '2017-10-26 10:37:04', '2017-11-03 10:31:40'),
-(64, 0, 'Debtor/Creditor classification', 1, '2017-10-26 10:37:16', '2017-11-03 10:31:40'),
-(65, 0, 'Opening Two Accounts Of The Same Party', 1, '2017-10-26 10:37:26', '2017-11-03 10:31:40');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `accounts`
---
-
-CREATE TABLE `accounts` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `account_no` varchar(255) DEFAULT NULL,
-  `account_group_id` int(11) DEFAULT NULL,
-  `opening_type` varchar(255) DEFAULT NULL,
-  `opening_amount` varchar(255) DEFAULT NULL,
-  `contact_person` varchar(255) DEFAULT NULL,
-  `address` text,
-  `mobile1` varchar(255) DEFAULT NULL,
-  `mobile2` varchar(255) DEFAULT NULL,
-  `office_no` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `accounts`
---
-
-INSERT INTO `accounts` (`id`, `name`, `account_no`, `account_group_id`, `opening_type`, `opening_amount`, `contact_person`, `address`, `mobile1`, `mobile2`, `office_no`, `email`, `created_at`, `updated_at`) VALUES
-(1, 'Furniture', '', 64, 'dr', '0.00', '', '', '', '', '', '', '2017-11-02 13:26:59', '2017-11-02 13:30:12'),
-(2, 'Bank Of Baroda Account', '', 29, 'dr', '0.00', '', '', '', '', '', '', '2017-11-03 09:07:18', '2017-11-03 09:07:18'),
-(3, 'Cash', '', 53, 'dr', '0.00', '', '', '', '', '', '', '2017-11-03 09:07:45', '2017-11-03 10:08:49'),
-(4, 'HDFC Account', '', 29, 'dr', '0.00', '', '', '', '', '', '', '2017-11-03 11:09:17', '2017-11-03 11:09:17');
+INSERT INTO `account_groups` (`id`, `parent_id`, `name`, `opening_balance`, `contact_person`, `area`, `city`, `pincode`, `gst_state_code_id`, `email`, `mobile1`, `mobile2`, `bank_name`, `bank_branch`, `ifsc_code`, `bank_account_no`, `pan`, `gst_type_id`, `gstin`, `is_default`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(26, 0, 'Non Revenue - Primary Groups', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:01:07', '2017-11-03 10:31:40'),
+(27, 0, 'Capital Account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:01:28', '2017-11-03 10:31:40'),
+(28, 0, 'Current Assets', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:02:10', '2017-11-03 10:31:40'),
+(29, 28, 'Bank Accounts', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:03:43', '2017-11-03 10:31:40'),
+(30, 29, 'Current account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:04:07', '2017-11-03 10:31:40'),
+(31, 29, 'savings account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:04:30', '2017-11-03 10:31:40'),
+(32, 28, 'Cash-in hand', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:04:58', '2017-11-03 10:31:40'),
+(33, 28, 'Deposits (Asset)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:05:14', '2017-11-03 10:31:40'),
+(34, 28, 'Loans & Advances (Asset)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-25 12:24:47', '2017-11-03 10:31:40'),
+(36, 28, 'Stock-in-hand', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-25 12:26:18', '2017-11-03 10:31:40'),
+(38, 28, 'Integrated Accounts-cum-Invent', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-25 12:34:52', '2017-11-03 10:31:40'),
+(39, 28, 'Non-integrated Accounts-cum-In', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:26:27', '2017-11-03 10:31:40'),
+(40, 28, 'Sundry Debtors', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:27:07', '2017-11-03 10:31:40'),
+(41, 0, 'Current Liabilities', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:27:44', '2017-11-03 10:31:40'),
+(42, 41, 'Duties and Taxes', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:28:02', '2017-11-03 10:31:40'),
+(43, 41, 'Provisions', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:28:36', '2017-11-03 10:31:40'),
+(44, 41, 'Sundry Creditors', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:29:03', '2017-11-03 10:31:40'),
+(45, 0, 'Investments', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:29:16', '2017-11-03 10:31:40'),
+(46, 0, 'Loans (Liability)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:30:04', '2017-11-03 10:31:40'),
+(47, 46, 'Bank OD Accounts [Bank OCC Accounts]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:30:18', '2017-11-03 10:31:40'),
+(48, 46, 'Bank OCC A/c', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:30:38', '2017-11-03 10:31:40'),
+(49, 46, 'Secured Loans', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:31:15', '2017-11-03 10:31:40'),
+(50, 46, 'Unsecured Loans', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:31:31', '2017-11-03 10:31:40'),
+(51, 0, 'Suspense Account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:32:23', '2017-11-03 10:31:40'),
+(52, 51, 'Loans and Advances (Asset) Group', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:32:39', '2017-11-03 10:31:40'),
+(53, 0, 'Miscellaneous Expenses (Asset)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:32:53', '2017-11-03 10:31:40'),
+(55, 0, 'Branch/Divisions', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:33:24', '2017-11-03 10:31:40'),
+(56, 0, 'Revenue - Primary Groups', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:33:38', '2017-11-03 10:31:40'),
+(57, 0, 'Sales Account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:34:10', '2017-11-03 10:31:40'),
+(58, 0, 'Purchase Account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:34:44', '2017-11-03 10:31:40'),
+(59, 0, 'Direct Income [Income Direct]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:35:05', '2017-11-03 10:31:40'),
+(60, 0, 'Indirect Income [Income Indirect]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:36:22', '2017-11-03 10:31:40'),
+(61, 0, 'Direct Expenses [Expenses Direct]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:36:34', '2017-11-03 10:31:40'),
+(62, 0, 'Indirect Expenses [Expenses Indirect]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:36:50', '2017-11-03 10:31:40'),
+(63, 0, 'Common and Possible Errors in Grouping and Account Classification', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:37:04', '2017-11-03 10:31:40'),
+(64, 0, 'Debtor/Creditor classification', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:37:16', '2017-11-03 10:31:40'),
+(65, 0, 'Opening Two Accounts Of The Same Party', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:37:26', '2017-11-03 10:31:40');
 
 -- --------------------------------------------------------
 
@@ -176,6 +158,7 @@ CREATE TABLE `branches` (
 CREATE TABLE `brands` (
   `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -184,9 +167,17 @@ CREATE TABLE `brands` (
 -- Dumping data for table `brands`
 --
 
-INSERT INTO `brands` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(9, 'sensation', '2017-09-13 12:42:20', '2017-10-26 15:22:36'),
-(11, 'lakme', '2017-09-29 15:31:09', '2017-10-26 15:22:29');
+INSERT INTO `brands` (`id`, `name`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(9, 'sensation', 0, '2017-09-13 12:42:20', '2017-10-26 15:22:36'),
+(11, 'lakme', 0, '2017-09-29 15:31:09', '2017-10-26 15:22:29'),
+(12, 'test', 1, '2017-11-14 12:37:35', '2017-11-14 12:37:52'),
+(13, 'test', 1, '2017-11-14 12:37:38', '2017-11-14 12:37:52'),
+(14, 'test', 1, '2017-11-14 12:37:42', '2017-11-14 12:37:54'),
+(15, 'test', 1, '2017-11-14 14:49:17', '2017-11-14 14:58:38'),
+(16, 'test', 1, '2017-11-14 14:49:20', '2017-11-14 14:58:38'),
+(17, 'test', 1, '2017-11-14 14:58:13', '2017-11-14 14:58:38'),
+(18, 'test', 1, '2017-11-14 14:58:53', '2017-11-14 15:00:37'),
+(19, 'test2', 1, '2017-11-14 14:59:16', '2017-11-14 15:00:37');
 
 -- --------------------------------------------------------
 
@@ -257,6 +248,7 @@ CREATE TABLE `customers` (
   `dob` varchar(255) DEFAULT NULL,
   `doa` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `upadted_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -265,8 +257,10 @@ CREATE TABLE `customers` (
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`id`, `name`, `gender`, `area`, `city`, `pincode`, `mobile1`, `mobile2`, `residence_no`, `office_no`, `dob`, `doa`, `email`, `created_at`, `upadted_at`) VALUES
-(16, 'jagruti', 'female', 'surat', '', '394510', '9327434007', '', '', '', '1992-06-22', '', '', '2017-10-24 16:01:03', '2017-10-24 16:01:43');
+INSERT INTO `customers` (`id`, `name`, `gender`, `area`, `city`, `pincode`, `mobile1`, `mobile2`, `residence_no`, `office_no`, `dob`, `doa`, `email`, `is_deleted`, `created_at`, `upadted_at`) VALUES
+(16, 'jagruti', 'female', 'surat', '', '394510', '9327434007', '', '', '', '1992-06-22', '', '', 0, '2017-10-24 16:01:03', '2017-10-24 16:01:43'),
+(17, 'test', 'male', '', '', '', '', '', '', '', '', '', '', 1, '2017-11-14 12:34:02', '2017-11-14 12:34:12'),
+(18, 'test', 'male', '', '', '', '', '', '', '', '', '', '', 1, '2017-11-14 12:34:07', '2017-11-14 12:34:12');
 
 -- --------------------------------------------------------
 
@@ -507,6 +501,7 @@ CREATE TABLE `parties` (
   `gst_type_id` int(11) DEFAULT '0',
   `gstin` varchar(255) DEFAULT NULL,
   `brand_ids` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -515,8 +510,15 @@ CREATE TABLE `parties` (
 -- Dumping data for table `parties`
 --
 
-INSERT INTO `parties` (`id`, `name`, `address`, `contact_person`, `email`, `mobile1`, `mobile2`, `residence_no`, `office_no`, `bank_name`, `bank_branch`, `ifsc_code`, `bank_account_no`, `pan`, `gst_state_code_id`, `gst_type_id`, `gstin`, `brand_ids`, `created_at`, `updated_at`) VALUES
-(16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '11', '2017-10-26 17:59:18', '2017-10-26 17:59:18');
+INSERT INTO `parties` (`id`, `name`, `address`, `contact_person`, `email`, `mobile1`, `mobile2`, `residence_no`, `office_no`, `bank_name`, `bank_branch`, `ifsc_code`, `bank_account_no`, `pan`, `gst_state_code_id`, `gst_type_id`, `gstin`, `brand_ids`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '11,9', 0, '2017-11-14 12:29:55', '2017-11-14 12:29:55'),
+(17, 'test', '', 'test', '', '', '', '', '', '', '', '', '', '', 0, 3, '', '9', 1, '2017-11-14 12:28:01', '2017-11-14 12:28:01'),
+(20, 'test', '', 'test', '', '', '', '', '', '', '', '', '', '', 0, 3, '', '', 1, '2017-11-14 12:28:01', '2017-11-14 12:28:01'),
+(21, 'test', '', 'test', '', '', '', '', '', '', '', '', '', '', 0, 3, '', '', 1, '2017-11-14 13:52:15', '2017-11-14 13:52:15'),
+(22, 'test', '', 'test', '', '', '', '', '', '', '', '', '', '', 0, 3, '', '', 1, '2017-11-14 13:52:15', '2017-11-14 13:52:15'),
+(23, 'test', '', 'test', '', '', '', '', '', '', '', '', '', '', 0, 3, '', '', 1, '2017-11-14 14:46:19', '2017-11-14 14:46:19'),
+(24, 'test', '', 'test', '', '', '', '', '', '', '', '', '', '', 0, 3, '', '', 1, '2017-11-14 14:46:48', '2017-11-14 14:46:48'),
+(25, 'teste', '', 'test', '', '', '', '', '', '', '', '', '', '', 0, 3, '', '', 1, '2017-11-14 14:46:50', '2017-11-14 14:46:50');
 
 -- --------------------------------------------------------
 
@@ -528,6 +530,7 @@ CREATE TABLE `product_categories` (
   `id` int(11) UNSIGNED NOT NULL,
   `parent_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -536,9 +539,12 @@ CREATE TABLE `product_categories` (
 -- Dumping data for table `product_categories`
 --
 
-INSERT INTO `product_categories` (`id`, `parent_id`, `name`, `created_at`, `updated_at`) VALUES
-(10, 0, 'hair prodcuts', '2017-10-26 15:20:20', '2017-10-26 15:20:20'),
-(11, 10, 'hair spa products', '2017-10-26 15:20:41', '2017-10-26 15:20:41');
+INSERT INTO `product_categories` (`id`, `parent_id`, `name`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(10, 0, 'hair prodcuts', 0, '2017-10-26 15:20:20', '2017-10-26 15:20:20'),
+(11, 10, 'hair spa products', 0, '2017-10-26 15:20:41', '2017-10-26 15:20:41'),
+(20, 0, 'test', 1, '2017-11-14 16:31:39', '2017-11-14 16:32:05'),
+(21, 0, 'sensation', 1, '2017-11-14 16:31:43', '2017-11-14 16:32:05'),
+(22, 0, 'hair spa productss', 1, '2017-11-14 16:31:52', '2017-11-14 16:32:00');
 
 -- --------------------------------------------------------
 
@@ -585,8 +591,8 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_category_id`, `brand_id`, `product_code`, `name`, `qty`, `price`, `description`, `hsn_code`, `calculation_type`, `taxability`, `cgst`, `sgst`, `integrated_tax`, `cess`, `created_at`, `updated_at`) VALUES
-(5, 10, 9, '', 'sensation smoothing shampoo', 1100, '750', '', '', 'on_value', 'nil_rated', '9', '14', '18.00', '0.00', '2017-10-26 16:07:58', '2017-11-07 12:35:24'),
-(6, 10, 9, '', 'sesnsation smoothing hair conditioner', 1500, '950', '', '', 'on_value', 'taxable', '9', '9', '18.00', '0.00', '2017-10-26 18:20:12', '2017-11-02 09:35:59');
+(5, 10, 9, '', 'sensation smoothing shampoo', 1100, '750', '', '', 'on_value', 'nil_rated', '9', '14', '18.00', '0.00', '2017-10-26 16:07:58', '2017-11-10 19:11:36'),
+(6, 10, 9, '', 'sensation smoothing hair conditioner', 1500, '950', '', '', 'on_value', 'taxable', '9', '9', '18.00', '0.00', '2017-10-26 18:20:12', '2017-11-10 18:39:17');
 
 -- --------------------------------------------------------
 
@@ -769,6 +775,7 @@ CREATE TABLE `staff_members` (
   `insurance_amount` double DEFAULT NULL,
   `insurance_from` varchar(255) DEFAULT NULL,
   `insurance_to` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `upadted_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -777,8 +784,10 @@ CREATE TABLE `staff_members` (
 -- Dumping data for table `staff_members`
 --
 
-INSERT INTO `staff_members` (`id`, `staff_code`, `name`, `designation`, `gender`, `address`, `permanent_address`, `mobile1`, `mobile2`, `residence_no`, `dob`, `doa`, `email`, `insurance_type`, `insurance_name`, `insurance_amount`, `insurance_from`, `insurance_to`, `created_at`, `upadted_at`) VALUES
-(12, 'code#1', 'jagruti staff', 'owner', 'female', 'valsad', 'surat', '9327434007', '9099584007', '02632249772', '1992-06-22', '2016-04-28', 'jagruti@mjinfoworld.com', 'madical', 'Floater', 100000, '2015-06-11', '2017-06-22', '2017-10-24 16:03:05', '2017-10-24 16:47:48');
+INSERT INTO `staff_members` (`id`, `staff_code`, `name`, `designation`, `gender`, `address`, `permanent_address`, `mobile1`, `mobile2`, `residence_no`, `dob`, `doa`, `email`, `insurance_type`, `insurance_name`, `insurance_amount`, `insurance_from`, `insurance_to`, `is_deleted`, `created_at`, `upadted_at`) VALUES
+(12, 'code#1', 'jagruti staff', 'owner', 'female', 'valsad', 'surat', '9327434007', '9099584007', '02632249772', '1992-06-22', '2016-04-28', 'jagruti@mjinfoworld.com', 'madical', 'Floater', 100000, '2015-06-11', '2017-06-22', 0, '2017-10-24 16:03:05', '2017-10-24 16:47:48'),
+(13, 'tr', 'test', '', 'male', '', '', '', '', '', '', '', '', '', '', 0, '', '', 1, '2017-11-14 12:35:48', '2017-11-14 12:36:00'),
+(14, 'tr', 'test', '', 'male', '', '', '', '', '', '', '', '', '', '', 0, '', '', 1, '2017-11-14 12:35:53', '2017-11-14 12:36:00');
 
 --
 -- Indexes for dumped tables
@@ -788,12 +797,6 @@ INSERT INTO `staff_members` (`id`, `staff_code`, `name`, `designation`, `gender`
 -- Indexes for table `account_groups`
 --
 ALTER TABLE `account_groups`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `accounts`
---
-ALTER TABLE `accounts`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -942,12 +945,7 @@ ALTER TABLE `staff_members`
 -- AUTO_INCREMENT for table `account_groups`
 --
 ALTER TABLE `account_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
---
--- AUTO_INCREMENT for table `accounts`
---
-ALTER TABLE `accounts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 --
 -- AUTO_INCREMENT for table `admins`
 --
@@ -962,7 +960,7 @@ ALTER TABLE `branches`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `contra_vouchers`
 --
@@ -977,7 +975,7 @@ ALTER TABLE `credit_notes`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `debit_notes`
 --
@@ -1022,12 +1020,12 @@ ALTER TABLE `on_item_rate_values`
 -- AUTO_INCREMENT for table `parties`
 --
 ALTER TABLE `parties`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT for table `product_categories`
 --
 ALTER TABLE `product_categories`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `product_images`
 --
@@ -1037,7 +1035,7 @@ ALTER TABLE `product_images`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `purchase_types`
 --
@@ -1062,8 +1060,7 @@ ALTER TABLE `sale_vouchers`
 -- AUTO_INCREMENT for table `staff_members`
 --
 ALTER TABLE `staff_members`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;COMMIT;
-
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

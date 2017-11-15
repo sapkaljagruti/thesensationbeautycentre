@@ -320,51 +320,60 @@ $(document).on('click', '#delete', function () {
     }
 });
 
-//$(document).on('submit', '#product_form', function () {
-//    var proceed = 1;
-//    var calculation_type = $('#calculation_type').val();
-//    if (calculation_type == 'on_item_rate') {
-//
-//        var nonemptygreaterthan = $('.greater_than').filter(function () {
-//            return this.value != ''
-//        });
-//
-//        var nonemptyupto = $('.upto').filter(function () {
-//            return this.value != ''
-//        });
-//
-//        if (nonemptygreaterthan.length == 0) {
-//            proceed = 0;
-//        } else if (nonemptyupto.length == 0) {
-//            proceed = 0;
-//        } else {
-//            $('.tax_type').each(function () {
-//                var tax_type = $(this).val();
-//                if (tax_type == 'taxable') {
-//                    var its_greater_than = $(this).parent().siblings().find('.greater_than').val();
-//                    var its_upto = $(this).parent().siblings().find('.upto').val();
-//                    var its_integrated_tax = $(this).parent().siblings().find('.integrated_tax').val();
-//                    var its_cess = $(this).parent().siblings().find('.cess').val();
-//                    if (its_greater_than == '' || its_upto == '' || its_integrated_tax == '' || its_cess == '') {
-//                        if ($(this).parent().siblings().find('.greater_than').hasClass('first_item_rate')) {
-//                            $('#calculation_type').val('on_value');
-//                        } else {
-//                            $(this).closest('tr').remove();
-//                        }
-//                    }
-//                }
-//            });
-//            proceed = 1;
-//        }
-//        if (proceed == 0) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    } else {
-//        return true;
-//    }
-//});
+$(document).on('focusout', '#name', function () {
+    var name = $.trim($('#name').val());
+
+    if ($.trim(name) == '') {
+        $('#valid_name').val('0');
+        $('#name').css('border-color', '#dd4b39');
+        $('#name_label').css('color', '#dd4b39');
+        $('#name_help_block').html('<font color="#dd4b39">Please enter Product Name</font>');
+    } else {
+        $('.overlay').show();
+        $.ajax({
+            url: '?controller=product&action=checkProductNameExist',
+            data: {
+                'product_name': name
+            },
+            type: 'post',
+            success: function (response) {
+                response = $.trim(response);
+                if (response == '1') {
+                    $('#valid_name').val('0');
+                    $('#name').css('border-color', '#dd4b39');
+                    $('#name_label').css('color', '#dd4b39');
+                    $('#name_help_block').html('<font color="#dd4b39">This name already exists.</font>');
+                } else {
+                    $('#valid_name').val('1');
+                    $('#name').css('border-color', 'rgb(210, 214, 222)');
+                    $('#name_label').css('color', 'black');
+                    $('#name_help_block').html('');
+                }
+            },
+            error: function (xhr, status, error) {
+                showError('Something went wrong. Please try again later.', 5000);
+            },
+            complete: function () {
+                $('.overlay').hide();
+            }
+        });
+    }
+});
+
+$(document).on('submit', '#product_form', function () {
+    var proceed = 1;
+    var valid_name = $('#valid_name').val();
+
+    if (valid_name == '0') {
+        proceed = 0;
+    }
+
+    if (proceed != 0) {
+        return true;
+    } else {
+        return false;
+    }
+});
 
 $(function () {
     var t = $('#products_table').DataTable({

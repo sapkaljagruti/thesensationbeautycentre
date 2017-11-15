@@ -11,7 +11,7 @@ class Brand {
     }
 
     public function getAll() {
-        $brands = $this->conn->query('SELECT * FROM brands ORDER BY id DESC');
+        $brands = $this->conn->query('SELECT * FROM brands WHERE is_deleted!="1" ORDER BY id DESC');
         return $brands;
     }
 
@@ -44,12 +44,26 @@ class Brand {
         if ($products_res->num_rows > 0) {
             return FALSE;
         } else {
-            $brand = $this->conn->query('DELETE FROM brands WHERE id=' . $id);
+            $brand = $this->conn->query('UPDATE brands SET is_deleted="1" WHERE id=' . $id);
             if ($brand === TRUE) {
                 return $id;
             } else {
                 return FALSE;
             }
+        }
+    }
+
+    public function checkNameExist($id, $name) {
+        if (empty($id)) {
+            $brand_res = $this->conn->query('SELECT * FROM brands WHERE name="' . $name . '" AND is_deleted!="1"');
+        } else {
+            $brand_res = $this->conn->query('SELECT * FROM brands WHERE name="' . $name . '" AND id!="' . $id . '" AND is_deleted!="1"');
+        }
+
+        if ($brand_res->num_rows > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
         }
     }
 

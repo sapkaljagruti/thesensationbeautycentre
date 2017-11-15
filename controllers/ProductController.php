@@ -276,6 +276,7 @@ class ProductController {
 
     public function checkProductNameExist() {
         $product_name = trim($_POST['product_name']);
+        $product_name = strtolower($product_name);
         $product_res = $this->productobj->checkProductNameExist($product_name);
         if ($product_res->num_rows > 0) {
             echo '1';

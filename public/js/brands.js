@@ -131,65 +131,96 @@ $(document).on('click', '#save', function () {
 
     if (proceed != 0) {
         var save_type = $('#save_type').val();
+
+        var id = '';
         if (save_type == 'add') {
-            $.ajax({
-                url: '?controller=brand&action=addBrand',
-                type: "POST",
-                data: {
-                    'name': name
-                },
-                success: function (response) {
-                    response = $.trim(response);
-                    $('#add_edit_modal').modal('hide');
-                    if (response != 0) {
-                        var table = $('#brands_table').DataTable();
-
-                        var rowNode = table.row.add([response, '<input type="checkbox" name="select_brands[]" data-id="' + response + '">', ucwords(name), '<a href="" class="view btn btn-default" data-id="' + response + '"><i class="fa fa-fw fa-eye"></i> View</a>' + ' <a href="" class="edit btn btn-default" data-id="' + response + '"> <i class="fa fa-fw fa-pencil-square-o"></i> Edit</a> <a href="" class="delete btn btn-default" data-id="' + response + '"> <i class="fa fa-fw fa-trash"></i> Delete</a>']).draw().node();
-
-                        $(rowNode).attr('id', 'tr_' + response);
-                        showSuccess('New brand was added successfully.', 5000);
-                    } else {
-                        showError('Something went wrong. Please try again later.', 5000);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    $('#add_edit_modal').modal('hide');
-                    showError('Something went wrong. Please try again later.', 5000);
-                },
-                complete: function () {
-                    $('#loader').hide();
-                }
-            });
+            id = '';
         } else if (save_type == 'edit') {
-            var id = $('#id').val();
-            $.ajax({
-                url: '?controller=brand&action=updateBrand',
-                type: "POST",
-                data: {
-                    'id': id,
-                    'name': name,
-                },
-                success: function (response) {
-                    response = $.trim(response);
-                    $('#add_edit_modal').modal('hide');
-                    if (response != 0) {
-                        var table = $('#brands_table').DataTable();
-                        table.cell('#tr_' + response, ':eq(2)').data(ucwords(name)).draw();
-
-                        showSuccess('Brand detail was updated successfully.', 5000);
-                    } else {
-                        showError('Something went wrong. Please try again later.', 5000);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    $('#add_edit_modal').modal('hide');
-                    showError('Something went wrong. Please try again later.', 5000);
-                },
-                complete: function () {
-                    $('#loader').hide();
-                }
-            });
+            id = $.trim($('#id').val());
         }
+
+        $.ajax({
+            url: '?controller=brand&action=checkNameExist',
+            type: "POST",
+            data: {
+                'name': name,
+                'id': id
+            },
+            success: function (response) {
+                response = $.trim(response);
+                if (response == '1') {
+                    $('#name_help_block').html('This name already exists');
+                    $('#name_div').closest('div .form-group').addClass('has-error');
+                } else {
+                    $('#name_help_block').html('');
+                    $('#name_div').closest('div .form-group').removeClass('has-error');
+                    if (save_type == 'add') {
+                        $.ajax({
+                            url: '?controller=brand&action=addBrand',
+                            type: "POST",
+                            data: {
+                                'name': name
+                            },
+                            success: function (response) {
+                                response = $.trim(response);
+                                $('#add_edit_modal').modal('hide');
+                                if (response != 0) {
+                                    var table = $('#brands_table').DataTable();
+
+                                    var rowNode = table.row.add([response, '<input type="checkbox" name="select_brands[]" data-id="' + response + '">', ucwords(name), '<a href="" class="view btn btn-default" data-id="' + response + '"><i class="fa fa-fw fa-eye"></i> View</a>' + ' <a href="" class="edit btn btn-default" data-id="' + response + '"> <i class="fa fa-fw fa-pencil-square-o"></i> Edit</a> <a href="" class="delete btn btn-default" data-id="' + response + '"> <i class="fa fa-fw fa-trash"></i> Delete</a>']).draw().node();
+
+                                    $(rowNode).attr('id', 'tr_' + response);
+                                    showSuccess('New brand was added successfully.', 5000);
+                                } else {
+                                    showError('Something went wrong. Please try again later.', 5000);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                $('#add_edit_modal').modal('hide');
+                                showError('Something went wrong. Please try again later.', 5000);
+                            },
+                            complete: function () {
+                                $('#loader').hide();
+                            }
+                        });
+                    } else if (save_type == 'edit') {
+                        $.ajax({
+                            url: '?controller=brand&action=updateBrand',
+                            type: "POST",
+                            data: {
+                                'id': id,
+                                'name': name,
+                            },
+                            success: function (response) {
+                                response = $.trim(response);
+                                $('#add_edit_modal').modal('hide');
+                                if (response != 0) {
+                                    var table = $('#brands_table').DataTable();
+                                    table.cell('#tr_' + response, ':eq(2)').data(ucwords(name)).draw();
+
+                                    showSuccess('Brand detail was updated successfully.', 5000);
+                                } else {
+                                    showError('Something went wrong. Please try again later.', 5000);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                $('#add_edit_modal').modal('hide');
+                                showError('Something went wrong. Please try again later.', 5000);
+                            },
+                            complete: function () {
+                                $('#loader').hide();
+                            }
+                        });
+                    }
+                }
+            },
+            error: function (xhr, status, error) {
+                showError('Something went wrong. Please try again later.', 5000);
+            },
+            complete: function () {
+                $('#loader').hide();
+            }
+        });
     }
 });
 

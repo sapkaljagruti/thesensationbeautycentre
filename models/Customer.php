@@ -11,7 +11,7 @@ class Customer {
     }
 
     public function getCustomers() {
-        $customers = $this->conn->query('SELECT * FROM customers ORDER BY id DESC');
+        $customers = $this->conn->query('SELECT * FROM customers WHERE is_deleted!="1" ORDER BY id DESC');
         return $customers;
     }
 
@@ -39,7 +39,7 @@ class Customer {
     }
 
     public function deleteCutomer($id) {
-        $customer = $this->conn->query('DELETE FROM customers WHERE id=' . $id);
+        $customer = $this->conn->query('UPDATE customers SET is_deleted="1" WHERE id=' . $id);
         if ($customer === TRUE) {
             return $id;
         } else {

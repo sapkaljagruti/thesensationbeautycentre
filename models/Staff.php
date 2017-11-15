@@ -11,7 +11,7 @@ class Staff {
     }
 
     public function getstaffmembers() {
-        $staff_members = $this->conn->query('SELECT * FROM staff_members ORDER BY id DESC');
+        $staff_members = $this->conn->query('SELECT * FROM staff_members WHERE is_deleted!="1" ORDER BY id DESC');
         return $staff_members;
     }
 
@@ -39,7 +39,7 @@ class Staff {
     }
 
     public function deletestaff($id) {
-        $staff_member = $this->conn->query('DELETE FROM staff_members WHERE id=' . $id);
+        $staff_member = $this->conn->query('UPDATE staff_members SET is_deleted="1" WHERE id=' . $id);
         if ($staff_member === TRUE) {
             return $id;
         } else {

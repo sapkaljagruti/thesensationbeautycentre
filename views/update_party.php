@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="public/plugins/select2/select2.min.css">
 <style>
     #pan, #gstin {
         text-transform: uppercase;
@@ -47,18 +48,24 @@ if (isset($party_detail)) {
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title">Detail Form</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
                             <!--<a href="?controller=customer&action=getCustomers" class="btn btn-danger pull-right">&times;</a>-->
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
                         <form class="form-horizontal" method="post">
-                            <input type="hidden" id="id" name="id" value=""<?php echo $id; ?>/>
+                            <input type="hidden" id="save_type" name="save_type" value="edit"/>
+                            <input type="hidden" id="id" name="id" value="<?php echo $id; ?>"/>
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label for="name" class="col-sm-2 control-label">Party Name</label>
+                                    <label for="name" class="col-sm-2 control-label" id="name_label">Party Name</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<?php echo $name; ?>" required="required">
+                                        <span id="name_help_block" class="help-block"></span>
                                     </div>
+                                    <input type="hidden" id="is_valid_name" name="is_valid_name" value="<?php echo isset($_POST['is_valid_name']) ? $_POST['is_valid_name'] : '1'; ?>"/>
                                     <label for="contact_person" class="col-sm-2 control-label">Contact Person</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" id="contact_person" name="contact_person" placeholder="Contact Person" value="<?php echo $contact_person; ?>" required="required">
@@ -174,20 +181,22 @@ if (isset($party_detail)) {
                                     <?php
                                     if (isset($brands)) {
                                         ?>
-                                        <div class="checkbox">
-                                            <?php
-                                            foreach ($brands as $brand) {
-                                                $brand_checked = '';
-                                                foreach ($brand_ids as $brand_id) {
-                                                    if ($brand_id == $brand['id']) {
-                                                        $brand_checked = ' checked="checked"';
+                                        <div class="col-sm-4">
+                                            <select class="form-control select2" multiple="multiple" data-placeholder="Select brands" id="brand_ids" name="brand_ids[]">
+                                                <?php
+                                                foreach ($brands as $brand) {
+                                                    $brand_selected = '';
+                                                    foreach ($brand_ids as $brand_id) {
+                                                        if ($brand_id == $brand['id']) {
+                                                            $brand_selected = ' selected="selected"';
+                                                        }
                                                     }
+                                                    ?>
+                                                    <option name="brand_ids[]" value="<?php echo $brand['id']; ?>"<?php echo $brand_selected; ?>><?php echo $brand['name']; ?></option>
+                                                    <?php
                                                 }
                                                 ?>
-                                                <label><input type="checkbox" name="brand_ids[]" value="<?php echo $brand['id']; ?>"<?php echo $brand_checked; ?>><?php echo $brand['name']; ?></label>
-                                                <?php
-                                            }
-                                            ?>
+                                            </select>
                                         </div>
                                         <?php
                                     }

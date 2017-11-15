@@ -11,7 +11,7 @@ class ProductCategory {
     }
 
     public function getcategories() {
-        $product_categories_res = $this->conn->query('SELECT * FROM product_categories ORDER BY id DESC');
+        $product_categories_res = $this->conn->query('SELECT * FROM product_categories WHERE is_deleted!="1" ORDER BY id DESC');
         return $product_categories_res;
     }
 
@@ -45,12 +45,26 @@ class ProductCategory {
         if ($product_categories_res->num_rows > 0 || $products_res->num_rows > 0) {
             return FALSE;
         } else {
-            $product_category = $this->conn->query('DELETE FROM product_categories WHERE id=' . $id);
+            $product_category = $this->conn->query('UPDATE product_categories SET is_deleted="1" WHERE id=' . $id);
             if ($product_category === TRUE) {
                 return $id;
             } else {
                 return FALSE;
             }
+        }
+    }
+
+    public function checkNameExist($id, $name) {
+        if (empty($id)) {
+            $product_category_res = $this->conn->query('SELECT * FROM product_categories WHERE name="' . $name . '" AND is_deleted!="1"');
+        } else {
+            $product_category_res = $this->conn->query('SELECT * FROM product_categories WHERE name="' . $name . '" AND id!="' . $id . '" AND is_deleted!="1"');
+        }
+
+        if ($product_category_res->num_rows > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
         }
     }
 

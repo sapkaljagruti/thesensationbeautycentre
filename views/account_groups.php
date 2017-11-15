@@ -13,7 +13,7 @@
         <!-- /.box -->
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a class="btn btn-app" href="#add_edit_modal" data-toggle="modal">
+                <a class="btn btn-app" href="?controller=accountgroup&action=add">
                     <i class="fa fa-plus"></i> New
                 </a>
                 <button class="btn btn-app" id="delete_selected">
@@ -45,32 +45,22 @@
                                 <tbody>
                                     <?php
                                     foreach ($account_groups as $account_group) {
-                                        ?>
-                                        <tr id="tr_<?php echo $account_group['id']; ?>">
-                                            <td><?php echo $account_group['id']; ?></td>
-                                            <td>
-                                                <?php
-                                                if ($account_group['is_default'] == '0') {
-                                                    ?>
+                                        if ($account_group['is_default'] == '0') {
+                                            ?>
+                                            <tr id="tr_<?php echo $account_group['id']; ?>">
+                                                <td><?php echo $account_group['id']; ?></td>
+                                                <td>
                                                     <input type="checkbox" name="select_ac_groups[]" data-id="<?php echo $account_group['id']; ?>">
-                                                    <?php
-                                                }
-                                                ?>
-                                            </td>
-                                            <td><?php echo ucwords($account_group['name']); ?></td>
-                                            <td>
-                                                <a href="" class="view btn btn-default" data-id="<?php echo $account_group['id']; ?>"><i class="fa fa-fw fa-eye"></i> View</a>
-                                                <?php
-                                                if ($account_group['is_default'] == '0') {
-                                                    ?>
-                                                    <a href="" class="edit btn btn-default" data-id="<?php echo $account_group['id']; ?>"><i class="fa fa-fw fa-pencil-square-o"></i> Edit</a>
+                                                </td>
+                                                <td><?php echo ucwords($account_group['name']); ?></td>
+                                                <td>
+                                                    <a href="?controller=accountgroup&action=get&id=<?php echo $account_group['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-eye"></i> View</a>
+                                                    <a href="?controller=accountgroup&action=update&id=<?php echo $account_group['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-pencil-square-o"></i> Edit</a>
                                                     <a href="" class="delete btn btn-default" data-id="<?php echo $account_group['id']; ?>"><i class="fa fa-fw fa-trash"></i> Delete</a>
-                                                    <?php
-                                                }
-                                                ?>
-                                            </td>
-                                        </tr>
-                                        <?php
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
                                     }
                                     ?>
                                 </tbody>
@@ -89,77 +79,6 @@
         <!-- /.box -->
     </div>
     <!-- /.col -->
-</div>
-
-<div class="modal fade" id="add_edit_modal" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Add/Edit Account Group</h4>
-            </div>
-            <div class="add_edit_modal_body">
-                <form class="form-horizontal" id="add_edit_form">
-                    <input type="hidden" class="form-control" id="save_type" value="add">
-                    <input type="hidden" class="form-control" id="id" value="">
-                    <input type="hidden" class="form-control" id="last_removed_parent_id" value="">
-                    <input type="hidden" class="form-control" id="last_removed_parent_name" value="">
-                    <div class="form-group" id="name_div">
-                        <label for="name" class="col-sm-3 control-label">Name</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="name" placeholder="Group Name">
-                            <span class="help-block" id="name_help_block"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="parent_id" class="col-sm-3 control-label">Under Category</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" id="parent_id">
-                                <option value='0'>Select under group</option>
-                                <?php
-                                if (isset($account_groups)) {
-                                    if (count($account_groups) > 0) {
-                                        foreach ($account_groups as $account_group) {
-                                            ?>
-                                            <option value="<?php echo $account_group['id']; ?>"><?php echo ucwords($account_group['name']); ?></option>
-                                            <?php
-                                        }
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success" id="save">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="view_modal" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Account Group Details</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-sm-4">Name :</label>
-                        <div class="col-sm-8" id="view_name"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <div class="modal fade" id="confirm_delete_modal" role="dialog" aria-hidden="true">

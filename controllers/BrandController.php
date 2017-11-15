@@ -33,7 +33,7 @@ class BrandController {
     }
 
     public function addBrand() {
-        $name = trim($_POST['name']);
+        $name = strtolower(trim($_POST['name']));
         $brand = $this->brandobj->addBrand($name);
         if ($brand) {
             echo $brand;
@@ -57,7 +57,7 @@ class BrandController {
 
     public function updateBrand() {
         $id = trim($_POST['id']);
-        $name = trim($_POST['name']);
+        $name = strtolower(trim($_POST['name']));
         $brand = $this->brandobj->updateBrand($id, $name);
         if ($brand) {
             echo $brand;
@@ -83,6 +83,17 @@ class BrandController {
             if ($brand) {
                 echo 'deleted';
             }
+        }
+    }
+
+    public function checkNameExist() {
+        $id = !empty(trim($_POST['id'])) ? trim($_POST['id']) : NULL;
+        $name = strtolower(trim($_POST['name']));
+        $brand_res = $this->brandobj->checkNameExist($id, $name);
+        if ($brand_res) {
+            echo '1';
+        } else {
+            echo '0';
         }
     }
 
