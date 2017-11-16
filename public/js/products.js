@@ -40,132 +40,158 @@ function ucwords(str) {
     });
 }
 
+$(document).on('keypress', '.decimal', function (evt) {
+    var ele_val = $(this).val();
+    var decimal_index = ele_val.indexOf('.');
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (decimal_index != '-1' && charCode == 46) {
+        return false;
+    }
+});
+
+$(function () {
+    var taxability = $('#taxability').val();
+    if (taxability != 'taxable') {
+        $('#integrated_tax').attr('disabled', 'disabled');
+        $('#cgst').attr('disabled', 'disabled');
+        $('#sgst').attr('disabled', 'disabled');
+    } else {
+        $('#integrated_tax').removeAttr('disabled');
+        $('#cgst').removeAttr('disabled');
+        $('#sgst').removeAttr('disabled');
+    }
+});
 
 $(document).on('change', '#taxability', function (e) {
     var taxability = $(this).val();
     if (taxability != 'taxable') {
-        $('#integrated_tax').val('0');
+        $('#integrated_tax').val('0.00');
         $('#integrated_tax').attr('disabled', 'disabled');
 
-        $('#cess').val('0');
-        $('#cess').attr('disabled', 'disabled');
+        $('#cgst').val('0.00');
+        $('#cgst').attr('disabled', 'disabled');
+
+        $('#sgst').val('0.00');
+        $('#sgst').attr('disabled', 'disabled');
     } else {
         $('#integrated_tax').val('');
         $('#integrated_tax').removeAttr('disabled');
-        $('#cess').val('');
-        $('#cess').removeAttr('disabled');
+        $('#cgst').val('');
+        $('#cgst').removeAttr('disabled');
+        $('#sgst').val('');
+        $('#sgst').removeAttr('disabled');
     }
 });
 
-$(document).on('change', '#calculation_type', function (e) {
-    var calculation_type = $(this).val();
-    if (calculation_type == 'on_item_rate') {
-        $('#item_rates_div').fadeIn();
-        $('.upto:last').focus();
-    } else if (calculation_type == 'on_value') {
-        $('#item_rates_div').fadeOut();
-    }
-});
-
-$(document).on('change', '.tax_type', function (e) {
-    var tax_type = $(this).val();
-    if (tax_type != 'taxable') {
-        $(this).parent().siblings().find('.integrated_tax').val('0');
-        $(this).parent().siblings().find('.integrated_tax').attr('disabled', 'disabled');
-
-        $(this).parent().siblings().find('.cess').val('0');
-        $(this).parent().siblings().find('.cess').attr('disabled', 'disabled');
-    } else {
-        $(this).parent().siblings().find('.integrated_tax').removeAttr('disabled');
-        $(this).parent().siblings().find('.integrated_tax').focus();
-        $(this).parent().siblings().find('.cess').removeAttr('disabled');
-    }
-});
-
-$(document).on('focusout', '.greater_than', function () {
-    var cur_elem = $(this);
-    var cur_elem_val = cur_elem.val();
-
-    if ($.trim(cur_elem_val) == '') {
-        $(this).focus();
-    } else if ($.trim(cur_elem_val) != '') {
-        var elem_class = $('.greater_than');
-        var prev_elem = elem_class.eq(elem_class.index(cur_elem) - 1);
-        var prev_upto_val = prev_elem.parent().siblings().find('.upto').val();
-        if (parseInt(cur_elem_val) < parseInt(prev_upto_val)) {
-            cur_elem.val('');
-            cur_elem.focus();
-        }
-
-        var next_upto_val = $(this).parent().siblings().find('.upto').val();
-        if ($.trim(next_upto_val) != '') {
-            if (parseInt(next_upto_val) < parseInt(cur_elem_val)) {
-                cur_elem.val('');
-                cur_elem.focus();
-            }
-        }
-    }
-});
-
-$(document).on('focusout', '.upto', function () {
-    var upto_val = $(this).val();
-    if ($.trim(upto_val) == '') {
-        $(this).focus();
-
-        $(this).parent().siblings().find('.integrated_tax').val('');
-        $(this).parent().siblings().find('.cess').val('');
-    } else if ($.trim(upto_val) != '') {
-        var greater_than_val = $(this).parent().siblings().find('.greater_than').val();
-        if (parseInt(upto_val) < parseInt(greater_than_val)) {
-            $(this).val('');
-            $(this).focus();
-        } else {
-            $(this).parent().siblings().find('.integrated_tax').focus();
-        }
-    }
-});
-
-
-$(document).on('focusout', '.integrated_tax', function () {
-    var integrated_tax = $(this).val();
-    if ($.trim(integrated_tax) == '') {
-        $(this).focus();
-    }
-});
-
-$(document).on('focusout', '.cess', function () {
-    var cess = $(this).val();
-    if ($.trim(cess) == '') {
-        $(this).focus();
-    } else if ($.trim(cess) != '') {
-        var new_tr = '<tr><td><input type="text" class="form-control greater_than" id="" name="greater_than[]" value="" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/></td><td><input type="text" class="form-control upto" id="" name="upto[]" value=" " onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/></td><td><select class="form-control tax_type" id="" name="tax_type[]"><option value="exempt">Exempt</option><option value="nil_rated">Nil Rated</option><option value="taxable" selected="selected">Taxable</option></select></td><td><div class="input-group"><input type="text" class="form-control integrated_tax" id="" name="integrated_tax_on_item_rate[]" value="" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/><span class="input-group-addon">%</span></div></td><td><input type="text" class="form-control" id="" name="" value="Based On Value" readonly="readonly"/></td><td><div class="input-group"><input type="text" class="form-control cess" id="" name="cess_on_item_rate[]" value="" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/><span class="input-group-addon">%</span></div></td></tr>';
-        $('#item_rates_table tr:last').after(new_tr);
-        $('.greater_than:last').focus();
-    }
-});
-
-
-$(document).on('focus', '.integrated_tax', function () {
-    var tax_type = $(this).closest('td').siblings().find('.tax_type').val();
-    if (tax_type != 'taxable') {
-        $(this).val('0');
-        $(this).attr('disabled', 'disabled');
-
-        $(this).parent().parent().siblings().find('.cess').val('0');
-        $(this).parent().parent().siblings().find('.cess').attr('disabled', 'disabled');
-    }
-});
-
-$(document).on('focus', '.cess', function () {
-    var tax_type = $(this).closest('td').siblings().find('.tax_type').val();
-    if (tax_type != 'taxable') {
-        $(this).val('0');
-        $(this).attr('disabled', 'disabled');
-
-        $(this).parent().parent().siblings().find('.integrated_tax').val('0');
-        $(this).parent().parent().siblings().find('.integrated_tax').attr('disabled', 'disabled');
-    }
-});
+//$(document).on('change', '#calculation_type', function (e) {
+//    var calculation_type = $(this).val();
+//    if (calculation_type == 'on_item_rate') {
+//        $('#item_rates_div').fadeIn();
+//        $('.upto:last').focus();
+//    } else if (calculation_type == 'on_value') {
+//        $('#item_rates_div').fadeOut();
+//    }
+//});
+//
+//$(document).on('change', '.tax_type', function (e) {
+//    var tax_type = $(this).val();
+//    if (tax_type != 'taxable') {
+//        $(this).parent().siblings().find('.integrated_tax').val('0');
+//        $(this).parent().siblings().find('.integrated_tax').attr('disabled', 'disabled');
+//
+//        $(this).parent().siblings().find('.cess').val('0');
+//        $(this).parent().siblings().find('.cess').attr('disabled', 'disabled');
+//    } else {
+//        $(this).parent().siblings().find('.integrated_tax').removeAttr('disabled');
+//        $(this).parent().siblings().find('.integrated_tax').focus();
+//        $(this).parent().siblings().find('.cess').removeAttr('disabled');
+//    }
+//});
+//
+//$(document).on('focusout', '.greater_than', function () {
+//    var cur_elem = $(this);
+//    var cur_elem_val = cur_elem.val();
+//
+//    if ($.trim(cur_elem_val) == '') {
+//        $(this).focus();
+//    } else if ($.trim(cur_elem_val) != '') {
+//        var elem_class = $('.greater_than');
+//        var prev_elem = elem_class.eq(elem_class.index(cur_elem) - 1);
+//        var prev_upto_val = prev_elem.parent().siblings().find('.upto').val();
+//        if (parseInt(cur_elem_val) < parseInt(prev_upto_val)) {
+//            cur_elem.val('');
+//            cur_elem.focus();
+//        }
+//
+//        var next_upto_val = $(this).parent().siblings().find('.upto').val();
+//        if ($.trim(next_upto_val) != '') {
+//            if (parseInt(next_upto_val) < parseInt(cur_elem_val)) {
+//                cur_elem.val('');
+//                cur_elem.focus();
+//            }
+//        }
+//    }
+//});
+//
+//$(document).on('focusout', '.upto', function () {
+//    var upto_val = $(this).val();
+//    if ($.trim(upto_val) == '') {
+//        $(this).focus();
+//
+//        $(this).parent().siblings().find('.integrated_tax').val('');
+//        $(this).parent().siblings().find('.cess').val('');
+//    } else if ($.trim(upto_val) != '') {
+//        var greater_than_val = $(this).parent().siblings().find('.greater_than').val();
+//        if (parseInt(upto_val) < parseInt(greater_than_val)) {
+//            $(this).val('');
+//            $(this).focus();
+//        } else {
+//            $(this).parent().siblings().find('.integrated_tax').focus();
+//        }
+//    }
+//});
+//
+//
+//$(document).on('focusout', '.integrated_tax', function () {
+//    var integrated_tax = $(this).val();
+//    if ($.trim(integrated_tax) == '') {
+//        $(this).focus();
+//    }
+//});
+//
+//$(document).on('focusout', '.cess', function () {
+//    var cess = $(this).val();
+//    if ($.trim(cess) == '') {
+//        $(this).focus();
+//    } else if ($.trim(cess) != '') {
+//        var new_tr = '<tr><td><input type="text" class="form-control greater_than" id="" name="greater_than[]" value="" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/></td><td><input type="text" class="form-control upto" id="" name="upto[]" value=" " onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/></td><td><select class="form-control tax_type" id="" name="tax_type[]"><option value="exempt">Exempt</option><option value="nil_rated">Nil Rated</option><option value="taxable" selected="selected">Taxable</option></select></td><td><div class="input-group"><input type="text" class="form-control integrated_tax" id="" name="integrated_tax_on_item_rate[]" value="" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/><span class="input-group-addon">%</span></div></td><td><input type="text" class="form-control" id="" name="" value="Based On Value" readonly="readonly"/></td><td><div class="input-group"><input type="text" class="form-control cess" id="" name="cess_on_item_rate[]" value="" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off"/><span class="input-group-addon">%</span></div></td></tr>';
+//        $('#item_rates_table tr:last').after(new_tr);
+//        $('.greater_than:last').focus();
+//    }
+//});
+//
+//
+//$(document).on('focus', '.integrated_tax', function () {
+//    var tax_type = $(this).closest('td').siblings().find('.tax_type').val();
+//    if (tax_type != 'taxable') {
+//        $(this).val('0');
+//        $(this).attr('disabled', 'disabled');
+//
+//        $(this).parent().parent().siblings().find('.cess').val('0');
+//        $(this).parent().parent().siblings().find('.cess').attr('disabled', 'disabled');
+//    }
+//});
+//
+//$(document).on('focus', '.cess', function () {
+//    var tax_type = $(this).closest('td').siblings().find('.tax_type').val();
+//    if (tax_type != 'taxable') {
+//        $(this).val('0');
+//        $(this).attr('disabled', 'disabled');
+//
+//        $(this).parent().parent().siblings().find('.integrated_tax').val('0');
+//        $(this).parent().parent().siblings().find('.integrated_tax').attr('disabled', 'disabled');
+//    }
+//});
 
 $(function () {
     $('#delete_selected').attr('disabled', true);
@@ -189,26 +215,6 @@ $(document).on('change', 'input[name="select_products[]"]', function (e) {
     } else {
         $('#delete_selected').prop('disabled', true);
     }
-});
-
-$(document).on('hidden.bs.modal', '#add_edit_modal', function (e) {
-    $('#name').val('');
-    $('#name').next('span').html('');
-    $('#name').closest('div .form-group').removeClass('has-error');
-
-    var last_removed_parent_id = $('#last_removed_parent_id').val();
-    var last_removed_parent_name = $('#last_removed_parent_name').val();
-
-    if (last_removed_parent_id != '') {
-        $('#parent_id').append("<option value='" + last_removed_parent_id + "'>" + last_removed_parent_name + "</option>");
-    }
-
-    $('#parent_id').val('0');
-
-    $('#last_removed_parent_id').val('');
-    $('#last_removed_parent_name').val('');
-
-    $('#save_type').val('add');
 });
 
 $(document).on('click', '.view', function (e) {
@@ -323,6 +329,15 @@ $(document).on('click', '#delete', function () {
 $(document).on('focusout', '#name', function () {
     var name = $.trim($('#name').val());
 
+    var save_type = $.trim($('#save_type').val());
+
+    var id = '';
+    if (save_type == 'add') {
+        id = '';
+    } else if (save_type == 'edit') {
+        id = $.trim($('#id').val());
+    }
+
     if ($.trim(name) == '') {
         $('#valid_name').val('0');
         $('#name').css('border-color', '#dd4b39');
@@ -333,7 +348,8 @@ $(document).on('focusout', '#name', function () {
         $.ajax({
             url: '?controller=product&action=checkProductNameExist',
             data: {
-                'product_name': name
+                'product_name': name,
+                'id': id
             },
             type: 'post',
             success: function (response) {

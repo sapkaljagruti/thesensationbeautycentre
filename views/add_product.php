@@ -36,6 +36,7 @@ if (isset($errors)) {
             <!-- /.box-header -->
             <!-- form start -->
             <form class="form-horizontal" method="post" id="product_form">
+                <input type="hidden" id="save_type" name="save_type" value="add"/>
                 <div class="box-body">
                     <div class="form-group">
                         <label for="product_category_id" class="col-sm-2 control-label">Product Category</label>
@@ -108,16 +109,25 @@ if (isset($errors)) {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="qty" class="col-sm-2 control-label">Quantity</label>
+                        <label for="qty1" class="col-sm-2 control-label">Asha Group Quantity</label>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="qty" name="qty" placeholder="Quantity" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['qty']) ? $_POST['qty'] : ''; ?>">
+                                <input type="text" class="form-control" id="qty1" name="qty1" placeholder="Asha Group Quantity" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['qty1']) ? $_POST['qty1'] : ''; ?>">
                                 <span class="input-group-addon">Nos</span>
                             </div>
                         </div>
+                        <label for="qty2" class="col-sm-2 control-label">Lakhan Group Quantity</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                            <input type="text" class="form-control" id="qty2" name="qty2" placeholder="Lakhan Group Quantity" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['qty2']) ? $_POST['qty2'] : ''; ?>">
+                            <span class="input-group-addon">Nos</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="price" class="col-sm-2 control-label">Rate Per No</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="price" name="price" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['price']) ? $_POST['price'] : ''; ?>">
+                            <input type="text" class="form-control decimal" id="price" name="price" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['price']) ? $_POST['price'] : ''; ?>">
                         </div>
                     </div>
                     <hr> <h4> GST Details </h5> <hr>
@@ -232,21 +242,21 @@ if (isset($errors)) {
                             <label for="cgst" class="col-sm-2 control-label">Central Tax</label>
                             <div class="col-sm-2">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="cgst" name="cgst" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['cgst']) ? $_POST['cgst'] : ''; ?>">
+                                    <input type="text" class="form-control decimal" id="cgst" name="cgst" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['cgst']) ? $_POST['cgst'] : ''; ?>">
                                     <span class="input-group-addon">%</span>
                                 </div>
                             </div>
                             <label for="sgst" class="col-sm-2 control-label">State Tax</label>
                             <div class="col-sm-2">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="sgst" name="sgst" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['sgst']) ? $_POST['sgst'] : ''; ?>">
+                                    <input type="text" class="form-control decimal" id="sgst" name="sgst" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['sgst']) ? $_POST['sgst'] : ''; ?>">
                                     <span class="input-group-addon">%</span>
                                 </div>
                             </div>
                             <label for="integrated_tax" class="col-sm-2 control-label">Integrated Tax</label>
                             <div class="col-sm-2">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="integrated_tax" name="integrated_tax" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['integrated_tax']) ? $_POST['integrated_tax'] : ''; ?>">
+                                    <input type="text" class="form-control decimal" id="integrated_tax" name="integrated_tax" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['integrated_tax']) ? $_POST['integrated_tax'] : ''; ?>">
                                     <span class="input-group-addon">%</span>
                                 </div>
                             </div>

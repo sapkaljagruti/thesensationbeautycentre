@@ -45,6 +45,15 @@ function ucwords(str) {
     });
 }
 
+$(document).on('keypress', '.decimal', function (evt) {
+    var ele_val = $(this).val();
+    var decimal_index = ele_val.indexOf('.');
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (decimal_index != '-1' && charCode == 46) {
+        return false;
+    }
+});
+
 $(function () {
     $('#delete_selected').attr('disabled', true);
 });

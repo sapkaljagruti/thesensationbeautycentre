@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="public/plugins/select2/select2.min.css">
 <style>
     #pan, #gstin {
         text-transform: uppercase;
@@ -42,6 +43,7 @@ if (isset($account_group_details)) {
             $pan = isset($_POST['pan']) ? $_POST['pan'] : $account_group_detail['pan'];
             $gst_type_id = isset($_POST['gst_type_id']) ? $_POST['gst_type_id'] : $account_group_detail['gst_type_id'];
             $gstin = isset($_POST['gstin']) ? $_POST['gstin'] : $account_group_detail['gstin'];
+            $brand_ids = isset($_POST['brand_ids']) ? $_POST['brand_ids'] : (!empty($account_group_detail['brand_ids']) ? explode(',', $account_group_detail['brand_ids']) : []);
             ?>
             <form class="form-horizontal" method="post">
                 <div class="row">
@@ -90,7 +92,7 @@ if (isset($account_group_details)) {
                                     </div>
                                     <label for="opening_balance" class="col-sm-2 control-label">Opening Balance</label>
                                     <div class="col-sm-2">
-                                        <input type="text" class="form-control" id="opening_balance" name="opening_balance" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo $opening_balance; ?>">
+                                        <input type="text" class="form-control decimal" id="opening_balance" name="opening_balance" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo $opening_balance; ?>">
                                     </div>
                                 </div>
                                 <div class="overlay" style="display: none;">
@@ -277,6 +279,55 @@ if (isset($account_group_details)) {
                                         <input type="text" class="form-control" id="gstin" name="gstin" placeholder="GSTIN" value="<?php echo $gstin; ?>" maxlength="15" minlength="15" oncopy="return false;" onpaste="return false;" autocomplete="off">
                                         <span id="gstin_help_block" class="help-block"></span>
                                     </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="overlay" style="display: none;">
+                                <i class="fa fa-refresh fa-spin"></i>
+                            </div>
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Horizontal Form -->
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Brand Details</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+                            <!-- form start -->
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="brand_ids[]" class="col-sm-2 control-label">Party Brands</label>
+                                    <?php
+                                    if (isset($brands)) {
+                                        ?>
+                                        <div class="col-sm-4">
+                                            <select class="form-control select2" multiple="multiple" data-placeholder="Select brands" id="brand_ids" name="brand_ids[]">
+                                                <?php
+                                                foreach ($brands as $brand) {
+                                                    $brand_selected = '';
+                                                    foreach ($brand_ids as $brand_id) {
+                                                        if ($brand_id == $brand['id']) {
+                                                            $brand_selected = ' selected="selected"';
+                                                        }
+                                                    }
+                                                    ?>
+                                                    <option name="brand_ids[]" value="<?php echo $brand['id']; ?>"<?php echo $brand_selected; ?>><?php echo $brand['name']; ?></option>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <?php
+                                    }
+                                    ?>
                                 </div>
                             </div>
                             <!-- /.box-body -->

@@ -51,7 +51,7 @@
                                         <!--<li><a href="?controller=branch&action=getBranches">Branch Master</a></li>-->
                                         <li><a href="?controller=customer&action=getCustomers">Customer Master</a></li>
                                         <li><a href="?controller=staff&action=getstaffmembers">Staff Master</a></li>
-                                        <li><a href="?controller=party&action=getall">Party Master</a></li>
+                                        <!--<li><a href="?controller=party&action=getall">Party Master</a></li>-->
                                         <li><a href="?controller=brand&action=getBrands">Brand Master</a></li>
                                         <li><a href="?controller=accountgroup&action=getall">Account Group Master</a></li>
                                     </ul>

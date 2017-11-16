@@ -39,6 +39,12 @@ if (isset($errors)) {
                 <input type="hidden" id="save_type" name="save_type" value="add"/>
                 <div class="box-body">
                     <div class="form-group">
+                        <label for="account_group_id" class="col-sm-2 control-label">Under Group</label>
+                        <div class="col-sm-4">
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="name" class="col-sm-2 control-label" id="name_label">Party Name</label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>" required="required">

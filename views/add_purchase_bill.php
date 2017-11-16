@@ -57,9 +57,31 @@ if (isset($errors)) {
                             <input type="text" class="form-control" id="date" name="date" placeholder="Date" value="<?php echo isset($_POST['date']) ? $_POST['date'] : $today; ?>" required="required">
                             <span id="date_help_block" class="help-block"></span>
                         </div>
-                        <label for="ledger_name" class="col-sm-2 control-label">Purchase Ledger</label>
+                        <label for="purchase_ledger_id" class="col-sm-2 control-label">Purchase Account</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="ledger_name" name="ledger_name" placeholder="Purchase Ledger" value="" required="required">
+                            <select class="form-control" id="purchase_ledger_id" name="purchase_ledger_id" required="required">
+                                <option value="">Select Purchase Account</option>
+                                <?php
+                                if (isset($purchase_ledgers)) {
+                                    $purchase_ledger_selected = '';
+                                    foreach ($purchase_ledgers as $purchase_ledger) {
+                                        if (isset($_POST['purchase_ledger_id'])) {
+                                            $purchase_ledger_id = $_POST['purchase_ledger_id'];
+                                        } else {
+                                            $purchase_ledger_id = '';
+                                        }
+                                        if ($purchase_ledger_id == $purchase_ledger['id']) {
+                                            $purchase_ledger_selected = ' selected="selected"';
+                                        } else {
+                                            $purchase_ledger_selected = '';
+                                        }
+                                        ?>
+                                        <option value="<?php echo $purchase_ledger['id']; ?>"<?php echo $purchase_ledger_selected; ?>><?php echo $purchase_ledger['name']; ?></option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -101,13 +123,6 @@ if (isset($errors)) {
                                 ?>
                             </select>
                         </div>
-                        <label for="target_account" class="col-sm-2 control-label">Targer Account</label>
-                        <div class="col-sm-4">
-                            <select class="form-control" id="target_account" name="target_account">
-                                <option value="asha">Asha</option>
-                                <option value="lakhan">Lakhan</option>
-                            </select>
-                        </div>
                     </div>
                 </div>
                 <!-- /.box-body -->
@@ -132,7 +147,7 @@ if (isset($errors)) {
                 <div class="box-body party_detail_form">
                     <input type="hidden" id="party_id" name="party_id" value=""/>
                     <div class="form-group">
-                        <label for="party_name" class="col-sm-2 control-label">Party Name</label>
+                        <label for="party_name" class="col-sm-2 control-label">Party A/C Name</label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" id="party_name" name="party_name" placeholder="Party Name" value="<?php echo isset($_POST['party_name']) ? $_POST['party_name'] : ''; ?>" required="required" onkeypress="return enterKeyEvent(event)">
                         </div>

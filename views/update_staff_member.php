@@ -155,7 +155,7 @@ if (isset($staff_member_detail)) {
                                     </div>
                                     <label for="insurance_amount" class="col-sm-1 control-label">Amount</label>
                                     <div class="col-sm-2">
-                                        <input type="text" class="form-control" id="insurance_amount" name="insurance_amount" placeholder="Insurance Amount" value="<?php echo $insurance_amount; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
+                                        <input type="text" class="form-control decimal" id="insurance_amount" name="insurance_amount" placeholder="Insurance Amount" value="<?php echo $insurance_amount; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="form-group" id="insurance_validity_div">

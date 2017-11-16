@@ -5,15 +5,15 @@
 $controllers = array(
     'Error' => ['index'],
     'Home' => ['index'],
-    'Manager' => ['getManagers', 'addManager', 'getManager', 'updateManager', 'deleteManager', 'getManagersForAutoComp'],
-    'Branch' => ['getBranches', 'getBranch', 'checkManager', 'addBranch'],
+//    'Manager' => ['getManagers', 'addManager', 'getManager', 'updateManager', 'deleteManager', 'getManagersForAutoComp'],
+//    'Branch' => ['getBranches', 'getBranch', 'checkManager', 'addBranch'],
     'Brand' => ['getBrands', 'addBrand', 'getBrand', 'updateBrand', 'deleteBrand', 'checkNameExist'],
     'Customer' => ['getCustomers', 'getCustomer', 'addCustomer', 'updateCustomer', 'deleteCutomer'],
     'Staff' => ['getstaffmembers', 'addstaff', 'getstaffmember', 'updatestaff', 'deletestaff'],
     'Accountgroup' => ['getall', 'get', 'add', 'getParentName', 'update', 'deleteacgroup', 'checkNameExist'],
     'Productcategory' => ['getcategories', 'addcategory', 'getcategory', 'updatecategory', 'deletecategory', 'checkNameExist'],
     'Product' => ['getproducts', 'getproduct', 'addproduct', 'updateproduct', 'deleteproduct', 'findProductByTerm', 'checkProductNameExist', 'checkQty', 'checkQtyForPurhase'],
-    'Party' => ['getall', 'add', 'update', 'get', 'delete', 'getPartyNameByTerm', 'getById', 'checkPartyNameExist'],
+//    'Party' => ['getall', 'add', 'update', 'get', 'delete', 'getPartyNameByTerm', 'getById', 'checkPartyNameExist'],
     'Purchase' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist'],
     'Sale' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist'],
     'Creditnotes' => ['getall', 'add', 'checkCreditNoteExist'],
@@ -38,12 +38,12 @@ if (array_key_exists($controller, $controllers)) {
             case 'Home':
                 $controller = new HomeController();
                 break;
-            case 'Manager':
-                $controller = new ManagerController();
-                break;
-            case 'Branch':
-                $controller = new BranchController();
-                break;
+//            case 'Manager':
+//                $controller = new ManagerController();
+//                break;
+//            case 'Branch':
+//                $controller = new BranchController();
+//                break;
             case 'Brand':
                 $controller = new BrandController();
                 break;
@@ -56,9 +56,9 @@ if (array_key_exists($controller, $controllers)) {
             case 'Accountgroup':
                 $controller = new AccountgroupController();
                 break;
-            case 'Account':
-                $controller = new AccountController();
-                break;
+//            case 'Account':
+//                $controller = new AccountController();
+//                break;
             case 'Productcategory':
                 $controller = new ProductcategoryController();
                 break;

@@ -75,7 +75,8 @@ class ProductController {
                 }
 
                 $product['name'] = ucwords($product['name']);
-                $product['qty'] = $product['qty'] . ' Nos';
+                $product['qty1'] = $product['qty1'] . ' Nos';
+                $product['qty2'] = $product['qty2'] . ' Nos';
                 $product['price'] = 'Rs. ' . $product['price'];
 
                 if ($product['calculation_type'] == 'on_item_rate') {
@@ -92,8 +93,9 @@ class ProductController {
                     $product['taxability'] = 'Taxable';
                 }
 
+                $product['cgst'] = $product['cgst'] . ' %';
+                $product['sgst'] = $product['sgst'] . ' %';
                 $product['integrated_tax'] = $product['integrated_tax'] . ' %';
-                $product['cess'] = $product['cess'] . ' %';
 
                 $rows[] = $product;
             }
@@ -110,12 +112,19 @@ class ProductController {
         if (!empty($_POST)) {
             $errors = array();
 
+            $name = strtolower(trim($_POST['name']));
+
+            $nameExistsRes = $this->productobj->checkProductNameExist(NULL, $product_name);
+            if ($nameExistsRes) {
+                array_push($errors, 'Product name already exists. Please try with different name.');
+            }
+
             if (empty($errors)) {
                 $product_category_id = $_POST['product_category_id'];
                 $brand_id = $_POST['brand_id'];
                 $product_code = !empty($_POST['product_code']) ? trim($_POST['product_code']) : NULL;
-                $name = trim($_POST['name']);
-                $qty = !empty($_POST['qty']) ? $_POST['qty'] : '0';
+                $qty1 = !empty($_POST['qty1']) ? $_POST['qty1'] : '0';
+                $qty2 = !empty($_POST['qty2']) ? $_POST['qty2'] : '0';
                 $price = !empty($_POST['price']) ? $_POST['price'] : '0';
                 $description = !empty($_POST['description']) ? trim($_POST['description']) : NULL;
                 $hsn_code = !empty($_POST['hsn_code']) ? trim($_POST['hsn_code']) : NULL;
@@ -126,7 +135,7 @@ class ProductController {
                 $integrated_tax = !empty($_POST['integrated_tax']) ? $_POST['integrated_tax'] : '0.00';
                 $cess = !empty($_POST['cess']) ? $_POST['cess'] : '0.00';
 
-                $product = $this->productobj->addproduct($product_category_id, $brand_id, $product_code, $name, $qty, $price, $description, $hsn_code, $calculation_type, $taxability, $cgst, $sgst, $integrated_tax, $cess);
+                $product = $this->productobj->addproduct($product_category_id, $brand_id, $product_code, $name, $qty1, $qty2, $price, $description, $hsn_code, $calculation_type, $taxability, $cgst, $sgst, $integrated_tax, $cess);
 
                 if ($product) {
 //                    if ($calculation_type == 'on_item_rate') {
@@ -169,12 +178,20 @@ class ProductController {
         if (!empty($_POST)) {
             $errors = array();
 
+            $name = strtolower(trim($_POST['name']));
+
+            $nameExistsRes = $this->productobj->checkProductNameExist($id, $product_name);
+            if ($nameExistsRes) {
+                array_push($errors, 'Party name already exists. Please try with different name.');
+            }
+
             if (empty($errors)) {
                 $product_category_id = $_POST['product_category_id'];
                 $brand_id = $_POST['brand_id'];
                 $product_code = !empty($_POST['product_code']) ? trim($_POST['product_code']) : NULL;
                 $name = trim($_POST['name']);
-                $qty = !empty($_POST['qty']) ? $_POST['qty'] : '0';
+                $qty1 = !empty($_POST['qty1']) ? $_POST['qty1'] : '0';
+                $qty2 = !empty($_POST['qty2']) ? $_POST['qty2'] : '0';
                 $price = !empty($_POST['price']) ? $_POST['price'] : '0';
                 $description = !empty($_POST['description']) ? trim($_POST['description']) : NULL;
                 $hsn_code = !empty($_POST['hsn_code']) ? trim($_POST['hsn_code']) : NULL;
@@ -185,7 +202,7 @@ class ProductController {
                 $integrated_tax = !empty($_POST['integrated_tax']) ? $_POST['integrated_tax'] : '0.00';
                 $cess = !empty($_POST['cess']) ? $_POST['cess'] : '0.00';
 
-                $product = $this->productobj->updateproduct($id, $product_category_id, $brand_id, $product_code, $name, $qty, $price, $description, $hsn_code, $calculation_type, $taxability, $cgst, $sgst, $integrated_tax, $cess);
+                $product = $this->productobj->updateproduct($id, $product_category_id, $brand_id, $product_code, $name, $qty1, $qty2, $price, $description, $hsn_code, $calculation_type, $taxability, $cgst, $sgst, $integrated_tax, $cess);
 
                 if ($product) {
                     header('location: home.php?controller=product&action=getproducts');
@@ -275,10 +292,10 @@ class ProductController {
     }
 
     public function checkProductNameExist() {
-        $product_name = trim($_POST['product_name']);
-        $product_name = strtolower($product_name);
-        $product_res = $this->productobj->checkProductNameExist($product_name);
-        if ($product_res->num_rows > 0) {
+        $id = !empty(trim($_POST['id'])) ? trim($_POST['id']) : NULL;
+        $product_name = strtolower(trim($_POST['product_name']));
+        $product_res = $this->productobj->checkProductNameExist($id, $product_name);
+        if ($product_res) {
             echo '1';
         } else {
             echo '0';

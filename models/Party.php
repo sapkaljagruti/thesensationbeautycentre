@@ -48,7 +48,7 @@ class Party {
     }
 
     public function getPartyNameByTerm($term) {
-        $party_res = $this->conn->query('SELECT * FROM parties WHERE name LIKE "%' . $term . '%" LIMIT 10');
+        $party_res = $this->conn->query('SELECT * FROM parties WHERE name LIKE "%' . $term . '%" AND is_deleted!="1" LIMIT 10');
         return $party_res;
     }
 

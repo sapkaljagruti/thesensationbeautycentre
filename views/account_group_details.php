@@ -229,6 +229,37 @@ if (isset($account_groups)) {
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Horizontal Form -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Brand Details</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="remove" id="close_detail_btn"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-6 table-responsive">
+                                <table class="table table-hover table-striped" width="50%">
+                                    <tbody>
+                                        <tr>
+                                            <td><b>Serving Brands</b></td>
+                                            <td><?php echo $account_group['brands']; ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+
         <?php
     }
 }

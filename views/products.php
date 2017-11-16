@@ -103,8 +103,12 @@
                         <div class="col-sm-8" id="view_name"></div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4">Quantity :</label>
-                        <div class="col-sm-8" id="view_qty"></div>
+                        <label class="col-sm-4">Asha Group Quantity :</label>
+                        <div class="col-sm-8" id="view_qty1"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4">Lakhan Group Quantity :</label>
+                        <div class="col-sm-8" id="view_qty2"></div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4">Rate per no. :</label>
@@ -127,12 +131,16 @@
                         <div class="col-sm-8" id="view_taxability"></div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4">Integrated Tax :</label>
-                        <div class="col-sm-8" id="view_integrated_tax"></div>
+                        <label class="col-sm-4">CGST :</label>
+                        <div class="col-sm-8" id="view_cgst"></div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4">Cess :</label>
-                        <div class="col-sm-8" id="view_cess"></div>
+                        <label class="col-sm-4">SGST :</label>
+                        <div class="col-sm-8" id="view_sgst"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4">Integrated Tax :</label>
+                        <div class="col-sm-8" id="view_integrated_tax"></div>
                     </div>
                 </div>
             </div>

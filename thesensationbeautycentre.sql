@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2017 at 01:34 AM
+-- Generation Time: Nov 16, 2017 at 03:11 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -48,6 +48,7 @@ CREATE TABLE `account_groups` (
   `pan` varchar(255) DEFAULT NULL,
   `gst_type_id` int(11) DEFAULT NULL,
   `gstin` varchar(255) DEFAULT NULL,
+  `brand_ids` varchar(255) DEFAULT NULL,
   `is_default` tinyint(1) NOT NULL DEFAULT '0',
   `is_deleted` tinyint(1) DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -58,44 +59,47 @@ CREATE TABLE `account_groups` (
 -- Dumping data for table `account_groups`
 --
 
-INSERT INTO `account_groups` (`id`, `parent_id`, `name`, `opening_balance`, `contact_person`, `area`, `city`, `pincode`, `gst_state_code_id`, `email`, `mobile1`, `mobile2`, `bank_name`, `bank_branch`, `ifsc_code`, `bank_account_no`, `pan`, `gst_type_id`, `gstin`, `is_default`, `is_deleted`, `created_at`, `updated_at`) VALUES
-(26, 0, 'Non Revenue - Primary Groups', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:01:07', '2017-11-03 10:31:40'),
-(27, 0, 'Capital Account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:01:28', '2017-11-03 10:31:40'),
-(28, 0, 'Current Assets', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:02:10', '2017-11-03 10:31:40'),
-(29, 28, 'Bank Accounts', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:03:43', '2017-11-03 10:31:40'),
-(30, 29, 'Current account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:04:07', '2017-11-03 10:31:40'),
-(31, 29, 'savings account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:04:30', '2017-11-03 10:31:40'),
-(32, 28, 'Cash-in hand', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:04:58', '2017-11-03 10:31:40'),
-(33, 28, 'Deposits (Asset)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:05:14', '2017-11-03 10:31:40'),
-(34, 28, 'Loans & Advances (Asset)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-25 12:24:47', '2017-11-03 10:31:40'),
-(36, 28, 'Stock-in-hand', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-25 12:26:18', '2017-11-03 10:31:40'),
-(38, 28, 'Integrated Accounts-cum-Invent', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-25 12:34:52', '2017-11-03 10:31:40'),
-(39, 28, 'Non-integrated Accounts-cum-In', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:26:27', '2017-11-03 10:31:40'),
-(40, 28, 'Sundry Debtors', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:27:07', '2017-11-03 10:31:40'),
-(41, 0, 'Current Liabilities', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:27:44', '2017-11-03 10:31:40'),
-(42, 41, 'Duties and Taxes', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:28:02', '2017-11-03 10:31:40'),
-(43, 41, 'Provisions', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:28:36', '2017-11-03 10:31:40'),
-(44, 41, 'Sundry Creditors', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:29:03', '2017-11-03 10:31:40'),
-(45, 0, 'Investments', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:29:16', '2017-11-03 10:31:40'),
-(46, 0, 'Loans (Liability)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:30:04', '2017-11-03 10:31:40'),
-(47, 46, 'Bank OD Accounts [Bank OCC Accounts]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:30:18', '2017-11-03 10:31:40'),
-(48, 46, 'Bank OCC A/c', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:30:38', '2017-11-03 10:31:40'),
-(49, 46, 'Secured Loans', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:31:15', '2017-11-03 10:31:40'),
-(50, 46, 'Unsecured Loans', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:31:31', '2017-11-03 10:31:40'),
-(51, 0, 'Suspense Account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:32:23', '2017-11-03 10:31:40'),
-(52, 51, 'Loans and Advances (Asset) Group', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:32:39', '2017-11-03 10:31:40'),
-(53, 0, 'Miscellaneous Expenses (Asset)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:32:53', '2017-11-03 10:31:40'),
-(55, 0, 'Branch/Divisions', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:33:24', '2017-11-03 10:31:40'),
-(56, 0, 'Revenue - Primary Groups', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:33:38', '2017-11-03 10:31:40'),
-(57, 0, 'Sales Account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:34:10', '2017-11-03 10:31:40'),
-(58, 0, 'Purchase Account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:34:44', '2017-11-03 10:31:40'),
-(59, 0, 'Direct Income [Income Direct]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:35:05', '2017-11-03 10:31:40'),
-(60, 0, 'Indirect Income [Income Indirect]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:36:22', '2017-11-03 10:31:40'),
-(61, 0, 'Direct Expenses [Expenses Direct]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:36:34', '2017-11-03 10:31:40'),
-(62, 0, 'Indirect Expenses [Expenses Indirect]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:36:50', '2017-11-03 10:31:40'),
-(63, 0, 'Common and Possible Errors in Grouping and Account Classification', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:37:04', '2017-11-03 10:31:40'),
-(64, 0, 'Debtor/Creditor classification', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:37:16', '2017-11-03 10:31:40'),
-(65, 0, 'Opening Two Accounts Of The Same Party', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:37:26', '2017-11-03 10:31:40');
+INSERT INTO `account_groups` (`id`, `parent_id`, `name`, `opening_balance`, `contact_person`, `area`, `city`, `pincode`, `gst_state_code_id`, `email`, `mobile1`, `mobile2`, `bank_name`, `bank_branch`, `ifsc_code`, `bank_account_no`, `pan`, `gst_type_id`, `gstin`, `brand_ids`, `is_default`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(26, 0, 'Non Revenue - Primary Groups', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:01:07', '2017-11-03 10:31:40'),
+(27, 0, 'Capital Account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:01:28', '2017-11-03 10:31:40'),
+(28, 0, 'Current Assets', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:02:10', '2017-11-03 10:31:40'),
+(29, 28, 'Bank Accounts', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:03:43', '2017-11-03 10:31:40'),
+(30, 29, 'Current account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:04:07', '2017-11-03 10:31:40'),
+(31, 29, 'savings account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:04:30', '2017-11-03 10:31:40'),
+(32, 28, 'Cash-in hand', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:04:58', '2017-11-03 10:31:40'),
+(33, 28, 'Deposits (Asset)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-24 17:05:14', '2017-11-03 10:31:40'),
+(34, 28, 'Loans & Advances (Asset)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-25 12:24:47', '2017-11-03 10:31:40'),
+(36, 28, 'Stock-in-hand', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-25 12:26:18', '2017-11-03 10:31:40'),
+(38, 28, 'Integrated Accounts-cum-Invent', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-25 12:34:52', '2017-11-03 10:31:40'),
+(39, 28, 'Non-integrated Accounts-cum-In', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:26:27', '2017-11-03 10:31:40'),
+(40, 28, 'Sundry Debtors', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:27:07', '2017-11-03 10:31:40'),
+(41, 0, 'Current Liabilities', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:27:44', '2017-11-03 10:31:40'),
+(42, 41, 'Duties and Taxes', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:28:02', '2017-11-03 10:31:40'),
+(43, 41, 'Provisions', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:28:36', '2017-11-03 10:31:40'),
+(44, 41, 'Sundry Creditors', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:29:03', '2017-11-03 10:31:40'),
+(45, 0, 'Investments', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:29:16', '2017-11-03 10:31:40'),
+(46, 0, 'Loans (Liability)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:30:04', '2017-11-03 10:31:40'),
+(47, 46, 'Bank OD Accounts [Bank OCC Accounts]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:30:18', '2017-11-03 10:31:40'),
+(48, 46, 'Bank OCC A/c', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:30:38', '2017-11-03 10:31:40'),
+(49, 46, 'Secured Loans', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:31:15', '2017-11-03 10:31:40'),
+(50, 46, 'Unsecured Loans', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:31:31', '2017-11-03 10:31:40'),
+(51, 0, 'Suspense Account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:32:23', '2017-11-03 10:31:40'),
+(52, 51, 'Loans and Advances (Asset) Group', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:32:39', '2017-11-03 10:31:40'),
+(53, 0, 'Miscellaneous Expenses (Asset)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:32:53', '2017-11-03 10:31:40'),
+(55, 0, 'Branch/Divisions', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:33:24', '2017-11-03 10:31:40'),
+(56, 0, 'Revenue - Primary Groups', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:33:38', '2017-11-03 10:31:40'),
+(57, 0, 'Sales Account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:34:10', '2017-11-03 10:31:40'),
+(58, 0, 'Purchase Account', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:34:44', '2017-11-03 10:31:40'),
+(59, 0, 'Direct Income [Income Direct]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:35:05', '2017-11-03 10:31:40'),
+(60, 0, 'Indirect Income [Income Indirect]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:36:22', '2017-11-03 10:31:40'),
+(61, 0, 'Direct Expenses [Expenses Direct]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:36:34', '2017-11-03 10:31:40'),
+(62, 0, 'Indirect Expenses [Expenses Indirect]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:36:50', '2017-11-03 10:31:40'),
+(63, 0, 'Common and Possible Errors in Grouping and Account Classification', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:37:04', '2017-11-03 10:31:40'),
+(64, 0, 'Debtor/Creditor classification', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:37:16', '2017-11-03 10:31:40'),
+(65, 0, 'Opening Two Accounts Of The Same Party', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:37:26', '2017-11-03 10:31:40'),
+(66, 64, 'test', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', NULL, 0, 0, '2017-11-15 13:41:35', '2017-11-15 13:41:35'),
+(67, 27, 'salon party', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '11,9', 0, 0, '2017-11-15 16:17:46', '2017-11-15 16:27:50'),
+(68, 58, 'domestic purchase', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-11-15 17:35:07', '2017-11-15 17:35:07');
 
 -- --------------------------------------------------------
 
@@ -540,11 +544,9 @@ CREATE TABLE `product_categories` (
 --
 
 INSERT INTO `product_categories` (`id`, `parent_id`, `name`, `is_deleted`, `created_at`, `updated_at`) VALUES
-(10, 0, 'hair prodcuts', 0, '2017-10-26 15:20:20', '2017-10-26 15:20:20'),
-(11, 10, 'hair spa products', 0, '2017-10-26 15:20:41', '2017-10-26 15:20:41'),
-(20, 0, 'test', 1, '2017-11-14 16:31:39', '2017-11-14 16:32:05'),
-(21, 0, 'sensation', 1, '2017-11-14 16:31:43', '2017-11-14 16:32:05'),
-(22, 0, 'hair spa productss', 1, '2017-11-14 16:31:52', '2017-11-14 16:32:00');
+(23, 0, 'hair products', 0, '2017-11-15 12:26:05', '2017-11-15 12:26:05'),
+(24, 23, 'spa products', 0, '2017-11-15 12:26:19', '2017-11-15 12:26:31'),
+(25, 23, 'shampoos', 0, '2017-11-15 12:26:27', '2017-11-15 12:26:27');
 
 -- --------------------------------------------------------
 
@@ -572,7 +574,8 @@ CREATE TABLE `products` (
   `brand_id` int(11) NOT NULL,
   `product_code` varchar(255) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
-  `qty` int(11) NOT NULL DEFAULT '0',
+  `qty1` int(11) NOT NULL DEFAULT '0',
+  `qty2` int(11) NOT NULL DEFAULT '0',
   `price` varchar(255) NOT NULL DEFAULT '0.00',
   `description` longtext,
   `hsn_code` varchar(255) DEFAULT NULL,
@@ -582,6 +585,7 @@ CREATE TABLE `products` (
   `sgst` varchar(255) DEFAULT NULL,
   `integrated_tax` varchar(255) DEFAULT NULL,
   `cess` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -590,9 +594,10 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `product_category_id`, `brand_id`, `product_code`, `name`, `qty`, `price`, `description`, `hsn_code`, `calculation_type`, `taxability`, `cgst`, `sgst`, `integrated_tax`, `cess`, `created_at`, `updated_at`) VALUES
-(5, 10, 9, '', 'sensation smoothing shampoo', 1100, '750', '', '', 'on_value', 'nil_rated', '9', '14', '18.00', '0.00', '2017-10-26 16:07:58', '2017-11-10 19:11:36'),
-(6, 10, 9, '', 'sensation smoothing hair conditioner', 1500, '950', '', '', 'on_value', 'taxable', '9', '9', '18.00', '0.00', '2017-10-26 18:20:12', '2017-11-10 18:39:17');
+INSERT INTO `products` (`id`, `product_category_id`, `brand_id`, `product_code`, `name`, `qty1`, `qty2`, `price`, `description`, `hsn_code`, `calculation_type`, `taxability`, `cgst`, `sgst`, `integrated_tax`, `cess`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(5, 25, 9, '', 'sensation smoothing shampoo', 1100, 0, '750', '', '', 'on_value', 'exempt', '0.00', '0.00', '0.00', '0.00', 0, '2017-10-26 16:07:58', '2017-11-15 14:02:08'),
+(6, 10, 9, '', 'sensation smoothing hair conditioner', 1500, 0, '950', '', '', 'on_value', 'taxable', '9', '9', '18.00', '0.00', 0, '2017-10-26 18:20:12', '2017-11-10 18:39:17'),
+(13, 25, 9, '', 'new shampo', 150, 20, '300', '', '', 'on_value', 'taxable', '0.00', '0.00', '0.00', '0.00', 0, '2017-11-15 17:59:51', '2017-11-15 18:03:20');
 
 -- --------------------------------------------------------
 
@@ -654,18 +659,6 @@ CREATE TABLE `purchase_vouchers` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `purchase_vouchers`
---
-
-INSERT INTO `purchase_vouchers` (`id`, `date`, `ledger_name`, `invoice_no`, `invoice_date`, `purchase_type_id`, `target_account`, `party_id`, `party_name`, `party_address`, `party_contact_person`, `party_email`, `party_mobile1`, `party_mobile2`, `party_residence_no`, `party_office_no`, `party_bank_name`, `party_bank_branch`, `party_ifsc_code`, `party_bank_account_no`, `party_pan`, `party_gst_state_code_id`, `party_gst_type_id`, `party_gstin`, `products_data`, `total_cgst`, `total_sgst`, `total_igst`, `total_amount`, `created_at`, `updated_at`) VALUES
-(3, '2017-11-01', 'Domestic purchase', '123', '2017-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '6_sesnsation smoothing hair conditioner_50 Nos_47500_9_9_18.00,5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 7650, 7650, 0, 100300, '2017-11-02 09:54:16', '2017-11-02 09:54:16'),
-(4, '2017-11-02', 'ww', '123', '2014-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 3375, 3375, 0, 44250, '2017-11-02 09:54:16', '2017-11-02 09:54:16'),
-(7, '2017-11-02', 'domestic purchase', '1234', '2017-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '6_sesnsation smoothing hair conditioner_50 Nos_47500_9_9_18.00,5_sensation smoothing shampoo_50 Nos_37500_9_9_18.00', 7650, 7650, 0, 100300, '2017-11-02 09:54:16', '2017-11-02 09:54:16'),
-(8, '2017-11-02', 'domestic purchase', '12345', '2017-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '6_sesnsation smoothing hair conditioner_50 Nos_47500_9_9_18.00,5_sensation smoothing shampoo_100 Nos_75000_9_9_18.00', 14400, 14400, 0, 151300, '2017-11-02 09:54:16', '2017-11-02 09:54:16'),
-(9, '2017-11-02', 'test', '123456', '2017-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '5_sensation smoothing shampoo_100 Nos_75000_9_9_18.00_1100 Nos', 10125, 10125, 0, 95250, '2017-11-02 09:54:16', '2017-11-02 09:54:16'),
-(10, '2017-11-02', 'domestic purchase', '127', '2017-08-31', 4, 'asha', 16, 'salon party', 'valsad', 'jagr', 'jagruti@mjinfoworld.com', '9327434007', '', '', '', 'bob', 'tithal road valsad', '', '', 'FKXPS6536R', 24, 3, '24FKXPS6536R1Z5', '6_sesnsation smoothing hair conditioner_50 Nos_47500_9_9_18.00_1550 Nos,5_sensation smoothing shampoo_150 Nos_112500_9_9_18.00_1150 Nos', 24525, 24525, 0, 209050, '2017-11-02 09:54:16', '2017-11-02 09:54:16');
 
 -- --------------------------------------------------------
 
@@ -785,9 +778,30 @@ CREATE TABLE `staff_members` (
 --
 
 INSERT INTO `staff_members` (`id`, `staff_code`, `name`, `designation`, `gender`, `address`, `permanent_address`, `mobile1`, `mobile2`, `residence_no`, `dob`, `doa`, `email`, `insurance_type`, `insurance_name`, `insurance_amount`, `insurance_from`, `insurance_to`, `is_deleted`, `created_at`, `upadted_at`) VALUES
-(12, 'code#1', 'jagruti staff', 'owner', 'female', 'valsad', 'surat', '9327434007', '9099584007', '02632249772', '1992-06-22', '2016-04-28', 'jagruti@mjinfoworld.com', 'madical', 'Floater', 100000, '2015-06-11', '2017-06-22', 0, '2017-10-24 16:03:05', '2017-10-24 16:47:48'),
+(12, 'code#1', 'jagruti staff', 'owner', 'female', 'valsad', 'surat', '9327434007', '9099584007', '02632249772', '1992-06-22', '2016-04-28', 'jagruti@mjinfoworld.com', 'madical', 'Floater', 100.5, '2015-06-11', '2017-06-22', 0, '2017-10-24 16:03:05', '2017-11-15 13:38:08'),
 (13, 'tr', 'test', '', 'male', '', '', '', '', '', '', '', '', '', '', 0, '', '', 1, '2017-11-14 12:35:48', '2017-11-14 12:36:00'),
 (14, 'tr', 'test', '', 'male', '', '', '', '', '', '', '', '', '', '', 0, '', '', 1, '2017-11-14 12:35:53', '2017-11-14 12:36:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `target_accounts`
+--
+
+CREATE TABLE `target_accounts` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `target_accounts`
+--
+
+INSERT INTO `target_accounts` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'asha', '2017-11-15 17:52:56', '2017-11-15 17:52:56'),
+(2, 'lakhan', '2017-11-15 17:52:56', '2017-11-15 17:52:56');
 
 --
 -- Indexes for dumped tables
@@ -938,6 +952,12 @@ ALTER TABLE `staff_members`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `target_accounts`
+--
+ALTER TABLE `target_accounts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -945,7 +965,7 @@ ALTER TABLE `staff_members`
 -- AUTO_INCREMENT for table `account_groups`
 --
 ALTER TABLE `account_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 --
 -- AUTO_INCREMENT for table `admins`
 --
@@ -1025,7 +1045,7 @@ ALTER TABLE `parties`
 -- AUTO_INCREMENT for table `product_categories`
 --
 ALTER TABLE `product_categories`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT for table `product_images`
 --
@@ -1035,7 +1055,7 @@ ALTER TABLE `product_images`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `purchase_types`
 --
@@ -1045,7 +1065,7 @@ ALTER TABLE `purchase_types`
 -- AUTO_INCREMENT for table `purchase_vouchers`
 --
 ALTER TABLE `purchase_vouchers`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `sale_types`
 --
@@ -1061,6 +1081,11 @@ ALTER TABLE `sale_vouchers`
 --
 ALTER TABLE `staff_members`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+--
+-- AUTO_INCREMENT for table `target_accounts`
+--
+ALTER TABLE `target_accounts`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

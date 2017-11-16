@@ -4,6 +4,7 @@ class AccountgroupController {
 
     public $accountgroupobj;
     public $gst_obj;
+    public $brand_obj;
     public $ex_ins_staff_members_nots;
 
     public function __construct() {
@@ -13,6 +14,9 @@ class AccountgroupController {
 
         require_once 'models/Gst.php';
         $this->gst_obj = new Gst();
+
+        require_once 'models/Brand.php';
+        $this->brand_obj = new Brand();
 
         require_once 'models/Staff.php';
         $this->staffobj = new Staff();
@@ -26,7 +30,7 @@ class AccountgroupController {
             }
         }
 
-        $this->extra_js_files = array('plugins/datatables/jquery.dataTables.min.js', 'plugins/datatables/dataTables.bootstrap.min.js', 'js/account_groups.js');
+        $this->extra_js_files = array('plugins/datatables/jquery.dataTables.min.js', 'plugins/datatables/dataTables.bootstrap.min.js', 'plugins/select2/select2.full.js', 'js/account_groups.js');
     }
 
     public function getall() {
@@ -105,6 +109,29 @@ class AccountgroupController {
                 } else {
                     $account_group['state'] = '';
                 }
+
+                if (!empty($account_group['brand_ids'])) {
+                    $brand_ids = explode(',', $account_group['brand_ids']);
+                    $account_group_brands = array();
+
+                    foreach ($brand_ids as $brand_id) {
+                        $gst_brand_res = $this->brand_obj->getBrand($brand_id);
+                        if ($gst_brand_res->num_rows > 0) {
+                            while ($brand = mysqli_fetch_assoc($gst_brand_res)) {
+                                array_push($account_group_brands, ucwords($brand['name']));
+                            }
+                        }
+                    }
+
+                    if (!empty($account_group_brands)) {
+                        $account_group['brands'] = implode(', ', $account_group_brands);
+                    } else {
+                        $account_group['brands'] = '';
+                    }
+                } else {
+                    $account_group['brands'] = '';
+                }
+
                 $account_groups[] = $account_group;
             }
             $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
@@ -166,8 +193,9 @@ class AccountgroupController {
                 $pan = !empty($_POST['pan']) ? strtoupper(trim($_POST['pan'])) : NULL;
                 $gst_type_id = !empty($_POST['gst_type_id']) ? trim($_POST['gst_type_id']) : NULL;
                 $gstin = !empty($_POST['gstin']) ? strtoupper(trim($_POST['gstin'])) : NULL;
+                $brand_ids = !empty($_POST['brand_ids']) ? implode(',', $_POST['brand_ids']) : NULL;
 
-                $accountgroup = $this->accountgroupobj->add($name, $parent_id, $opening_balance, $contact_person, $area, $city, $pincode, $gst_state_code_id, $email, $mobile1, $mobile2, $bank_name, $bank_branch, $ifsc_code, $bank_account_no, $pan, $gst_type_id, $gstin);
+                $accountgroup = $this->accountgroupobj->add($name, $parent_id, $opening_balance, $contact_person, $area, $city, $pincode, $gst_state_code_id, $email, $mobile1, $mobile2, $bank_name, $bank_branch, $ifsc_code, $bank_account_no, $pan, $gst_type_id, $gstin, $brand_ids);
                 if ($accountgroup) {
                     header('location: home.php?controller=accountgroup&action=getall');
                 } else {
@@ -197,6 +225,14 @@ class AccountgroupController {
             while ($gst_state = mysqli_fetch_assoc($gst_states_res)) {
                 $gst_state['state'] = ucwords($gst_state['state']);
                 $gst_states[] = $gst_state;
+            }
+        }
+
+        $brands_res = $this->brand_obj->getAll();
+        if ($brands_res->num_rows > 0) {
+            while ($brand = mysqli_fetch_assoc($brands_res)) {
+                $brand['name'] = ucwords($brand['name']);
+                $brands[] = $brand;
             }
         }
 
@@ -240,8 +276,9 @@ class AccountgroupController {
                 $pan = !empty($_POST['pan']) ? strtoupper(trim($_POST['pan'])) : NULL;
                 $gst_type_id = !empty($_POST['gst_type_id']) ? trim($_POST['gst_type_id']) : NULL;
                 $gstin = !empty($_POST['gstin']) ? strtoupper(trim($_POST['gstin'])) : NULL;
+                $brand_ids = !empty($_POST['brand_ids']) ? implode(',', $_POST['brand_ids']) : NULL;
 
-                $accountgroup = $this->accountgroupobj->update($id, $name, $parent_id, $opening_balance, $contact_person, $area, $city, $pincode, $gst_state_code_id, $email, $mobile1, $mobile2, $bank_name, $bank_branch, $ifsc_code, $bank_account_no, $pan, $gst_type_id, $gstin);
+                $accountgroup = $this->accountgroupobj->update($id, $name, $parent_id, $opening_balance, $contact_person, $area, $city, $pincode, $gst_state_code_id, $email, $mobile1, $mobile2, $bank_name, $bank_branch, $ifsc_code, $bank_account_no, $pan, $gst_type_id, $gstin, $brand_ids);
                 if ($accountgroup) {
                     header('location: home.php?controller=accountgroup&action=getall');
                 } else {
@@ -279,6 +316,14 @@ class AccountgroupController {
                 while ($gst_state = mysqli_fetch_assoc($gst_states_res)) {
                     $gst_state['state'] = ucwords($gst_state['state']);
                     $gst_states[] = $gst_state;
+                }
+            }
+
+            $brands_res = $this->brand_obj->getAll();
+            if ($brands_res->num_rows > 0) {
+                while ($brand = mysqli_fetch_assoc($brands_res)) {
+                    $brand['name'] = ucwords($brand['name']);
+                    $brands[] = $brand;
                 }
             }
 

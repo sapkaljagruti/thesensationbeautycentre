@@ -6,6 +6,7 @@ class PurchaseController {
     public $purchase_type_obj;
     public $gst_obj;
     public $productobj;
+    public $accountgroupobj;
     public $ex_ins_staff_members_nots;
 
     public function __construct() {
@@ -21,6 +22,9 @@ class PurchaseController {
 
         require_once 'models/Product.php';
         $this->productobj = new Product();
+        
+        require_once 'models/AccountGroup.php';
+        $this->accountgroupobj = new AccountGroup();
 
         require_once 'models/Staff.php';
         $this->staffobj = new Staff();
@@ -145,6 +149,24 @@ class PurchaseController {
             while ($gst_type = mysqli_fetch_assoc($gst_types_res)) {
                 $gst_type['title'] = ucwords($gst_type['title']);
                 $gst_types[] = $gst_type;
+            }
+        }
+        
+        $purchase_ledgers = array();
+        $purchase_ledgers_res = $this->accountgroupobj->getPurchaseLedgers();
+        if ($purchase_ledgers_res->num_rows > 0) {
+            while ($purchase_ledger = mysqli_fetch_assoc($purchase_ledgers_res)) {
+                $purchase_ledger['name'] = ucwords($purchase_ledger['name']);
+                $purchase_ledgers[] = $purchase_ledger;
+            }
+        }
+        
+        $not_default_ledgers = array();
+        $not_default_ledgers_res = $this->accountgroupobj->getPurchaseLedgers();
+        if ($not_default_ledgers_res->num_rows > 0) {
+            while ($not_default_ledger = mysqli_fetch_assoc($not_default_ledgers_res)) {
+                $not_default_ledger['name'] = ucwords($not_default_ledger['name']);
+                $not_default_ledgers[] = $not_default_ledger;
             }
         }
 
