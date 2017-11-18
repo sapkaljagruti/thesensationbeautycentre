@@ -142,8 +142,10 @@ class AccountgroupController {
         }
     }
 
-    public function getParentName() {
-        $parent_id = trim($_POST['parent_id']);
+    public function getParentName($parent_id = NULL) {
+        if (empty($parent_id)) {
+            $parent_id = trim($_POST['parent_id']);
+        }
         $parent_name = '0';
         $parent_group_res = $this->accountgroupobj->getAccountGroup($parent_id);
         if ($parent_group_res) {
@@ -365,6 +367,86 @@ class AccountgroupController {
             echo '1';
         } else {
             echo '0';
+        }
+    }
+
+    public function getById() {
+        $id = trim($_POST['id']);
+        $party_res = $this->accountgroupobj->getAccountGroup($id);
+        if ($party_res->num_rows == 1) {
+            while ($party = mysqli_fetch_assoc($party_res)) {
+                $party['name'] = ucwords($party['name']);
+                $party['contact_person'] = ucwords($party['contact_person']);
+
+                if (!empty($party['gst_type_id'])) {
+                    $gst_type_res = $this->gst_obj->getGstType($party['gst_type_id']);
+                    if ($gst_type_res->num_rows > 0) {
+                        while ($gst_type = mysqli_fetch_assoc($gst_type_res)) {
+                            $party['gst_type'] = ucwords($gst_type['title']);
+                        }
+                    } else {
+                        $party['gst_type'] = '';
+                    }
+                } else {
+                    $party['gst_type'] = '';
+                }
+
+                if (!empty($party['gst_state_code_id'])) {
+                    $gst_state_res = $this->gst_obj->getGstState($party['gst_state_code_id']);
+                    if ($gst_state_res->num_rows > 0) {
+                        while ($gst_state = mysqli_fetch_assoc($gst_state_res)) {
+                            $party['state'] = ucwords($gst_state['state']);
+                        }
+                    } else {
+                        $party['state'] = '';
+                    }
+                } else {
+                    $party['state'] = '';
+                }
+
+                if (!empty($party['brand_ids'])) {
+                    $brand_ids = explode(',', $party['brand_ids']);
+                    $party_brands = array();
+
+                    foreach ($brand_ids as $brand_id) {
+                        $gst_brand_res = $this->brand_obj->getBrand($brand_id);
+                        if ($gst_brand_res->num_rows > 0) {
+                            while ($brand = mysqli_fetch_assoc($gst_brand_res)) {
+                                array_push($party_brands, ucwords($brand['name']));
+                            }
+                        }
+                    }
+
+                    if (!empty($party_brands)) {
+                        $party['brands'] = implode(', ', $party_brands);
+                    } else {
+                        $party['brands'] = '';
+                    }
+                } else {
+                    $party['brands'] = '';
+                }
+
+                $parent_group_res = $this->accountgroupobj->getAccountGroup($party['parent_id']);
+                if ($parent_group_res) {
+                    if ($parent_group_res->num_rows > 0) {
+                        while ($parent_group = $parent_group_res->fetch_assoc()) {
+                            $grand_parent_group_res = $this->accountgroupobj->getAccountGroup($parent_group['parent_id']);
+
+                            if ($grand_parent_group_res->num_rows > 0) {
+                                while ($grand_parent_group = $grand_parent_group_res->fetch_assoc()) {
+                                    $grand_parent_group['name'] = '(' . ucwords($grand_parent_group['name']) . ')';
+                                    $party['parent_name'] = $grand_parent_group['name'];
+                                }
+                            } else {
+                                $party['parent_name'] = '';
+                            }
+                        }
+                    }
+                }
+
+                $parties[] = $party;
+            }
+            echo json_encode($parties);
         }
     }
 

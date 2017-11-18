@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2017 at 03:11 AM
+-- Generation Time: Nov 18, 2017 at 04:28 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -98,7 +98,7 @@ INSERT INTO `account_groups` (`id`, `parent_id`, `name`, `opening_balance`, `con
 (64, 0, 'Debtor/Creditor classification', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:37:16', '2017-11-03 10:31:40'),
 (65, 0, 'Opening Two Accounts Of The Same Party', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2017-10-26 10:37:26', '2017-11-03 10:31:40'),
 (66, 64, 'test', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', NULL, 0, 0, '2017-11-15 13:41:35', '2017-11-15 13:41:35'),
-(67, 27, 'salon party', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '11,9', 0, 0, '2017-11-15 16:17:46', '2017-11-15 16:27:50'),
+(67, 40, 'salon party', 0, '', '', '', '', 24, '', '', '', '', '', '', '', 'FKXPS6536R', 3, '24FKXPS6536R1Z5', '11,9', 0, 0, '2017-11-15 16:17:46', '2017-11-17 18:48:38'),
 (68, 58, 'domestic purchase', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-11-15 17:35:07', '2017-11-15 17:35:07');
 
 -- --------------------------------------------------------
@@ -617,8 +617,8 @@ CREATE TABLE `purchase_types` (
 --
 
 INSERT INTO `purchase_types` (`id`, `title`, `created_at`, `updated_at`) VALUES
-(2, 'interstate purchase', '2017-09-22 10:23:04', '2017-09-22 10:23:04'),
-(4, 'local purchase', '2017-09-22 10:23:28', '2017-09-22 10:23:28');
+(1, 'interstate purchase', '2017-09-22 10:23:04', '2017-11-17 16:14:36'),
+(2, 'local purchase', '2017-09-22 10:23:28', '2017-11-17 16:14:47');
 
 -- --------------------------------------------------------
 
@@ -651,7 +651,7 @@ CREATE TABLE `purchase_vouchers` (
   `party_gst_state_code_id` int(11) DEFAULT NULL,
   `party_gst_type_id` int(11) DEFAULT NULL,
   `party_gstin` varchar(255) DEFAULT NULL,
-  `products_data` longtext,
+  `products_data` longtext COMMENT 'product_id, target_account_id, product_name, hsn_code, qty, price, discount_percentage, discount_rs, cgst_percentage, cgst_rs, sgst_percentage, sgst_rs, igst_percentage, igst_rs, total_amount',
   `total_cgst` double DEFAULT NULL,
   `total_sgst` double DEFAULT NULL,
   `total_igst` double DEFAULT NULL,

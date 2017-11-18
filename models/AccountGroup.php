@@ -11,7 +11,12 @@ class AccountGroup {
     }
 
     public function getall() {
-        $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" AND is_default="0" ORDER BY id DESC');
+        $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" ORDER BY id DESC');
+        return $account_groups;
+    }
+    
+    public function getNotDefaultLedgers() {
+        $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" AND is_default=0 ORDER BY id DESC');
         return $account_groups;
     }
 

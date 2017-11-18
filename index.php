@@ -8,6 +8,7 @@ $idletime = 3000; //after 60 seconds the user gets logged out
 if ((time() - $_SESSION['timestamp']) > $idletime) {
     session_destroy();
     session_unset();
+    header('location: login.php');
 } else {
     $_SESSION['timestamp'] = time();
 }

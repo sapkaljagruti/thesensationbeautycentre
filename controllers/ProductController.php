@@ -275,7 +275,8 @@ class ProductController {
                     'brand_id' => $product['brand_id'],
                     'product_code' => $product['product_code'],
                     'name' => $product['name'],
-                    'qty' => $product['qty'],
+                    'qty1' => $product['qty1'],
+                    'qty2' => $product['qty2'],
                     'price' => $product['price'],
                     'description' => $product['description'],
                     'hsn_code' => $product['hsn_code'],
@@ -319,13 +320,19 @@ class ProductController {
 
     public function checkQtyForPurhase() {
         $product_id = trim($_POST['product_id']);
+        $target_account_id = trim($_POST['target_account_id']);
+
         $inputQty = trim($_POST['quantity']);
         $finalQty = '';
 
         $product_res = $this->productobj->getproduct($product_id);
         if ($product_res->num_rows > 0) {
             while ($product = $product_res->fetch_assoc()) {
-                $availableQty = $product['qty'];
+                if ($target_account_id == '1') {
+                    $availableQty = $product['qty1'];
+                } else {
+                    $availableQty = $product['qty2'];
+                }
                 $finalQty = ($availableQty + $inputQty) . ' Nos';
             }
         }

@@ -7,6 +7,7 @@ class PurchaseController {
     public $gst_obj;
     public $productobj;
     public $accountgroupobj;
+    public $targetaccountobj;
     public $ex_ins_staff_members_nots;
 
     public function __construct() {
@@ -22,9 +23,12 @@ class PurchaseController {
 
         require_once 'models/Product.php';
         $this->productobj = new Product();
-        
+
         require_once 'models/AccountGroup.php';
         $this->accountgroupobj = new AccountGroup();
+
+        require_once 'models/TargetAccount.php';
+        $this->targetaccountobj = new TargetAccount();
 
         require_once 'models/Staff.php';
         $this->staffobj = new Staff();
@@ -151,7 +155,7 @@ class PurchaseController {
                 $gst_types[] = $gst_type;
             }
         }
-        
+
         $purchase_ledgers = array();
         $purchase_ledgers_res = $this->accountgroupobj->getPurchaseLedgers();
         if ($purchase_ledgers_res->num_rows > 0) {
@@ -160,13 +164,32 @@ class PurchaseController {
                 $purchase_ledgers[] = $purchase_ledger;
             }
         }
-        
+
         $not_default_ledgers = array();
-        $not_default_ledgers_res = $this->accountgroupobj->getPurchaseLedgers();
+        $not_default_ledgers_res = $this->accountgroupobj->getNotDefaultLedgers();
         if ($not_default_ledgers_res->num_rows > 0) {
             while ($not_default_ledger = mysqli_fetch_assoc($not_default_ledgers_res)) {
                 $not_default_ledger['name'] = ucwords($not_default_ledger['name']);
                 $not_default_ledgers[] = $not_default_ledger;
+            }
+        }
+
+        $account_groups = array();
+        $account_groups_res = $this->accountgroupobj->getall();
+        if ($account_groups_res->num_rows > 0) {
+            while ($account_group = $account_groups_res->fetch_assoc()) {
+                $account_group['name'] = ucwords($account_group['name']);
+                $account_groups[] = $account_group;
+            }
+        }
+
+
+        $target_accounts = array();
+        $target_account_res = $this->targetaccountobj->getall();
+        if ($target_account_res->num_rows > 0) {
+            while ($target_account = $target_account_res->fetch_assoc()) {
+                $target_account['name'] = ucwords($target_account['name']);
+                $target_accounts[] = $target_account;
             }
         }
 
