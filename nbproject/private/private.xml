@@ -3,13 +3,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/controllers/ProductController.php</file>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/controllers/PurchaseController.php</file>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/layout.php</file>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/add_purchase_bill.php</file>
-            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/config/routes.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/controllers/CreditNotesController.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/models/AccountGroup.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/credit_notes.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/models/CreditNotes.php</file>
             <file>file:/C:/xampp/htdocs/thesensationbeautycentre/public/js/purchase_bills.js</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/add_purchase_bill.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/purchase_bills.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/models/Sale.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/add_credit_note.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/views/layout.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/controllers/PurchaseController.php</file>
             <file>file:/C:/xampp/htdocs/thesensationbeautycentre/models/Purchase.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/public/js/credit_notes.js</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/controllers/SaleController.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/config/routes.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/models/Product.php</file>
+            <file>file:/C:/xampp/htdocs/thesensationbeautycentre/controllers/AccountgroupController.php</file>
         </group>
     </open-files>
 </project-private>

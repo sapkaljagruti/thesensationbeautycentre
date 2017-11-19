@@ -3,7 +3,7 @@
 class CreditNotesController {
 
     public $creditnotesobj;
-    public $partyobj;
+    public $accountgroupobj;
     public $gst_obj;
     public $ex_ins_staff_members_nots;
 
@@ -18,8 +18,8 @@ class CreditNotesController {
         require_once 'models/Gst.php';
         $this->gst_obj = new Gst();
 
-        require_once 'models/Party.php';
-        $this->partyobj = new Party();
+        require_once 'models/AccountGroup.php';
+        $this->accountgroupobj = new AccountGroup();
 
         require_once 'models/Staff.php';
         $this->staffobj = new Staff();
@@ -100,11 +100,30 @@ class CreditNotesController {
             }
         }
 
-        $parties_res = $this->partyobj->getall();
-        if ($parties_res->num_rows > 0) {
-            while ($party = mysqli_fetch_assoc($parties_res)) {
-                $party['name'] = ucwords($party['name']);
-                $parties[] = $party;
+        $purchase_ledgers = array();
+        $purchase_ledgers_res = $this->accountgroupobj->getPurchaseLedgers();
+        if ($purchase_ledgers_res->num_rows > 0) {
+            while ($purchase_ledger = mysqli_fetch_assoc($purchase_ledgers_res)) {
+                $purchase_ledger['name'] = ucwords($purchase_ledger['name']);
+                $purchase_ledgers[] = $purchase_ledger;
+            }
+        }
+
+        $not_default_ledgers = array();
+        $not_default_ledgers_res = $this->accountgroupobj->getNotDefaultLedgers();
+        if ($not_default_ledgers_res->num_rows > 0) {
+            while ($not_default_ledger = mysqli_fetch_assoc($not_default_ledgers_res)) {
+                $not_default_ledger['name'] = ucwords($not_default_ledger['name']);
+                $not_default_ledgers[] = $not_default_ledger;
+            }
+        }
+
+        $account_groups = array();
+        $account_groups_res = $this->accountgroupobj->getall();
+        if ($account_groups_res->num_rows > 0) {
+            while ($account_group = $account_groups_res->fetch_assoc()) {
+                $account_group['name'] = ucwords($account_group['name']);
+                $account_groups[] = $account_group;
             }
         }
 
@@ -114,9 +133,10 @@ class CreditNotesController {
     }
 
     public function checkCreditNoteExist() {
+        $id = !empty(trim($_POST['id'])) ? trim($_POST['id']) : NULL;
         $credit_note_no = trim($_POST['credit_note_no']);
-        $credit_note = $this->creditnotesobj->checkCreditNoteExist($credit_note_no);
-        if ($credit_note) {
+        $credit_note_res = $this->creditnotesobj->checkCreditNoteExist($id, $credit_note_no);
+        if ($credit_note_res) {
             echo '1';
         } else {
             echo '0';

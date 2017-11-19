@@ -98,14 +98,13 @@ $(document).on('click', '#delete', function () {
         var data_to_delete = $('#data_to_delete').val();
         $('#loader').show();
         $.ajax({
-            url: '?controller=customer&action=deleteCutomer',
+            url: '?controller=purchase&action=delete',
             type: "POST",
             data: {'id': data_to_delete},
             success: function (response) {
                 if ($.trim(response) == 'deleted') {
-                    var table = $('#purchase_vouchers_table').DataTable();
-                    table.row($('#tr_' + data_to_delete)).remove().draw(false);
-                    showSuccess('Customer was removed.', 10000);
+                    $('#span_' + data_to_delete).html('<font color="red"><i class="fa fa-exclamation-triangle"></i> Cancelled</font>');
+                    showSuccess('Voucher is cancelled.', 10000);
                 } else {
                     showError(response, 10000);
                 }
@@ -126,17 +125,16 @@ $(document).on('click', '#delete', function () {
         });
         $('#loader').show();
         $.ajax({
-            url: '?controller=customer&action=deleteCutomer',
+            url: '?controller=purchase&action=delete',
             type: "POST",
             data: {'id': data_to_delete},
             dataType: "json",
             success: function (response) {
-                var table = $('#purchase_vouchers_table').DataTable();
                 for (var j in response) {
-                    table.row($('#tr_' + response[j])).remove().draw(false);
+                    $('#span_' + response[j]).html('<font color="red"><i class="fa fa-exclamation-triangle"></i> Cancelled</font>');
                 }
                 if (data_to_delete.length == response.length) {
-                    showSuccess('Selected customers were removed.', 10000);
+                    showSuccess('Selected vouchers were cancelled.', 10000);
                     $('#delete_selected').attr('disabled', true);
                 }
                 $(".select-all")[0].checked = false;
@@ -338,6 +336,10 @@ $(document).on('click', '#proceed_product', function () {
         var discount_percentage = $('#discount_rate').val();
         var discount_rs = $('#discount_price').val();
 
+        if ($.trim(hsn_code) == '') {
+            hsn_code = '-';
+        }
+
         if ($.trim(discount_rs) == '') {
             discount_rs = '0.00';
         }
@@ -346,6 +348,8 @@ $(document).on('click', '#proceed_product', function () {
 
         if ($.trim(discount_percentage) != '') {
             discount_rs = (amount * parseFloat(discount_percentage)) / 100;
+        } else {
+            discount_percentage = '0.00';
         }
 
         var cgst_percentage = $('#cgst').val();
@@ -406,6 +410,7 @@ $(document).on('click', '#proceed_product', function () {
                     $(rowNode).attr('data-name', product_name);
                     $(rowNode).attr('data-hcode', hsn_code);
                     $(rowNode).attr('data-qty', quantity);
+                    $(rowNode).attr('data-finalQty', finalQty);
                     $(rowNode).attr('data-price', price);
                     $(rowNode).attr('data-dper', discount_percentage);
                     $(rowNode).attr('data-drs', discount_rs);
@@ -478,8 +483,15 @@ $(function () {
 });
 
 $(document).on('focusout', '#invoice_no', function () {
-    var target_account = $('#target_account').val();
+    var save_type = $.trim($('#save_type').val());
     var invoice_no = $('#invoice_no').val();
+
+    var id = '';
+    if (save_type == 'add') {
+        id = '';
+    } else if (save_type == 'edit') {
+        id = $.trim($('#id').val());
+    }
 
     if ($.trim(invoice_no) == '') {
         $('#valid_invoice_no').val('0');
@@ -493,7 +505,7 @@ $(document).on('focusout', '#invoice_no', function () {
         $.ajax({
             url: '?controller=purchase&action=checkInovieExist',
             data: {
-                'target_account': target_account,
+                'id': id,
                 'invoice_no': invoice_no
             },
             type: 'post',
@@ -642,7 +654,7 @@ $(document).on('focusout', '#party_name', function () {
     if (save_type == 'add') {
         id = '';
     } else if (save_type == 'edit') {
-        id = $.trim($('#id').val());
+        id = $.trim($('#party_id').val());
     }
 
     if ($.trim(name) == '') {
@@ -858,20 +870,12 @@ $(document).on('submit', 'form', function () {
         $('#product_name_help_block').html('');
 
         $('.products').each(function () {
-
-
-
-
-
-
-            $(rowNode).attr('data-total', total_amount);
-
-            var tr_id = $(this).attr('id');
             var data_id = $(this).attr('data-id');
             var data_tid = $(this).attr('data-tid');
             var data_name = $(this).attr('data-name');
             var data_hcode = $(this).attr('data-hcode');
             var data_qty = $(this).attr('data-qty');
+            var data_finalQty = $(this).attr('data-finalQty');
             var data_price = $(this).attr('data-price');
             var data_dper = $(this).attr('data-dper');
             var data_drs = $(this).attr('data-drs');
@@ -884,7 +888,7 @@ $(document).on('submit', 'form', function () {
             var data_total = $(this).attr('data-total');
 
 
-            product_details.push(data_id + '_' + data_tid + '_' + data_name + '_' + data_hcode + '_' + data_qty + '_' + data_price + '_' + data_dper + '_' + data_drs + '_' + data_cgstper + '_' + data_cgstrs + '_' + data_sgstper + '_' + data_sgstrs + '_' + data_igstper + '_' + data_igstrs + '_' + data_total);
+            product_details.push(data_id + '_' + data_tid + '_' + data_name + '_' + data_hcode + '_' + data_qty + '_' + data_finalQty + '_' + data_price + '_' + data_dper + '_' + data_drs + '_' + data_cgstper + '_' + data_cgstrs + '_' + data_sgstper + '_' + data_sgstrs + '_' + data_igstper + '_' + data_igstrs + '_' + data_total);
         });
         $('#products_data').val(product_details);
     }
@@ -1004,17 +1008,17 @@ $(function () {
                     }, 0);
 
             // Update footer
-            $(api.column(4).footer()).html(total_qty);
-            $(api.column(5).footer()).html(total_rate_per_unit);
-            $(api.column(6).footer()).html(total_discount_percentage);
-            $(api.column(7).footer()).html(total_discount_rs);
-            $(api.column(8).footer()).html(total_cgst_percentage);
-            $(api.column(9).footer()).html(total_cgst_rs);
-            $(api.column(10).footer()).html(total_sgst_percentage);
-            $(api.column(11).footer()).html(total_sgst_rs);
-            $(api.column(12).footer()).html(total_igst_percentage);
-            $(api.column(13).footer()).html(total_igst_rs);
-            $(api.column(14).footer()).html(total_price);
+            $(api.column(4).footer()).html('<input type="hidden" id="total_qty" name="total_qty" value="' + total_qty + '">' + total_qty);
+            $(api.column(5).footer()).html('<input type="hidden" id="total_rate_per_unit" name="total_rate_per_unit" value="' + total_rate_per_unit + '">' + total_rate_per_unit);
+            $(api.column(6).footer()).html('<input type="hidden" id="total_discount_percentage" name="total_discount_percentage" value="' + total_discount_percentage + '">' + total_discount_percentage);
+            $(api.column(7).footer()).html('<input type="hidden" id="total_discount_rs" name="total_discount_rs" value="' + total_discount_rs + '">' + total_discount_rs);
+            $(api.column(8).footer()).html('<input type="hidden" id="total_cgst_percentage" name="total_cgst_percentage" value="' + total_cgst_percentage + '">' + total_cgst_percentage);
+            $(api.column(9).footer()).html('<input type="hidden" id="total_cgst_rs" name="total_cgst_rs" value="' + total_cgst_rs + '">' + total_cgst_rs);
+            $(api.column(10).footer()).html('<input type="hidden" id="total_sgst_percentage" name="total_sgst_percentage" value="' + total_sgst_percentage + '">' + total_sgst_percentage);
+            $(api.column(11).footer()).html('<input type="hidden" id="total_sgst_rs" name="total_sgst_rs" value="' + total_sgst_rs + '">' + total_sgst_rs);
+            $(api.column(12).footer()).html('<input type="hidden" id="total_igst_percentage" name="total_igst_percentage" value="' + total_igst_percentage + '">' + total_igst_percentage);
+            $(api.column(13).footer()).html('<input type="hidden" id="total_igst_rs" name="total_igst_rs" value="' + total_igst_rs + '">' + total_igst_rs);
+            $(api.column(14).footer()).html('<input type="hidden" id="total_bill_amount" name="total_bill_amount" value="' + total_price + '">' + total_price);
         }
     });
 });

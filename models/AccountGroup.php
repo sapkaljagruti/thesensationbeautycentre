@@ -14,7 +14,7 @@ class AccountGroup {
         $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" ORDER BY id DESC');
         return $account_groups;
     }
-    
+
     public function getNotDefaultLedgers() {
         $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" AND is_default=0 ORDER BY id DESC');
         return $account_groups;
@@ -29,7 +29,7 @@ class AccountGroup {
         $account_group = $this->conn->query('SELECT * FROM account_groups WHERE id=' . $id);
         return $account_group;
     }
-    
+
     public function getPurchaseLedgers() {
         $account_group = $this->conn->query('SELECT * FROM account_groups WHERE parent_id="58"');
         return $account_group;
@@ -84,6 +84,11 @@ class AccountGroup {
         } else {
             return FALSE;
         }
+    }
+
+    public function findSalesLedgerByTerm($term) {
+        $group_res = $this->conn->query('SELECT * FROM account_groups WHERE name LIKE "%' . $term . '%" AND parent_id="57" ORDER BY id DESC');
+        return $group_res;
     }
 
 }

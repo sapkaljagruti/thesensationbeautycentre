@@ -34,36 +34,45 @@
                                 <th data-orderable="false" width="20px">
                                     <input type="checkbox" class="select-all">
                                 </th>                                
-                                <th>Ledger</th>
+                                <th>Party A/C</th>
+                                <th>Purchase Ledger</th>
                                 <th>invoice No</th>
-                                <!--<th data-orderable="false" width="300px">Actions</th>-->
+                                <th data-orderable="false" width="300px">Actions</th>
                             </tr>
                         </thead>
                         <?php
                         if (isset($purchase_vouchers)) {
-                            if ($purchase_vouchers->num_rows > 0) {
-                                ?>
-                                <tbody>
-                                    <?php
-                                    while ($purchase_voucher = $purchase_vouchers->fetch_assoc()) {
-                                        ?>
-                                        <tr id="tr_<?php echo $purchase_voucher['id']; ?>">
-                                            <td><?php echo $purchase_voucher['id']; ?></td>
-                                            <td><input type="checkbox" name="select_purchase_vouchers[]" data-id="<?php echo $purchase_voucher['id']; ?>"></td>
-                                            <td><?php echo $purchase_voucher['ledger_name']; ?></td>
-                                            <td><?php echo $purchase_voucher['invoice_no']; ?></td>
-<!--                                            <td>
-                                                <a href="?controller=party&action=get&id=<?php echo $purchase_voucher['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-eye"></i> View</a>
-                                                <a href="?controller=party&action=update&id=<?php echo $purchase_voucher['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-pencil-square-o"></i> Edit</a>
-                                                <a href="" class="delete btn btn-default" data-id="<?php echo $purchase_voucher['id']; ?>"><i class="fa fa-fw fa-trash"></i> Delete</a>
-                                            </td>-->
-                                        </tr>
-                                        <?php
-                                    }
-                                    ?>
-                                </tbody>
+                            ?>
+                            <tbody>
                                 <?php
-                            }
+                                foreach ($purchase_vouchers as $purchase_voucher) {
+                                    ?>
+                                    <tr id="tr_<?php echo $purchase_voucher['id']; ?>">
+                                        <td><?php echo $purchase_voucher['id']; ?></td>
+                                        <td><input type="checkbox" name="select_purchase_vouchers[]" data-id="<?php echo $purchase_voucher['id']; ?>"></td>
+                                        <td><?php echo $purchase_voucher['party_ac_name']; ?></td>
+                                        <td><?php echo $purchase_voucher['purchase_ledger_name']; ?></td>
+                                        <td><?php echo $purchase_voucher['invoice_no']; ?></td>
+                                        <td>
+                                            <a href="?controller=party&action=get&id=<?php echo $purchase_voucher['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-eye"></i> View</a>
+                                            <a href="?controller=party&action=update&id=<?php echo $purchase_voucher['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-pencil-square-o"></i> Edit</a>
+                                            <a href="" class="delete btn btn-default" data-id="<?php echo $purchase_voucher['id']; ?>"><i class="fa fa-fw fa-trash"></i> Delete</a>
+                                            <span id="span_<?php echo $purchase_voucher['id']; ?>">
+                                                <?php
+                                                if ($purchase_voucher['is_deleted'] == '1') {
+                                                    ?>
+                                                    <font color="red"><i class="fa fa-exclamation-triangle"></i> Cancelled</font>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                            </tbody>
+                            <?php
                         }
                         ?>
                     </table>

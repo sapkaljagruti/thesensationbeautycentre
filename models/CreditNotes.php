@@ -20,9 +20,14 @@ class CreditNotes {
         return $purchase_voucher;
     }
 
-    public function checkCreditNoteExist($credit_note_no) {
-        $credit_note = $this->conn->query('SELECT * FROM credit_notes WHERE credit_note_no="' . $credit_note_no . '"');
-        if ($credit_note->num_rows > 0) {
+    public function checkCreditNoteExist($id, $credit_note_no) {
+        if (empty($id)) {
+            $credit_note_res = $this->conn->query('SELECT * FROM credit_notes WHERE credit_note_no="' . $credit_note_no . '" AND is_deleted!="1"');
+        } else {
+            $credit_note_res = $this->conn->query('SELECT * FROM credit_notes WHERE credit_note_no="' . $credit_note_no . '" AND id!="' . $id . '" AND is_deleted!="1"');
+        }
+
+        if ($credit_note_res->num_rows > 0) {
             return TRUE;
         } else {
             return FALSE;

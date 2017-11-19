@@ -48,7 +48,7 @@ class Product {
     }
 
     public function findProductByTerm($term) {
-        $product_res = $this->conn->query('SELECT * FROM products WHERE name LIKE "%' . $term . '%" AND is_deleted!="1" LIMIT 10');
+        $product_res = $this->conn->query('SELECT * FROM products WHERE name LIKE "%' . $term . '%" AND is_deleted!="1" ORDER BY id DESC');
         return $product_res;
     }
 
@@ -66,8 +66,12 @@ class Product {
         }
     }
 
-    public function updateProductQty($qty, $id) {
-        $product = $this->conn->query('UPDATE products SET qty="' . $qty . '" WHERE id=' . $id);
+    public function updateProductQty($target_account_id, $product_id, $product_qty) {
+        if ($target_account_id == '1') {
+            $product = $this->conn->query('UPDATE products SET qty1="' . $product_qty . '" WHERE id=' . $product_id);
+        } else {
+            $product = $this->conn->query('UPDATE products SET qty2="' . $product_qty . '" WHERE id=' . $product_id);
+        }
         if ($product === TRUE) {
             return $id;
         } else {

@@ -36,6 +36,7 @@ if (isset($errors)) {
 </style>
 <!-- form start -->
 <form class="form-horizontal" method="post">
+    <input type="hidden" id="save_type" name="save_type" value="add"/>
     <div class="row">
         <div class="col-md-12">
             <div class="box box-default">
