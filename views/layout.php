@@ -98,6 +98,7 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="#">User Roles</a></li>
                                         <li><a href="#">Users</a></li>
+                                        <li><a href="#">Company Settings</a></li>
                                     </ul>
                                 </li>
                             </ul>
