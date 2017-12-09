@@ -35,6 +35,11 @@ class AccountGroup {
         return $account_group;
     }
 
+    public function getSalesLedgers() {
+        $account_group = $this->conn->query('SELECT * FROM account_groups WHERE parent_id="57"');
+        return $account_group;
+    }
+
     public function add($name, $parent_id, $opening_balance, $contact_person, $area, $city, $pincode, $gst_state_code_id, $email, $mobile1, $mobile2, $bank_name, $bank_branch, $ifsc_code, $bank_account_no, $pan, $gst_type_id, $gstin, $brand_ids) {
         $account_group = $this->conn->query('INSERT INTO account_groups(name, parent_id, opening_balance, contact_person, area, city, pincode, gst_state_code_id, email, mobile1, mobile2, bank_name, bank_branch, ifsc_code, bank_account_no, pan, gst_type_id, gstin,brand_ids) VALUES("' . $name . '", "' . $parent_id . '", "' . $opening_balance . '", "' . $contact_person . '", "' . $area . '", "' . $city . '", "' . $pincode . '", "' . $gst_state_code_id . '", "' . $email . '", "' . $mobile1 . '", "' . $mobile2 . '", "' . $bank_name . '", "' . $bank_branch . '", "' . $ifsc_code . '", "' . $bank_account_no . '", "' . $pan . '", "' . $gst_type_id . '", "' . $gstin . '", "' . $brand_ids . '")');
         if ($account_group === TRUE) {

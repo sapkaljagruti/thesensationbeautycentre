@@ -66,12 +66,30 @@ class Product {
         }
     }
 
+    public function updateProductMRP($product_id, $product_mrp) {
+        $product = $this->conn->query('UPDATE products SET price="' . $product_mrp . '" WHERE id=' . $product_id);
+        if ($product === TRUE) {
+            return $id;
+        } else {
+            return FALSE;
+        }
+    }
+
     public function updateProductQty($target_account_id, $product_id, $product_qty) {
         if ($target_account_id == '1') {
             $product = $this->conn->query('UPDATE products SET qty1="' . $product_qty . '" WHERE id=' . $product_id);
         } else {
             $product = $this->conn->query('UPDATE products SET qty2="' . $product_qty . '" WHERE id=' . $product_id);
         }
+        if ($product === TRUE) {
+            return $id;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function updateProductGST($product_id, $product_cgst, $product_sgst, $product_igst) {
+        $product = $this->conn->query('UPDATE products SET cgst="' . $product_cgst . '", sgst="' . $product_sgst . '", integrated_tax="' . $product_igst . '" WHERE id=' . $product_id);
         if ($product === TRUE) {
             return $id;
         } else {

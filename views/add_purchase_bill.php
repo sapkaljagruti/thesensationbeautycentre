@@ -381,6 +381,10 @@ if (isset($errors)) {
                         <input type="hidden" name="qty1" id="qty1">
                         <input type="hidden" name="qty2" id="qty2">
                         <div class="col-sm-2">
+                            <input type="text" class="form-control decimal" id="mrp" name="mrp" placeholder="MRP" value="<?php echo isset($_POST['mrp']) ? $_POST['mrp'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
+                            <span id="mrp_help_block" class="help-block"></span>
+                        </div>
+                        <div class="col-sm-2">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="product_qty" name="product_qty" placeholder="Quantity" value="<?php echo isset($_POST['product_qty']) ? $_POST['product_qty'] : ''; ?>" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
                                 <span class="input-group-addon" id="product_qty_addon">Nos</span>
@@ -391,6 +395,8 @@ if (isset($errors)) {
                             <input type="text" class="form-control decimal" id="price" name="price" placeholder="Product Price" value="<?php echo isset($_POST['price']) ? $_POST['price'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
                             <span id="price_help_block" class="help-block"></span>
                         </div>
+                    </div>
+                    <div class="form-group">
                         <div class="col-sm-2">
                             <div class="input-group">
                                 <span class="input-group-addon">
@@ -411,8 +417,6 @@ if (isset($errors)) {
                             </div>
                             <span id="product_qty_help_block" class="help-block"></span>
                         </div>
-                    </div>
-                    <div class="form-group">
                         <div class="col-sm-2">
                             <div class="input-group">
                                 <input type="text" class="form-control decimal" id="cgst" name="cgst" placeholder="CGST" value="<?php echo isset($_POST['cgst']) ? $_POST['cgst'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
@@ -449,6 +453,7 @@ if (isset($errors)) {
                                             <th>Target Account</th>
                                             <th>Product</th>
                                             <th>HSN Code</th>
+                                            <th>MRP</th>
                                             <th>Quantity</th>
                                             <th>Rate Per Unit</th>
                                             <th>Discount %</th>
@@ -481,23 +486,6 @@ if (isset($errors)) {
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
                                             <td></td>
                                         </tr>
                                         <tr>
@@ -517,6 +505,26 @@ if (isset($errors)) {
                                             <td></td>
                                             <td></td>
                                             <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                         <tr>
                                             <td></td>
@@ -535,8 +543,10 @@ if (isset($errors)) {
                                             <td></td>
                                             <td></td>
                                             <td></td>
+                                            <td></td>
                                         </tr>
                                         <tr>
+                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -558,6 +568,7 @@ if (isset($errors)) {
                                     <tfoot>
                                         <tr>
                                             <th colspan="4" style="text-align:right">Total:</th>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>

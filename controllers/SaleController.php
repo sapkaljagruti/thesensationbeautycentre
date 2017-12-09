@@ -22,6 +22,12 @@ class SaleController {
         require_once 'models/Product.php';
         $this->productobj = new Product();
 
+        require_once 'models/AccountGroup.php';
+        $this->accountgroupobj = new AccountGroup();
+
+        require_once 'models/TargetAccount.php';
+        $this->targetaccountobj = new TargetAccount();
+
         require_once 'models/Staff.php';
         $this->staffobj = new Staff();
 
@@ -40,17 +46,40 @@ class SaleController {
     public function getbills() {
         $page_header = 'Sales Vouchers';
         $extra_js_files = $this->extra_js_files;
-        $sale_vouchers = $this->saleobj->getSaleVouchers();
+
+        $sales_vouchers = array();
+        $sales_vouchers_res = $this->saleobj->getSaleVouchers();
+        if ($sales_vouchers_res->num_rows > 0) {
+            while ($sales_voucher = $sales_vouchers_res->fetch_assoc()) {
+
+                $sales_ledger_res = $this->accountgroupobj->getAccountGroup($sales_voucher['sales_ledger_id']);
+                if ($sales_ledger_res->num_rows > 0) {
+                    while ($sales_ledger = mysqli_fetch_assoc($sales_ledger_res)) {
+                        $sales_voucher['sales_ledger_name'] = ucwords($sales_ledger['name']);
+                    }
+                }
+
+                $party_res = $this->accountgroupobj->getAccountGroup($sales_voucher['party_id']);
+                if ($party_res->num_rows > 0) {
+                    while ($party = mysqli_fetch_assoc($party_res)) {
+                        $sales_voucher['party_ac_name'] = ucwords($party['name']);
+                    }
+                }
+
+                $sales_vouchers[] = $sales_voucher;
+            }
+        }
+
         $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
         $view_file = '/views/sale_bills.php';
         require_once APP_DIR . '/views/layout.php';
     }
 
     public function checkInovieExist() {
-        $target_account = trim($_POST['target_account']);
+        $id = !empty(trim($_POST['id'])) ? trim($_POST['id']) : NULL;
         $invoice_no = trim($_POST['invoice_no']);
-        $sale_voucher = $this->saleobj->checkInovieExist($target_account, $invoice_no);
-        if ($sale_voucher) {
+        $sales_voucher_res = $this->saleobj->checkInovieExist($id, $invoice_no);
+        if ($sales_voucher_res) {
             echo '1';
         } else {
             echo '0';
@@ -64,40 +93,59 @@ class SaleController {
         if (!empty($_POST)) {
             $errors = array();
 
-//            $target_account = $_POST['target_account'];
-//            $invoice_no = trim($_POST['invoice_no']);
-//            $checkInovieExist = $this->checkInovieExist($target_account, $invoice_no);
-//            if ($checkInovieExist) {
-//                array_push($errors, 'This invoice already exist. Please change invoice no');
-//            }
+            $invoice_no = trim($_POST['invoice_no']);
+
+            $invoiceExistsRes = $this->saleobj->checkInovieExist(NULL, $invoice_no);
+            if ($invoiceExistsRes) {
+                array_push($errors, 'Invoice no already exists. Please try again.');
+            }
+
+            if (empty($_POST['party_id'])) {
+                $party_name = trim($_POST['party_name']);
+                $party_parent_id = !empty($_POST['party_parent_id']) ? $_POST['party_parent_id'] : NULL;
+                $opening_balance = !empty($_POST['opening_balance']) ? $_POST['opening_balance'] : NULL;
+                $contact_person = !empty($_POST['contact_person']) ? $_POST['contact_person'] : NULL;
+                $area = !empty($_POST['area']) ? $_POST['area'] : NULL;
+                $city = !empty($_POST['city']) ? $_POST['city'] : NULL;
+                $pincode = !empty($_POST['pincode']) ? $_POST['pincode'] : NULL;
+                $gst_state_code_id = !empty($_POST['party_gst_state_code_id']) ? $_POST['party_gst_state_code_id'] : NULL;
+                $email = !empty($_POST['email']) ? trim($_POST['email']) : NULL;
+                $mobile1 = !empty($_POST['mobile1']) ? trim($_POST['mobile1']) : NULL;
+                $mobile2 = !empty($_POST['mobile2']) ? trim($_POST['mobile2']) : NULL;
+                $bank_name = !empty($_POST['party_bank_name']) ? trim($_POST['party_bank_name']) : NULL;
+                $bank_branch = !empty($_POST['party_bank_branch']) ? trim($_POST['party_bank_branch']) : NULL;
+                $ifsc_code = !empty($_POST['party_ifsc_code']) ? trim($_POST['party_ifsc_code']) : NULL;
+                $bank_account_no = !empty($_POST['party_bank_account_no']) ? trim($_POST['party_bank_account_no']) : NULL;
+                $pan = !empty($_POST['party_pan']) ? strtoupper(trim($_POST['party_pan'])) : NULL;
+                $gst_type_id = !empty($_POST['party_gst_type_id']) ? trim($_POST['party_gst_type_id']) : NULL;
+                $gstin = !empty($_POST['party_gstin']) ? strtoupper(trim($_POST['party_gstin'])) : NULL;
+
+                $party_id = $this->accountgroupobj->add($party_name, $party_parent_id, $opening_balance, $contact_person, $area, $city, $pincode, $gst_state_code_id, $email, $mobile1, $mobile2, $bank_name, $bank_branch, $ifsc_code, $bank_account_no, $pan, $gst_type_id, $gstin, NULL);
+
+                if (!$party_id) {
+                    array_push($errors, 'Something went wrong. Please try again later.');
+                }
+            } else {
+                $party_id = $_POST['party_id'];
+            }
 
             if (empty($errors)) {
-                $target_account = $_POST['target_account'];
-                $invoice_no = trim($_POST['invoice_no']);
-                $ledger_name = trim($_POST['ledger_name']);
-                $sale_type_id = !empty($_POST['sale_type_id']) ? trim($_POST['sale_type_id']) : NULL;
-                $party_id = !empty($_POST['party_id']) ? $_POST['party_id'] : NULL;
-                $party_name = !empty($_POST['party_name']) ? trim($_POST['party_name']) : NULL;
-                $party_address = !empty($_POST['party_address']) ? trim($_POST['party_address']) : NULL;
-                $party_contact_person = !empty($_POST['party_contact_person']) ? trim($_POST['party_contact_person']) : NULL;
-                $party_email = !empty($_POST['party_email']) ? trim($_POST['party_email']) : NULL;
-                $party_mobile1 = !empty($_POST['party_mobile1']) ? trim($_POST['party_mobile1']) : NULL;
-                $party_mobile2 = !empty($_POST['party_mobile2']) ? trim($_POST['party_mobile2']) : NULL;
-                $party_residence_no = !empty($_POST['party_residence_no']) ? trim($_POST['party_residence_no']) : NULL;
-                $party_office_no = !empty($_POST['party_office_no']) ? trim($_POST['party_office_no']) : NULL;
-                $party_bank_name = !empty($_POST['party_bank_name']) ? trim($_POST['party_bank_name']) : NULL;
-                $party_bank_branch = !empty($_POST['party_bank_branch']) ? trim($_POST['party_bank_branch']) : NULL;
-                $party_ifsc_code = !empty($_POST['party_ifsc_code']) ? trim($_POST['party_ifsc_code']) : NULL;
-                $party_bank_account_no = !empty($_POST['party_bank_account_no']) ? trim($_POST['party_bank_account_no']) : NULL;
-                $party_pan = !empty($_POST['party_pan']) ? trim($_POST['party_pan']) : NULL;
-                $party_gst_state_code_id = !empty($_POST['party_gst_state_code_id']) ? trim($_POST['party_gst_state_code_id']) : NULL;
-                $party_gst_type_id = !empty($_POST['party_gst_type_id']) ? trim($_POST['party_gst_type_id']) : NULL;
-                $party_gstin = !empty($_POST['party_gstin']) ? trim($_POST['party_gstin']) : NULL;
+                $sales_ledger_id = trim($_POST['sales_ledger_id']);
+                $sales_type_id = !empty($_POST['sales_type_id']) ? trim($_POST['sales_type_id']) : NULL;
                 $products_data = !empty($_POST['products_data']) ? trim($_POST['products_data']) : NULL;
-                $total_cgst = !empty($_POST['total_cgst']) ? trim($_POST['total_cgst']) : NULL;
-                $total_sgst = !empty($_POST['total_sgst']) ? trim($_POST['total_sgst']) : NULL;
-                $total_igst = !empty($_POST['total_igst']) ? trim($_POST['total_igst']) : NULL;
-                $total_amount = !empty($_POST['total_amount']) ? trim($_POST['total_amount']) : NULL;
+
+                $total_qty = !empty($_POST['total_qty']) ? trim($_POST['total_qty']) : NULL;
+                $total_rate_per_unit = !empty($_POST['total_rate_per_unit']) ? trim($_POST['total_rate_per_unit']) : NULL;
+                $total_discount_percentage = !empty($_POST['total_discount_percentage']) ? trim($_POST['total_discount_percentage']) : NULL;
+                $total_discount_rs = !empty($_POST['total_discount_rs']) ? trim($_POST['total_discount_rs']) : NULL;
+                $total_cgst_percentage = !empty($_POST['total_cgst_percentage']) ? trim($_POST['total_cgst_percentage']) : NULL;
+                $total_cgst_rs = !empty($_POST['total_cgst_rs']) ? trim($_POST['total_cgst_rs']) : NULL;
+                $total_sgst_percentage = !empty($_POST['total_sgst_percentage']) ? trim($_POST['total_sgst_percentage']) : NULL;
+                $total_sgst_rs = !empty($_POST['total_sgst_rs']) ? trim($_POST['total_sgst_rs']) : NULL;
+                $total_igst_percentage = !empty($_POST['total_igst_percentage']) ? trim($_POST['total_igst_percentage']) : NULL;
+                $total_igst_rs = !empty($_POST['total_igst_rs']) ? trim($_POST['total_igst_rs']) : NULL;
+                $total_bill_amount = !empty($_POST['total_bill_amount']) ? trim($_POST['total_bill_amount']) : NULL;
+                $total_bill_amount = number_format((float) $total_bill_amount, 2, '.', '');
 
                 if (!empty($_POST['date'])) {
                     $post_date = date_create($_POST['date']);
@@ -113,15 +161,17 @@ class SaleController {
                     $invoice_date = NULL;
                 }
 
-                $sale_voucher = $this->saleobj->addSaleVoucher($date, $ledger_name, $invoice_no, $invoice_date, $sale_type_id, $target_account, $party_id, $party_name, $party_address, $party_contact_person, $party_email, $party_mobile1, $party_mobile2, $party_residence_no, $party_office_no, $party_bank_name, $party_bank_branch, $party_ifsc_code, $party_bank_account_no, $party_pan, $party_gst_state_code_id, $party_gst_type_id, $party_gstin, $products_data, $total_cgst, $total_sgst, $total_igst, $total_amount);
-                if ($sale_voucher) {
+                $sales_voucher = $this->saleobj->addSaleVoucher($date, $sales_ledger_id, $invoice_no, $invoice_date, $sales_type_id, $party_id, $products_data, $total_qty, $total_rate_per_unit, $total_discount_percentage, $total_discount_rs, $total_cgst_percentage, $total_cgst_rs, $total_sgst_percentage, $total_sgst_rs, $total_igst_percentage, $total_igst_rs, $total_bill_amount);
+
+                if ($sales_voucher) {
                     $products_data_arr = explode(',', $products_data);
                     foreach ($products_data_arr as $product) {
                         $product_arr = explode('_', $product);
                         $product_id = $product_arr[0];
-                        $product_qty_arr = explode(' ', $product_arr[7]);
-                        $product_qty = $product_qty_arr[0];
-                        $product = $this->productobj->updateProductQty($product_qty, $product_id);
+                        $target_account_id = $product_arr[1];
+                        $product_qty = $product_arr[6];
+
+                        $update_qty_res = $this->productobj->updateProductQty($target_account_id, $product_id, $product_qty);
                     }
                     header('location: home.php?controller=sale&action=getbills');
                 } else {
@@ -151,6 +201,43 @@ class SaleController {
             while ($gst_type = mysqli_fetch_assoc($gst_types_res)) {
                 $gst_type['title'] = ucwords($gst_type['title']);
                 $gst_types[] = $gst_type;
+            }
+        }
+
+        $sales_ledgers = array();
+        $sales_ledgers_res = $this->accountgroupobj->getSalesLedgers();
+        if ($sales_ledgers_res->num_rows > 0) {
+            while ($sales_ledger = mysqli_fetch_assoc($sales_ledgers_res)) {
+                $sales_ledger['name'] = ucwords($sales_ledger['name']);
+                $sales_ledgers[] = $sales_ledger;
+            }
+        }
+
+        $not_default_ledgers = array();
+        $not_default_ledgers_res = $this->accountgroupobj->getNotDefaultLedgers();
+        if ($not_default_ledgers_res->num_rows > 0) {
+            while ($not_default_ledger = mysqli_fetch_assoc($not_default_ledgers_res)) {
+                $not_default_ledger['name'] = ucwords($not_default_ledger['name']);
+                $not_default_ledgers[] = $not_default_ledger;
+            }
+        }
+
+        $account_groups = array();
+        $account_groups_res = $this->accountgroupobj->getall();
+        if ($account_groups_res->num_rows > 0) {
+            while ($account_group = $account_groups_res->fetch_assoc()) {
+                $account_group['name'] = ucwords($account_group['name']);
+                $account_groups[] = $account_group;
+            }
+        }
+
+
+        $target_accounts = array();
+        $target_account_res = $this->targetaccountobj->getall();
+        if ($target_account_res->num_rows > 0) {
+            while ($target_account = $target_account_res->fetch_assoc()) {
+                $target_account['name'] = ucwords($target_account['name']);
+                $target_accounts[] = $target_account;
             }
         }
 
@@ -186,6 +273,28 @@ class SaleController {
             echo '1';
         } else {
             echo '0';
+        }
+    }
+
+    public function delete() {
+        if (is_array($_POST['id'])) {
+            $ids = $_POST['id'];
+            $deleted = array();
+            foreach ($ids as $id) {
+                $sales_voucher = $this->saleobj->delete($id);
+                if ($sales_voucher) {
+                    array_push($deleted, $id);
+                }
+            }
+            echo json_encode($deleted);
+        } else {
+            $id = trim($_POST['id']);
+            $sales_voucher = $this->saleobj->delete($id);
+            if ($sales_voucher) {
+                echo 'deleted';
+            } else {
+                echo 'You cannot delete this voucher.';
+            }
         }
     }
 

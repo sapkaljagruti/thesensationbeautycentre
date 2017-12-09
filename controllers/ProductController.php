@@ -333,7 +333,28 @@ class ProductController {
                 } else {
                     $availableQty = $product['qty2'];
                 }
-                $finalQty = ($availableQty + $inputQty) . ' Nos';
+                $finalQty = ($availableQty + $inputQty);
+            }
+        }
+        echo $finalQty;
+    }
+    
+    public function checkQtyForSales() {
+        $product_id = trim($_POST['product_id']);
+        $target_account_id = trim($_POST['target_account_id']);
+
+        $inputQty = trim($_POST['quantity']);
+        $finalQty = '';
+
+        $product_res = $this->productobj->getproduct($product_id);
+        if ($product_res->num_rows > 0) {
+            while ($product = $product_res->fetch_assoc()) {
+                if ($target_account_id == '1') {
+                    $availableQty = $product['qty1'];
+                } else {
+                    $availableQty = $product['qty2'];
+                }
+                $finalQty = ($availableQty - $inputQty);
             }
         }
         echo $finalQty;

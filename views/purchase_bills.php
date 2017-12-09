@@ -36,7 +36,7 @@
                                 </th>                                
                                 <th>Party A/C</th>
                                 <th>Purchase Ledger</th>
-                                <th>invoice No</th>
+                                <th>Invoice No</th>
                                 <th data-orderable="false" width="300px">Actions</th>
                             </tr>
                         </thead>
@@ -54,8 +54,8 @@
                                         <td><?php echo $purchase_voucher['purchase_ledger_name']; ?></td>
                                         <td><?php echo $purchase_voucher['invoice_no']; ?></td>
                                         <td>
-                                            <a href="?controller=party&action=get&id=<?php echo $purchase_voucher['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-eye"></i> View</a>
-                                            <a href="?controller=party&action=update&id=<?php echo $purchase_voucher['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-pencil-square-o"></i> Edit</a>
+                                            <a href="?controller=purchase&action=printBill&id=<?php echo $purchase_voucher['id']; ?>" class="btn btn-default" target="_blank"><i class="fa fa-fw fa-print"></i> Print</a>
+<!--                                            <a href="?controller=purchase&action=update&id=<?php echo $purchase_voucher['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-pencil-square-o"></i> Edit</a>-->
                                             <a href="" class="delete btn btn-default" data-id="<?php echo $purchase_voucher['id']; ?>"><i class="fa fa-fw fa-trash"></i> Delete</a>
                                             <span id="span_<?php echo $purchase_voucher['id']; ?>">
                                                 <?php

@@ -27,43 +27,52 @@
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="table-responsive">
-                    <table id="sale_vouchers_table" class="table table-bordered table-hover" role="grid" aria-describedby="sale_vouchers_table_info">
+                    <table id="sales_vouchers_table" class="table table-bordered table-hover" role="grid" aria-describedby="sales_vouchers_table_info">
                         <thead>
                             <tr>
                                 <th>Id</th>
                                 <th data-orderable="false" width="20px">
                                     <input type="checkbox" class="select-all">
                                 </th>                                
-                                <th>Ledger</th>
-                                <th>invoice No</th>
-                                <!--<th data-orderable="false" width="300px">Actions</th>-->
+                                <th>Party A/C</th>
+                                <th>Sales Ledger</th>
+                                <th>Invoice No</th>
+                                <th data-orderable="false" width="300px">Actions</th>
                             </tr>
                         </thead>
                         <?php
-                        if (isset($sale_vouchers)) {
-                            if ($sale_vouchers->num_rows > 0) {
-                                ?>
-                                <tbody>
-                                    <?php
-                                    while ($sale_voucher = $sale_vouchers->fetch_assoc()) {
-                                        ?>
-                                        <tr id="tr_<?php echo $sale_voucher['id']; ?>">
-                                            <td><?php echo $sale_voucher['id']; ?></td>
-                                            <td><input type="checkbox" name="select_sale_vouchers[]" data-id="<?php echo $sale_voucher['id']; ?>"></td>
-                                            <td><?php echo $sale_voucher['ledger_name']; ?></td>
-                                            <td><?php echo $sale_voucher['invoice_no']; ?></td>
-<!--                                            <td>
-                                                <a href="?controller=party&action=get&id=<?php echo $sale_voucher['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-eye"></i> View</a>
-                                                <a href="?controller=party&action=update&id=<?php echo $sale_voucher['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-pencil-square-o"></i> Edit</a>
-                                                <a href="" class="delete btn btn-default" data-id="<?php echo $sale_voucher['id']; ?>"><i class="fa fa-fw fa-trash"></i> Delete</a>
-                                            </td>-->
-                                        </tr>
-                                        <?php
-                                    }
-                                    ?>
-                                </tbody>
+                        if (isset($sales_vouchers)) {
+                            ?>
+                            <tbody>
                                 <?php
-                            }
+                                foreach ($sales_vouchers as $sales_voucher) {
+                                    ?>
+                                    <tr id="tr_<?php echo $sales_voucher['id']; ?>">
+                                        <td><?php echo $sales_voucher['id']; ?></td>
+                                        <td><input type="checkbox" name="select_sales_vouchers[]" data-id="<?php echo $sales_voucher['id']; ?>"></td>
+                                        <td><?php echo $sales_voucher['party_ac_name']; ?></td>
+                                        <td><?php echo $sales_voucher['sales_ledger_name']; ?></td>
+                                        <td><?php echo $sales_voucher['invoice_no']; ?></td>
+                                        <td>
+                                            <a href="?controller=sale&action=printBill&id=<?php echo $sales_voucher['id']; ?>" class="btn btn-default" target="_blank"><i class="fa fa-fw fa-print"></i> Print</a>
+        <!--                                            <a href="?controller=sale&action=update&id=<?php echo $sales_voucher['id']; ?>" class="btn btn-default"><i class="fa fa-fw fa-pencil-square-o"></i> Edit</a>-->
+                                            <a href="" class="delete btn btn-default" data-id="<?php echo $sales_voucher['id']; ?>"><i class="fa fa-fw fa-trash"></i> Delete</a>
+                                            <span id="span_<?php echo $sales_voucher['id']; ?>">
+                                                <?php
+                                                if ($sales_voucher['is_deleted'] == '1') {
+                                                    ?>
+                                                    <font color="red"><i class="fa fa-exclamation-triangle"></i> Cancelled</font>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                            </tbody>
+                            <?php
                         }
                         ?>
                     </table>

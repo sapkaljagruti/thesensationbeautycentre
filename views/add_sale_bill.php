@@ -36,6 +36,7 @@ if (isset($errors)) {
 </style>
 <!-- form start -->
 <form class="form-horizontal" method="post">
+    <input type="hidden" id="save_type" name="save_type" value="add"/>
     <div class="row">
         <div class="col-md-12">
             <div class="box box-default">
@@ -57,9 +58,31 @@ if (isset($errors)) {
                             <input type="text" class="form-control" id="date" name="date" placeholder="Date" value="<?php echo isset($_POST['date']) ? $_POST['date'] : $today; ?>" required="required">
                             <span id="date_help_block" class="help-block"></span>
                         </div>
-                        <label for="ledger_name" class="col-sm-2 control-label">Sales Ledger</label>
+                        <label for="sales_ledger_id" class="col-sm-2 control-label">Sales Account</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="ledger_name" name="ledger_name" placeholder="Sale Ledger" value="" required="required">
+                            <select class="form-control" id="sales_ledger_id" name="sales_ledger_id" required="required">
+                                <option value="">Select Sales Account</option>
+                                <?php
+                                if (isset($sales_ledgers)) {
+                                    $sales_ledger_selected = '';
+                                    foreach ($sales_ledgers as $sales_ledger) {
+                                        if (isset($_POST['sales_ledger_id'])) {
+                                            $sales_ledger_id = $_POST['sales_ledger_id'];
+                                        } else {
+                                            $sales_ledger_id = '';
+                                        }
+                                        if ($sales_ledger_id == $sales_ledger['id']) {
+                                            $sales_ledger_selected = ' selected="selected"';
+                                        } else {
+                                            $sales_ledger_selected = '';
+                                        }
+                                        ?>
+                                        <option value="<?php echo $sales_ledger['id']; ?>"<?php echo $sales_ledger_selected; ?>><?php echo $sales_ledger['name']; ?></option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -76,36 +99,29 @@ if (isset($errors)) {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="sale_type_id" class="col-sm-2 control-label">Sale Type</label>
+                        <label for="sales_type_id" class="col-sm-2 control-label">Sales Type</label>
                         <div class="col-sm-4">
-                            <select class="form-control" id="sale_type_id" name="sale_type_id">
+                            <select class="form-control" id="sales_type_id" name="sales_type_id">
                                 <?php
                                 if (isset($sale_types)) {
-                                    $sale_type_selected = '';
-                                    foreach ($sale_types as $sale_type) {
-                                        if (isset($_POST['sale_type_id'])) {
-                                            $sale_type_id = $_POST['sale_type_id'];
+                                    $sales_type_selected = '';
+                                    foreach ($sale_types as $sales_type) {
+                                        if (isset($_POST['sales_type_id'])) {
+                                            $sales_type_id = $_POST['sales_type_id'];
                                         } else {
-                                            $sale_type_id = '';
+                                            $sales_type_id = '';
                                         }
-                                        if ($sale_type_id == $sale_type['id']) {
-                                            $sale_type_selected = ' selected="selected"';
+                                        if ($sales_type_id == $sales_type['id']) {
+                                            $sales_type_selected = ' selected="selected"';
                                         } else {
-                                            $sale_type_selected = '';
+                                            $sales_type_selected = '';
                                         }
                                         ?>
-                                        <option value="<?php echo $sale_type['id']; ?>"<?php echo $sale_type_selected; ?>><?php echo $sale_type['title']; ?></option>
+                                        <option value="<?php echo $sales_type['id']; ?>"<?php echo $sales_type_selected; ?>><?php echo $sales_type['title']; ?></option>
                                         <?php
                                     }
                                 }
                                 ?>
-                            </select>
-                        </div>
-                        <label for="target_account" class="col-sm-2 control-label">Targer Account</label>
-                        <div class="col-sm-4">
-                            <select class="form-control" id="target_account" name="target_account">
-                                <option value="asha">Asha</option>
-                                <option value="lakhan">Lakhan</option>
                             </select>
                         </div>
                     </div>
@@ -130,45 +146,110 @@ if (isset($errors)) {
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body party_detail_form">
-                    <input type="hidden" id="party_id" name="party_id" value=""/>
                     <div class="form-group">
-                        <label for="party_name" class="col-sm-2 control-label">Party Name</label>
+                        <label for="party_id" class="col-sm-2 control-label">Select Party</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="party_name" name="party_name" placeholder="Party Name" value="<?php echo isset($_POST['party_name']) ? $_POST['party_name'] : ''; ?>" required="required" onkeypress="return enterKeyEvent(event)">
-                        </div>
-                        <label for="party_contact_person" class="col-sm-2 control-label">Contact Person</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="party_contact_person" name="party_contact_person" placeholder="Contact Person" value="<?php echo isset($_POST['party_contact_person']) ? $_POST['party_contact_person'] : ''; ?>">
+                            <select class="form-control" id="party_id" name="party_id">
+                                <option value="">Select Party</option>
+                                <?php
+                                if (isset($not_default_ledgers)) {
+                                    foreach ($not_default_ledgers as $not_default_ledger) {
+                                        if (isset($_POST['party_id'])) {
+                                            $party_id = $_POST['party_id'];
+                                        } else {
+                                            $party_id = '0';
+                                        }
+                                        if ($party_id == $not_default_ledger['id']) {
+                                            $party_selected = ' selected="selected"';
+                                        } else {
+                                            $party_selected = '';
+                                        }
+                                        ?>
+                                        <option value="<?php echo $not_default_ledger['id']; ?>"<?php echo $party_selected; ?>><?php echo $not_default_ledger['name']; ?></option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="party_address" class="col-sm-2 control-label">Address</label>
-                        <div class="col-sm-4">
-                            <textarea class="form-control" rows="3" placeholder="Address" id="party_address" name="party_address"><?php echo isset($_POST['party_address']) ? $_POST['party_address'] : ''; ?></textarea>
+                        <label for="party_name" class="col-sm-2 control-label" id="party_name_label">Party A/C Name</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="party_name" name="party_name" placeholder="Party A/C Name" value="<?php echo isset($_POST['party_name']) ? $_POST['party_name'] : ''; ?>"  required="required">
+                            <span id="party_name_help_block" class="help-block"></span>
                         </div>
-                        <label for="party_email" class="col-sm-2 control-label">Email</label>
-                        <div class="col-sm-4">
-                            <input type="party_email" class="form-control" id="party_email" name="party_email" placeholder="Email" value="<?php echo isset($_POST['party_email']) ? $_POST['party_email'] : ''; ?>">
+                        <input type="hidden" id="is_valid_party_name" name="is_valid_party_name" value="<?php echo isset($_POST['is_valid_party_name']) ? $_POST['is_valid_party_name'] : '0'; ?>"/>
+                        <label for="party_parent_id" class="col-sm-2 control-label">Under Group</label>
+                        <div class="col-sm-2">
+                            <select id="party_parent_id" name="party_parent_id" class="form-control" required="required">
+                                <?php
+                                if (isset($_POST['party_parent_id'])) {
+                                    $parent_id = $_POST['party_parent_id'];
+                                } else {
+                                    $parent_id = '40';
+                                }
+                                if ($parent_id == '') {
+                                    $default_parent_id_selected = ' selected="selected"';
+                                } else {
+                                    $default_parent_id_selected = '';
+                                }
+                                ?>
+                                <option value=""<?php echo $default_parent_id_selected; ?> data-parent-id="0">Select group</option>
+                                <?php
+                                if (isset($account_groups)) {
+                                    foreach ($account_groups as $account_group) {
+                                        if ($parent_id != '' && $parent_id == $account_group['id']) {
+                                            $parent_id_selected = ' selected="selected"';
+                                        } else {
+                                            $parent_id_selected = '';
+                                        }
+                                        ?>
+                                        <option value="<?php echo $account_group['id']; ?>" data-parent-id="<?php echo $account_group['parent_id']; ?>"<?php echo $parent_id_selected; ?>><?php echo $account_group['name']; ?></option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
+                            <span id="group_parent"></span>
+                        </div>
+                        <label for="opening_balance" class="col-sm-2 control-label">Opening Balance</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control decimal" id="opening_balance" name="opening_balance" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['opening_balance']) ? $_POST['opening_balance'] : ''; ?>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="party_mobile1" class="col-sm-2 control-label">Mobile 1</label>
+                        <label for="contact_person" class="col-sm-2 control-label">Contact Person</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="party_mobile1" name="party_mobile1" placeholder="Enter Mobile No" maxlength="10" minlength="10" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['party_mobile1']) ? $_POST['party_mobile1'] : ''; ?>">
+                            <input type="text" class="form-control" id="contact_person" name="contact_person" placeholder="Contact Person" value="<?php echo isset($_POST['contact_person']) ? $_POST['contact_person'] : ''; ?>">
                         </div>
-                        <label for="party_mobile2" class="col-sm-2 control-label">Mobile 2</label>
+                        <label for="email" class="col-sm-2 control-label">Email</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="party_mobile2" name="party_mobile2" placeholder="Enter Mobile No" maxlength="10" minlength="10" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['party_mobile2']) ? $_POST['party_mobile2'] : ''; ?>">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="party_residence_no" class="col-sm-2 control-label">Residence No</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="party_residence_no" name="party_residence_no" placeholder="Enter Residence No" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['party_residence_no']) ? $_POST['party_residence_no'] : ''; ?>">
+                        <label for="area" class="col-sm-2 control-label">Area</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="area" name="area" placeholder="Area" value="<?php echo isset($_POST['area']) ? $_POST['area'] : ''; ?>">
                         </div>
-                        <label for="party_office_no" class="col-sm-2 control-label">Office No</label>
+                        <label for="city" class="col-sm-2 control-label">City</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="city" name="city" placeholder="City" value="<?php echo isset($_POST['city']) ? $_POST['city'] : ''; ?>">
+                        </div>
+                        <label for="pincode" class="col-sm-2 control-label">Pincode</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" value="<?php echo isset($_POST['pincode']) ? $_POST['pincode'] : ''; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile1" class="col-sm-2 control-label">Mobile 1</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="party_office_no" name="party_office_no" placeholder="Enter Office Contact No" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" value="<?php echo isset($_POST['party_office_no']) ? $_POST['party_office_no'] : ''; ?>">
+                            <input type="text" class="form-control" id="mobile1" name="mobile1" placeholder="Enter Mobile No" maxlength="10" minlength="10" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['mobile1']) ? $_POST['mobile1'] : ''; ?>">
+                        </div>
+                        <label for="mobile2" class="col-sm-2 control-label">Mobile 2</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="mobile2" name="mobile2" placeholder="Enter Mobile No" maxlength="10" minlength="10" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['mobile2']) ? $_POST['mobile2'] : ''; ?>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -277,31 +358,87 @@ if (isset($errors)) {
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <div class="row">
-                        <div class="form-group">
-                            <input type="hidden" name="product_id" id="product_id">
-                            <input type="hidden" name="price" id="price">
-                            <input type="hidden" name="cgst" id="cgst">
-                            <input type="hidden" name="sgst" id="sgst">
-                            <input type="hidden" name="igst" id="igst">
-                            <label for="product_name" class="col-sm-2 control-label" id="product_name_label"> Product</label>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Product Name" value="<?php echo isset($_POST['product_name']) ? $_POST['product_name'] : ''; ?>" onkeypress="return productEnterKeyEvent(event)">
-                                <span id="product_name_help_block" class="help-block"></span>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <select class="form-control" id="target_account_id" name="target_account_id">
+                                <?php
+                                if (isset($target_accounts)) {
+                                    foreach ($target_accounts as $target_account) {
+                                        ?>
+                                        <option value="<?php echo $target_account['id']; ?>"><?php echo $target_account['name']; ?></option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Product Name" value="<?php echo isset($_POST['product_name']) ? $_POST['product_name'] : ''; ?>" onkeypress="return productEnterKeyEvent(event)">
+                            <span id="product_name_help_block" class="help-block"></span>
+                        </div>
+                        <input type="hidden" name="product_id" id="product_id">
+                        <input type="hidden" name="hsn_code" id="hsn_code">
+                        <input type="hidden" name="qty1" id="qty1">
+                        <input type="hidden" name="qty2" id="qty2">
+                         <div class="col-sm-2">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="product_qty" name="product_qty" placeholder="Quantity" value="<?php echo isset($_POST['product_qty']) ? $_POST['product_qty'] : ''; ?>" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
+                                <span class="input-group-addon" id="product_qty_addon">Nos</span>
                             </div>
-                            <label for="product_qty" class="col-sm-2 control-label" id="product_qty_label">Quantity</label>
-                            <div class="col-sm-2">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="product_qty" name="product_qty" placeholder="Quantity" value="<?php echo isset($_POST['product_qty']) ? $_POST['product_qty'] : ''; ?>" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
-                                    <span class="input-group-addon" id="product_qty_addon">Nos</span>
-                                </div>
-                                <span id="product_qty_help_block" class="help-block"></span>
-                            </div>
-                            <div class="col-sm-2">
-                                <button type="button" class="btn btn-block btn-info" id="proceed_product"><i class="fa fa-plus"></i> Add</button>
-                            </div>
+                            <span id="product_qty_help_block" class="help-block"></span>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control decimal" id="mrp" name="mrp" placeholder="MRP" value="<?php echo isset($_POST['mrp']) ? $_POST['mrp'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" disabled="disabled">
+                            <span id="mrp_help_block" class="help-block"></span>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="radio" name="discount" value="percentage" id="discount_percentage">
+                                </span>
+                                <input type="text" class="form-control decimal" id="discount_rate" name="discount_rate" placeholder="Discount Rate" value="<?php echo isset($_POST['discount_rate']) ? $_POST['discount_rate'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
+                                <span class="input-group-addon" id="discount_rate_addon">%</span>
+                            </div>
+                            <span id="product_qty_help_block" class="help-block"></span>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="radio" name="discount" value="rs" id="discount_rs">
+                                </span>
+                                <input type="text" class="form-control decimal" id="discount_price" name="discount_price" placeholder="Discount Price" value="<?php echo isset($_POST['discount_price']) ? $_POST['discount_price'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
+                                <span class="input-group-addon" id="discount_rate_addon">Rs</span>
+                            </div>
+                            <span id="product_qty_help_block" class="help-block"></span>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="input-group">
+                                <input type="text" class="form-control decimal" id="cgst" name="cgst" placeholder="CGST" value="<?php echo isset($_POST['cgst']) ? $_POST['cgst'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
+                                <span class="input-group-addon" id="cgst_addon">%</span>
+                            </div>
+                            <span id="cgst_help_block" class="help-block"></span>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="input-group">
+                                <input type="text" class="form-control decimal" id="sgst" name="sgst" placeholder="SGST" value="<?php echo isset($_POST['sgst']) ? $_POST['sgst'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
+                                <span class="input-group-addon" id="sgst_addon">%</span>
+                            </div>
+                            <span id="cgst_help_block" class="help-block"></span>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="input-group">
+                                <input type="text" class="form-control decimal" id="igst" name="igst" placeholder="IGST" value="<?php echo isset($_POST['igst']) ? $_POST['igst'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" disabled="disabled">
+                                <span class="input-group-addon" id="igst_addon">%</span>
+                            </div>
+                            <span id="cgst_help_block" class="help-block"></span>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-block btn-info" id="proceed_product"><i class="fa fa-plus"></i> Add</button>
+                        </div>
+                    </div>
+
                     <div class="row" id="products_table_div">
                         <div class="col-md-12">
                             <div class="table-responsive">
@@ -309,10 +446,20 @@ if (isset($errors)) {
                                     <thead>
                                         <tr>
                                             <th>Id</th>
+                                            <th>Target Account</th>
                                             <th>Product</th>
+                                            <th>HSN Code</th>
                                             <th>Quantity</th>
                                             <th>Rate Per Unit</th>
-                                            <th>Price</th>
+                                            <th>Discount %</th>
+                                            <th>Discount Rs</th>
+                                            <th>CGST %</th>
+                                            <th>CGST Rs</th>
+                                            <th>SGST %</th>
+                                            <th>SGST Rs</th>
+                                            <th>IGST %</th>
+                                            <th>IGST Rs</th>
+                                            <th>Total Price</th>
                                             <th data-orderable="false">Action</th>
                                         </tr>
                                     </thead>
@@ -324,6 +471,16 @@ if (isset($errors)) {
                                             <td></td>
                                             <td></td>
                                             <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                         <tr>
                                             <td></td>
@@ -332,35 +489,85 @@ if (isset($errors)) {
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                        </tr>
-                                        <tr>
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td style="text-align:right"><b>CGST:</b></td>
-                                            <td id="cgst_td">0.00</td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td style="text-align:right"><b>SGST:</b></td>
-                                            <td id="sgst_td">0.00</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td style="text-align:right"><b>IGST:</b></td>
-                                            <td id="igst_td">0.00</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                             <td></td>
                                         </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <th colspan="4" style="text-align:right">Total:</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                         </tr>
@@ -381,9 +588,6 @@ if (isset($errors)) {
     <div class="row">
         <div class="col-md-12">
             <textarea style="display: none;" name="products_data" id="products_data"></textarea>
-            <input type="hidden" id="total_cgst" name="total_cgst" value="0.00"/>
-            <input type="hidden" id="total_sgst" name="total_sgst" value="0.00"/>
-            <input type="hidden" id="total_igst" name="total_igst" value="0.00"/>
             <a type="button" class="btn btn-danger" href="?controller=sale&action=getbills">
                 <i class="fa fa-fw fa-arrow-circle-left"></i> Cancel
             </a>

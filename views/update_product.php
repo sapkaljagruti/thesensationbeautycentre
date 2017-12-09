@@ -104,7 +104,7 @@ if (isset($product_details)) {
                                         <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<?php echo $name; ?>" required="required">
                                         <span id="name_help_block" class="help-block"></span>
                                     </div>
-                                    <input type="hidden" id="valid_name" value="0"/>
+                                    <input type="hidden" id="valid_name" value="<?php echo isset($_POST['valid_name']) ? $_POST['valid_name'] : '1'; ?>"/>
                                 </div>
                                 <div class="form-group">
                                     <label for="description" class="col-sm-2 control-label">Description</label>

@@ -290,8 +290,9 @@ $(document).on('click', '#proceed_product', function () {
 
     var product_name = $('#product_name').val();
     var product_id = $('#product_id').val();
-    var price = $('#price').val();
+    var mrp = $('#mrp').val();
     var quantity = $('#product_qty').val();
+    var price = $('#price').val();
 
     if (product_name == '') {
         $('#product_name').css('border-color', '#dd4b39');
@@ -308,13 +309,20 @@ $(document).on('click', '#proceed_product', function () {
         }
     }
 
-    if (price == '') {
-        $('#price').css('border-color', '#dd4b39');
-        $('#price_help_block').html('<font color="#dd4b39">Please Enter Price</font>');
+    if (mrp == '') {
+        $('#mrp').css('border-color', '#dd4b39');
+        $('#mrp_help_block').html('<font color="#dd4b39">Please Enter MRP</font>');
         proceed = 0;
     } else {
-        $('#price').css('border-color', 'rgb(210, 214, 222)');
-        $('#price_help_block').html('');
+        mrp = parseFloat(mrp);
+        if (mrp == '') {
+            $('#mrp').css('border-color', '#dd4b39');
+            $('#mrp_help_block').html('<font color="#dd4b39">Please Enter MRP</font>');
+            proceed = 0;
+        } else {
+            $('#mrp').css('border-color', 'rgb(210, 214, 222)');
+            $('#mrp_help_block').html('');
+        }
     }
 
     if (quantity == '') {
@@ -324,9 +332,32 @@ $(document).on('click', '#proceed_product', function () {
         proceed = 0;
     } else {
         quantity = parseInt(quantity);
-        $('#product_qty').css('border-color', 'rgb(210, 214, 222)');
-        $('#product_qty_addon').css('border-color', 'rgb(210, 214, 222)');
-        $('#product_qty_help_block').html('');
+        if (quantity == '') {
+            $('#product_qty').css('border-color', '#dd4b39');
+            $('#product_qty_addon').css('border-color', '#dd4b39');
+            $('#product_qty_help_block').html('<font color="#dd4b39">Please Enter Quantity</font>');
+            proceed = 0;
+        } else {
+            $('#product_qty').css('border-color', 'rgb(210, 214, 222)');
+            $('#product_qty_addon').css('border-color', 'rgb(210, 214, 222)');
+            $('#product_qty_help_block').html('');
+        }
+    }
+
+    if (price == '') {
+        $('#price').css('border-color', '#dd4b39');
+        $('#price_help_block').html('<font color="#dd4b39">Please Enter Price</font>');
+        proceed = 0;
+    } else {
+        price = parseFloat(price);
+        if (price == '') {
+            $('#price').css('border-color', '#dd4b39');
+            $('#price_help_block').html('<font color="#dd4b39">Please Enter Price</font>');
+            proceed = 0;
+        } else {
+            $('#price').css('border-color', 'rgb(210, 214, 222)');
+            $('#price_help_block').html('');
+        }
     }
 
     if (proceed != 0) {
@@ -344,7 +375,7 @@ $(document).on('click', '#proceed_product', function () {
             discount_rs = '0.00';
         }
 
-        var amount = quantity * parseFloat(price);
+        var amount = quantity * price;
 
         if ($.trim(discount_percentage) != '') {
             discount_rs = (amount * parseFloat(discount_percentage)) / 100;
@@ -403,12 +434,13 @@ $(document).on('click', '#proceed_product', function () {
                 } else {
                     var table = $('#products_table').DataTable();
 
-                    var rowNode = table.row.add([product_id, target_account, product_name + '</br>' + '<font color="green">' + finalQty + ' in stock.', hsn_code, quantity, price, discount_percentage, discount_rs, cgst_percentage, cgst_rs, sgst_percentage, sgst_rs, igst_percentage, igst_rs, total_amount, '<a href="" class="delete_product" data-id="' + product_id + '"> <i class="fa fa-fw fa-trash"></i></a>']).draw().node();
+                    var rowNode = table.row.add([product_id, target_account, product_name + '</br>' + '<font color="green">' + finalQty + ' Nos in stock.', hsn_code, mrp, quantity, price, discount_percentage, discount_rs, cgst_percentage, cgst_rs, sgst_percentage, sgst_rs, igst_percentage, igst_rs, total_amount, '<a href="" class="delete_product" data-id="' + product_id + '"> <i class="fa fa-fw fa-trash"></i></a>']).draw().node();
                     $(rowNode).attr('id', 'tr_' + product_id);
                     $(rowNode).attr('data-id', product_id);
                     $(rowNode).attr('data-tid', target_account_id);
                     $(rowNode).attr('data-name', product_name);
                     $(rowNode).attr('data-hcode', hsn_code);
+                    $(rowNode).attr('data-mrp', mrp);
                     $(rowNode).attr('data-qty', quantity);
                     $(rowNode).attr('data-finalQty', finalQty);
                     $(rowNode).attr('data-price', price);
@@ -428,6 +460,7 @@ $(document).on('click', '#proceed_product', function () {
 
                     $('#product_id').val('');
                     $('#product_name').val('');
+                    $('#mrp').val('');
                     $('#product_qty').val('');
                     $('#price').val('');
                     $('#discount_rate').val('');
@@ -874,6 +907,7 @@ $(document).on('submit', 'form', function () {
             var data_tid = $(this).attr('data-tid');
             var data_name = $(this).attr('data-name');
             var data_hcode = $(this).attr('data-hcode');
+            var data_mrp = $(this).attr('data-mrp');
             var data_qty = $(this).attr('data-qty');
             var data_finalQty = $(this).attr('data-finalQty');
             var data_price = $(this).attr('data-price');
@@ -888,7 +922,7 @@ $(document).on('submit', 'form', function () {
             var data_total = $(this).attr('data-total');
 
 
-            product_details.push(data_id + '_' + data_tid + '_' + data_name + '_' + data_hcode + '_' + data_qty + '_' + data_finalQty + '_' + data_price + '_' + data_dper + '_' + data_drs + '_' + data_cgstper + '_' + data_cgstrs + '_' + data_sgstper + '_' + data_sgstrs + '_' + data_igstper + '_' + data_igstrs + '_' + data_total);
+            product_details.push(data_id + '_' + data_tid + '_' + data_name + '_' + data_hcode + '_' + data_mrp + '_' + data_qty + '_' + data_finalQty + '_' + data_price + '_' + data_dper + '_' + data_drs + '_' + data_cgstper + '_' + data_cgstrs + '_' + data_sgstper + '_' + data_sgstrs + '_' + data_igstper + '_' + data_igstrs + '_' + data_total);
         });
         $('#products_data').val(product_details);
     }
@@ -931,73 +965,81 @@ $(function () {
             };
 
             // Total over all pages
-            var total_qty = api
+            var total_mrp = api
                     .column(4)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+            var total_qty = api
+                    .column(5)
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0);
 
             var total_rate_per_unit = api
-                    .column(5)
-                    .data()
-                    .reduce(function (a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-            var total_discount_percentage = api
                     .column(6)
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0);
-            var total_discount_rs = api
+            var total_discount_percentage = api
                     .column(7)
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0);
-            var total_cgst_percentage = api
+            var total_discount_rs = api
                     .column(8)
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0);
-            var total_cgst_rs = api
+            var total_cgst_percentage = api
                     .column(9)
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0);
-            var total_sgst_percentage = api
+            var total_cgst_rs = api
                     .column(10)
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0);
-            var total_sgst_rs = api
+            var total_sgst_percentage = api
                     .column(11)
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0);
-            var total_igst_percentage = api
+            var total_sgst_rs = api
                     .column(12)
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0);
-            var total_igst_rs = api
+            var total_igst_percentage = api
                     .column(13)
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0);
-            var total_price = api
+            var total_igst_rs = api
                     .column(14)
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0);
+            var total_price = api
+                    .column(15)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+            total_price = parseFloat(Math.round(total_price * 100) / 100).toFixed(2);
 
             // Total over this page
             var pageTotal = api
@@ -1008,17 +1050,18 @@ $(function () {
                     }, 0);
 
             // Update footer
-            $(api.column(4).footer()).html('<input type="hidden" id="total_qty" name="total_qty" value="' + total_qty + '">' + total_qty);
-            $(api.column(5).footer()).html('<input type="hidden" id="total_rate_per_unit" name="total_rate_per_unit" value="' + total_rate_per_unit + '">' + total_rate_per_unit);
-            $(api.column(6).footer()).html('<input type="hidden" id="total_discount_percentage" name="total_discount_percentage" value="' + total_discount_percentage + '">' + total_discount_percentage);
-            $(api.column(7).footer()).html('<input type="hidden" id="total_discount_rs" name="total_discount_rs" value="' + total_discount_rs + '">' + total_discount_rs);
-            $(api.column(8).footer()).html('<input type="hidden" id="total_cgst_percentage" name="total_cgst_percentage" value="' + total_cgst_percentage + '">' + total_cgst_percentage);
-            $(api.column(9).footer()).html('<input type="hidden" id="total_cgst_rs" name="total_cgst_rs" value="' + total_cgst_rs + '">' + total_cgst_rs);
-            $(api.column(10).footer()).html('<input type="hidden" id="total_sgst_percentage" name="total_sgst_percentage" value="' + total_sgst_percentage + '">' + total_sgst_percentage);
-            $(api.column(11).footer()).html('<input type="hidden" id="total_sgst_rs" name="total_sgst_rs" value="' + total_sgst_rs + '">' + total_sgst_rs);
-            $(api.column(12).footer()).html('<input type="hidden" id="total_igst_percentage" name="total_igst_percentage" value="' + total_igst_percentage + '">' + total_igst_percentage);
-            $(api.column(13).footer()).html('<input type="hidden" id="total_igst_rs" name="total_igst_rs" value="' + total_igst_rs + '">' + total_igst_rs);
-            $(api.column(14).footer()).html('<input type="hidden" id="total_bill_amount" name="total_bill_amount" value="' + total_price + '">' + total_price);
+            $(api.column(4).footer()).html('<input type="hidden" id="total_mrp" name="total_mrp" value="' + total_mrp + '">' + total_mrp);
+            $(api.column(5).footer()).html('<input type="hidden" id="total_qty" name="total_qty" value="' + total_qty + '">' + total_qty);
+            $(api.column(6).footer()).html('<input type="hidden" id="total_rate_per_unit" name="total_rate_per_unit" value="' + total_rate_per_unit + '">' + total_rate_per_unit);
+            $(api.column(7).footer()).html('<input type="hidden" id="total_discount_percentage" name="total_discount_percentage" value="' + total_discount_percentage + '">' + total_discount_percentage);
+            $(api.column(8).footer()).html('<input type="hidden" id="total_discount_rs" name="total_discount_rs" value="' + total_discount_rs + '">' + total_discount_rs);
+            $(api.column(9).footer()).html('<input type="hidden" id="total_cgst_percentage" name="total_cgst_percentage" value="' + total_cgst_percentage + '">' + total_cgst_percentage);
+            $(api.column(10).footer()).html('<input type="hidden" id="total_cgst_rs" name="total_cgst_rs" value="' + total_cgst_rs + '">' + total_cgst_rs);
+            $(api.column(11).footer()).html('<input type="hidden" id="total_sgst_percentage" name="total_sgst_percentage" value="' + total_sgst_percentage + '">' + total_sgst_percentage);
+            $(api.column(12).footer()).html('<input type="hidden" id="total_sgst_rs" name="total_sgst_rs" value="' + total_sgst_rs + '">' + total_sgst_rs);
+            $(api.column(13).footer()).html('<input type="hidden" id="total_igst_percentage" name="total_igst_percentage" value="' + total_igst_percentage + '">' + total_igst_percentage);
+            $(api.column(14).footer()).html('<input type="hidden" id="total_igst_rs" name="total_igst_rs" value="' + total_igst_rs + '">' + total_igst_rs);
+            $(api.column(15).footer()).html('<input type="hidden" id="total_bill_amount" name="total_bill_amount" value="' + total_price + '">' + total_price);
         }
     });
 });
