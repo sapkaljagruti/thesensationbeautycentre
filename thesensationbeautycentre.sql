@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2017 at 03:54 AM
+-- Generation Time: Dec 10, 2017 at 12:56 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -186,6 +186,44 @@ INSERT INTO `brands` (`id`, `name`, `is_deleted`, `created_at`, `updated_at`) VA
 (17, 'test', 1, '2017-11-14 14:58:13', '2017-11-14 14:58:38'),
 (18, 'test', 1, '2017-11-14 14:58:53', '2017-11-14 15:00:37'),
 (19, 'test2', 1, '2017-11-14 14:59:16', '2017-11-14 15:00:37');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `company_setting`
+--
+
+CREATE TABLE `company_setting` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `opening_balance` double NOT NULL,
+  `contact_person` varchar(255) NOT NULL,
+  `area` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `pincode` varchar(255) NOT NULL,
+  `gst_state_code_id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `mobile1` varchar(255) NOT NULL,
+  `mobile2` varchar(255) NOT NULL,
+  `bank_name` varchar(255) NOT NULL,
+  `bank_branch` varchar(255) NOT NULL,
+  `ifsc_code` varchar(255) NOT NULL,
+  `bank_account_no` varchar(255) NOT NULL,
+  `pan` varchar(255) NOT NULL,
+  `gst_type_id` int(11) NOT NULL,
+  `gstin` varchar(255) NOT NULL,
+  `is_default` tinyint(1) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `company_setting`
+--
+
+INSERT INTO `company_setting` (`id`, `name`, `opening_balance`, `contact_person`, `area`, `city`, `pincode`, `gst_state_code_id`, `email`, `mobile1`, `mobile2`, `bank_name`, `bank_branch`, `ifsc_code`, `bank_account_no`, `pan`, `gst_type_id`, `gstin`, `is_default`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(1, 'Capital Account', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 0, '', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -818,6 +856,12 @@ ALTER TABLE `brands`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `company_setting`
+--
+ALTER TABLE `company_setting`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `contra_vouchers`
 --
 ALTER TABLE `contra_vouchers`
@@ -967,6 +1011,11 @@ ALTER TABLE `branches`
 --
 ALTER TABLE `brands`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+--
+-- AUTO_INCREMENT for table `company_setting`
+--
+ALTER TABLE `company_setting`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `contra_vouchers`
 --

@@ -298,6 +298,79 @@ class SaleController {
         }
     }
 
+    public function printBill() {
+        $id = trim($_GET['id']);
+        $sales_voucher_res = $this->saleobj->getSaleVoucher($id);
+
+        $sales_voucher_data = array();
+
+        if ($sales_voucher_res->num_rows == 1) {
+            while ($sales_voucher = mysqli_fetch_assoc($sales_voucher_res)) {
+                $party_res = $this->accountgroupobj->getAccountGroup($sales_voucher['party_id']);
+                if ($party_res->num_rows > 0) {
+                    while ($party = mysqli_fetch_assoc($party_res)) {
+                        $sales_voucher['party_name'] = ucwords($party['name']);
+                        $sales_voucher['party_parent_id'] = ucwords($party['parent_id']);
+
+                        $sales_voucher['group_parent'] = '';
+
+                        $parent_group_res = $this->accountgroupobj->getAccountGroup($party['parent_id']);
+                        if ($parent_group_res) {
+                            if ($parent_group_res->num_rows > 0) {
+                                while ($parent_group = $parent_group_res->fetch_assoc()) {
+                                    $grand_parent_group_res = $this->accountgroupobj->getAccountGroup($parent_group['parent_id']);
+                                    if ($grand_parent_group_res) {
+                                        if ($grand_parent_group_res->num_rows > 0) {
+                                            while ($grand_parent_group = $grand_parent_group_res->fetch_assoc()) {
+                                                $sales_voucher['group_parent'] = ucwords($parent_group['name']) . '<br/><i>(' . $grand_parent_group['name'] . ')</i>';
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (!empty($party['gst_state_code_id'])) {
+                            $sales_voucher['party_gst_state_code_id'] = $party['gst_state_code_id'];
+                            $gst_state_res = $this->gst_obj->getGstState($party['gst_state_code_id']);
+                            if ($gst_state_res->num_rows > 0) {
+                                while ($gst_state = mysqli_fetch_assoc($gst_state_res)) {
+                                    $sales_voucher['state'] = ucwords($gst_state['state']);
+                                }
+                            } else {
+                                $sales_voucher['state'] = '';
+                            }
+                        } else {
+                            $sales_voucher['party_gst_state_code_id'] = '';
+                            $sales_voucher['state'] = '';
+                        }
+
+                        $sales_voucher['contact_person'] = ucwords($party['contact_person']);
+                        $sales_voucher['opening_balance'] = $party['opening_balance'];
+                        $sales_voucher['email'] = $party['email'];
+                        $sales_voucher['area'] = $party['area'];
+                        $sales_voucher['city'] = $party['city'];
+                        $sales_voucher['pincode'] = $party['pincode'];
+                        $sales_voucher['mobile1'] = $party['mobile1'];
+                        $sales_voucher['mobile2'] = $party['mobile2'];
+                        $sales_voucher['party_bank_name'] = $party['bank_name'];
+                        $sales_voucher['party_bank_branch'] = $party['bank_branch'];
+                        $sales_voucher['party_ifsc_code'] = $party['ifsc_code'];
+                        $sales_voucher['party_bank_account_no'] = $party['bank_account_no'];
+                        $sales_voucher['party_pan'] = $party['pan'];
+                        $sales_voucher['party_gst_type_id'] = $party['gst_type_id'];
+                        $sales_voucher['party_gstin'] = $party['gstin'];
+                    }
+                }
+
+                $sales_voucher_data[] = $sales_voucher;
+            }
+            require_once APP_DIR . '/views/print_sales_voucher.php';
+        } else {
+            header('location: home.php?controller=error&action=index');
+        }
+    }
+
 }
 
 ?>

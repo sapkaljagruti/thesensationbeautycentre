@@ -421,7 +421,7 @@ class PurchaseController {
             }
         }
 
-        $purchase_voucher_res = $this->purchaseobj->get($id);
+        $purchase_voucher_res = $this->purchaseobj->getPurchaseVoucher($id);
 
         $purchase_voucher_data = array();
 
@@ -545,7 +545,7 @@ class PurchaseController {
 
     public function printBill() {
         $id = trim($_GET['id']);
-        $purchase_voucher_res = $this->purchaseobj->get($id);
+        $purchase_voucher_res = $this->purchaseobj->getPurchaseVoucher($id);
 
         $purchase_voucher_data = array();
 

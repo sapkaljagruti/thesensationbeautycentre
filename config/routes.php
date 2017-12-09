@@ -15,11 +15,12 @@ $controllers = array(
     'Product' => ['getproducts', 'getproduct', 'addproduct', 'updateproduct', 'deleteproduct', 'findProductByTerm', 'checkProductNameExist', 'checkQty', 'checkQtyForPurhase', 'checkQtyForSales'],
     'Party' => ['getall', 'add', 'update', 'get', 'delete', 'getPartyNameByTerm', 'getById', 'checkPartyNameExist'],
     'Purchase' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist', 'delete', 'update', 'printBill'],
-    'Sale' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist', 'delete'],
+    'Sale' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist', 'delete', 'printBill'],
     'Creditnotes' => ['getall', 'add', 'checkCreditNoteExist'],
     'Debitnotes' => ['getall', 'add', 'checkDebitNoteExist'],
     'Contra' => ['getall', 'add', 'checkDebitNoteExist'],
     'Journal' => ['getall', 'add', 'getAllAccounts', 'checkLedgerNameExist'],
+    'Company_setting' => ['add'],
 );
 
 // check that the requested controller and action are both allowed
@@ -85,6 +86,9 @@ if (array_key_exists($controller, $controllers)) {
                 break;
             case 'Journal':
                 $controller = new JournalController();
+                break;
+            case 'Company_setting':
+                $controller = new Company_settingController();
                 break;
         }
 

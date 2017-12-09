@@ -62,11 +62,6 @@ class Purchase {
         }
     }
 
-    public function get($id) {
-        $purchase_voucher_res = $this->conn->query('SELECT * FROM purchase_vouchers WHERE id=' . $id);
-        return $purchase_voucher_res;
-    }
-
     public function updatePurchaseVoucher($id, $date, $purchase_ledger_id, $invoice_no, $invoice_date, $purchase_type_id, $party_id, $products_data, $total_qty, $total_rate_per_unit, $total_discount_percentage, $total_discount_rs, $total_cgst_percentage, $total_cgst_rs, $total_sgst_percentage, $total_sgst_rs, $total_igst_percentage, $total_igst_rs, $total_bill_amount) {
         $purchase_voucher = $this->conn->query('UPDATE purchase_vouchers SET date="' . $date . '", purchase_ledger_id="' . $purchase_ledger_id . '", invoice_no="' . $invoice_no . '", invoice_date="' . $invoice_date . '", purchase_type_id="' . $purchase_type_id . '", party_id="' . $party_id . '", products_data="' . $products_data . '", total_qty="' . $total_qty . '", total_rate_per_unit="' . $total_rate_per_unit . '", total_discount_percentage="' . $total_discount_percentage . '", total_discount_rs="' . $total_discount_rs . '", total_cgst_percentage="' . $total_cgst_percentage . '", total_cgst_rs="' . $total_cgst_rs . '", total_sgst_percentage="' . $total_sgst_percentage . '", total_sgst_rs="' . $total_sgst_rs . '", total_igst_percentage="' . $total_igst_percentage . '", total_igst_rs="' . $total_igst_rs . '", total_bill_amount="' . $total_bill_amount . '" WHERE id=' . $id);
         if ($purchase_voucher === TRUE) {
