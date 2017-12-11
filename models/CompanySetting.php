@@ -24,8 +24,8 @@ class CompanySetting {
 //        return $account_groups;
 //    }
 //
-    public function getCompanySetting($id) {
-        $company_setting = $this->conn->query('SELECT * FROM company_setting WHERE id=' . $id);
+    public function getCompanySetting() {
+        $company_setting = $this->conn->query('SELECT * FROM company_setting');
         return $company_setting;
     }
 //

@@ -52,8 +52,14 @@ class CreditNotesController {
         if (!empty($_POST)) {
             $errors = array();
 
+            $credit_note_no = trim($_POST['credit_note_no']);
+
+            $invoiceExistsRes = $this->creditnotesobj->checkCreditNoteExist(NULL, $credit_note_no);
+            if ($invoiceExistsRes) {
+                array_push($errors, 'Credit Note no already exists. Please try again.');
+            }
+
             if (empty($errors)) {
-                $credit_note_no = trim($_POST['credit_note_no']);
                 $party_id = trim($_POST['party_id']);
                 $sales_invoice_data = !empty($_POST['sales_invoice_data']) ? trim($_POST['sales_invoice_data']) : NULL;
                 $narration = $_POST['narration'];

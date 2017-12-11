@@ -240,25 +240,6 @@ $(document).on('change', '#party_id', function () {
                         } else {
                             $('#group_parent').html('<font color="blue"><i>' + obj.parent_name + '</i></font>');
                         }
-
-                        $('#party_name').attr('disabled', 'disabled');
-                        $('#party_parent_id').attr('disabled', 'disabled');
-                        $('#opening_balance').attr('disabled', 'disabled');
-                        $('#contact_person').attr('disabled', 'disabled');
-                        $('#email').attr('disabled', 'disabled');
-                        $('#area').attr('disabled', 'disabled');
-                        $('#city').attr('disabled', 'disabled');
-                        $('#pincode').attr('disabled', 'disabled');
-                        $('#mobile1').attr('disabled', 'disabled');
-                        $('#mobile2').attr('disabled', 'disabled');
-                        $('#party_bank_name').attr('disabled', 'disabled');
-                        $('#party_bank_branch').attr('disabled', 'disabled');
-                        $('#party_ifsc_code').attr('disabled', 'disabled');
-                        $('#party_bank_account_no').attr('disabled', 'disabled');
-                        $('#party_pan').attr('disabled', 'disabled');
-                        $('#party_gst_state_code_id').attr('disabled', 'disabled');
-                        $('#party_gst_type_id').attr('disabled', 'disabled');
-                        $('#party_gstin').attr('disabled', 'disabled');
                     }
                 });
             },
@@ -272,7 +253,7 @@ $(document).on('change', '#party_id', function () {
     } else {
         $('#party_name').val('');
         $('#is_valid_party_name').val('0');
-        $('#party_parent_id').val('44');
+        $('#party_parent_id').val('40');
         $('#group_parent').html('<font color="blue"><i>(Current Liabilities)</i></font>');
         $('#opening_balance').val('');
         $('#contact_person').val('');
@@ -290,25 +271,6 @@ $(document).on('change', '#party_id', function () {
         $('#party_gst_state_code_id').val('0');
         $('#party_gst_type_id').val('3');
         $('#party_gstin').val('');
-
-        $('#party_name').removeAttr('disabled');
-        $('#party_parent_id').removeAttr('disabled');
-        $('#opening_balance').removeAttr('disabled');
-        $('#contact_person').removeAttr('disabled');
-        $('#email').removeAttr('disabled');
-        $('#area').removeAttr('disabled');
-        $('#city').removeAttr('disabled');
-        $('#pincode').removeAttr('disabled');
-        $('#mobile1').removeAttr('disabled');
-        $('#mobile2').removeAttr('disabled');
-        $('#party_bank_name').removeAttr('disabled');
-        $('#party_bank_branch').removeAttr('disabled');
-        $('#party_ifsc_code').removeAttr('disabled');
-        $('#party_bank_account_no').removeAttr('disabled');
-        $('#party_pan').removeAttr('disabled');
-        $('#party_gst_state_code_id').removeAttr('disabled');
-        $('#party_gst_type_id').removeAttr('disabled');
-        $('#party_gstin').removeAttr('disabled');
     }
 });
 

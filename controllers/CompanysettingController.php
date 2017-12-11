@@ -1,6 +1,6 @@
 <?php
 
-class Company_settingController {
+class CompanysettingController {
 
     public $companysettingobj;
 //    public $gst_obj;
@@ -52,8 +52,8 @@ class Company_settingController {
         $page_header = 'Company Setting Details';
         $extra_js_files = $this->extra_js_files;
 
-        $id = trim($_GET['id']);
-        $company_setting_res = $this->companysettingobj->getCompanySetting($id);
+//        $id = trim($_GET['id']);
+        $company_setting_res = $this->companysettingobj->getCompanySetting();
         if ($company_setting_res->num_rows > 0) {
             $company_setting = array();
             while ($company_setting = mysqli_fetch_assoc($company_setting_res)) {
@@ -134,7 +134,7 @@ class Company_settingController {
 
                 $account_groups[] = $account_group;
             }
-            $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
+//            $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
             $view_file = '/views/account_group_details.php';
             require_once APP_DIR . '/views/layout.php';
         } else {

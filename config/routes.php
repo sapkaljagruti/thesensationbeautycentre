@@ -20,7 +20,7 @@ $controllers = array(
     'Debitnotes' => ['getall', 'add', 'checkDebitNoteExist'],
     'Contra' => ['getall', 'add', 'checkDebitNoteExist'],
     'Journal' => ['getall', 'add', 'getAllAccounts', 'checkLedgerNameExist'],
-    'Company_setting' => ['add'],
+    'Companysetting' => ['get'],
 );
 
 // check that the requested controller and action are both allowed
