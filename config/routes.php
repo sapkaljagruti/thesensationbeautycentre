@@ -21,6 +21,7 @@ $controllers = array(
     'Contra' => ['getall', 'add', 'checkDebitNoteExist'],
     'Journal' => ['getall', 'add', 'getAllAccounts', 'checkLedgerNameExist'],
     'Companysetting' => ['get'],
+    'Profile'=>['get'],
 );
 
 // check that the requested controller and action are both allowed
@@ -89,6 +90,9 @@ if (array_key_exists($controller, $controllers)) {
                 break;
             case 'Company_setting':
                 $controller = new Company_settingController();
+                break;
+            case 'Profile':
+                $controller = new ProfileController();
                 break;
         }
 
