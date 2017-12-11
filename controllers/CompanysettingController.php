@@ -3,7 +3,8 @@
 class CompanysettingController {
 
     public $companysettingobj;
-//    public $gst_obj;
+    public $gst_obj;
+
 //    public $brand_obj;
 //    public $ex_ins_staff_members_nots;  
 
@@ -12,8 +13,8 @@ class CompanysettingController {
         require_once 'models/CompanySetting.php';
         $this->companysettingobj = new CompanySetting();
 
-//        require_once 'models/Gst.php';
-//        $this->gst_obj = new Gst();
+        require_once 'models/Gst.php';
+        $this->gst_obj = new Gst();
 //
 //        require_once 'models/Brand.php';
 //        $this->brand_obj = new Brand();
@@ -22,7 +23,6 @@ class CompanysettingController {
 //        $this->staffobj = new Staff();
 //
 //        $this->ex_ins_staff_members_nots = array();
-
 //        $ex_ins_staff_members_res = $this->staffobj->getInsuranceExStaff();
 //        if ($ex_ins_staff_members_res->num_rows > 0) {
 //            while ($ex_ins_staff_members = mysqli_fetch_assoc($ex_ins_staff_members_res)) {
@@ -33,109 +33,84 @@ class CompanysettingController {
         $this->extra_js_files = array('plugins/datatables/jquery.dataTables.min.js', 'plugins/datatables/dataTables.bootstrap.min.js', 'plugins/select2/select2.full.js', 'js/account_groups.js');
     }
 
-//    public function getall() {
-//        $page_header = 'Account Groups';
-//        $extra_js_files = $this->extra_js_files;
-//        $account_groups_res = $this->accountgroupobj->getall();
-//        if ($account_groups_res->num_rows > 0) {
-//            while ($account_group = $account_groups_res->fetch_assoc()) {
-//                $account_group['name'] = ucwords($account_group['name']);
-//                $account_groups[] = $account_group;
-//            }
-//        }
-//        $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
-//        $view_file = '/views/account_groups.php';
-//        require_once APP_DIR . '/views/layout.php';
-//    }
-
     public function get() {
         $page_header = 'Company Setting Details';
         $extra_js_files = $this->extra_js_files;
 
-//        $id = trim($_GET['id']);
+        if (!empty($_POST)) {
+            $errors = array();
+//            $name = strtolower(trim($_POST['name']));
+//
+//            $groupExistsres = $this->companysettingobj->checkNameExist($id, $name);
+//            if ($groupExistsres) {
+//                array_push($errors, 'Group name already exists. Please try with different name.');
+//            }
+
+            if (empty($errors)) {
+                $id = trim($_POST['id']);
+                $name = !empty($_POST['name']) ? $_POST['name'] : NULL;
+//                $parent_id = !empty($_POST['parent_id']) ? $_POST['parent_id'] : NULL;
+                $opening_balance = !empty($_POST['opening_balance']) ? $_POST['opening_balance'] : NULL;
+                $contact_person = !empty($_POST['contact_person']) ? $_POST['contact_person'] : NULL;
+                $area = !empty($_POST['area']) ? $_POST['area'] : NULL;
+                $city = !empty($_POST['city']) ? $_POST['city'] : NULL;
+                $pincode = !empty($_POST['pincode']) ? $_POST['pincode'] : NULL;
+                $gst_state_code_id = !empty($_POST['gst_state_code_id']) ? $_POST['gst_state_code_id'] : NULL;
+                $email = !empty($_POST['email']) ? trim($_POST['email']) : NULL;
+                $mobile1 = !empty($_POST['mobile1']) ? trim($_POST['mobile1']) : NULL;
+                $mobile2 = !empty($_POST['mobile2']) ? trim($_POST['mobile2']) : NULL;
+                $bank_name = !empty($_POST['bank_name']) ? trim($_POST['bank_name']) : NULL;
+                $bank_branch = !empty($_POST['bank_branch']) ? trim($_POST['bank_branch']) : NULL;
+                $ifsc_code = !empty($_POST['ifsc_code']) ? trim($_POST['ifsc_code']) : NULL;
+                $bank_account_no = !empty($_POST['bank_account_no']) ? trim($_POST['bank_account_no']) : NULL;
+                $pan = !empty($_POST['pan']) ? strtoupper(trim($_POST['pan'])) : NULL;
+                $gst_type_id = !empty($_POST['gst_type_id']) ? trim($_POST['gst_type_id']) : NULL;
+                $gstin = !empty($_POST['gstin']) ? strtoupper(trim($_POST['gstin'])) : NULL;
+
+
+                $company_setting = $this->companysettingobj->update($id, $name, $opening_balance, $contact_person, $area, $city, $pincode, $gst_state_code_id, $email, $mobile1, $mobile2, $bank_name, $bank_branch, $ifsc_code, $bank_account_no, $pan, $gst_type_id, $gstin);
+            }
+        }
+
+//       $id = trim($_GET['id']);
         $company_setting_res = $this->companysettingobj->getCompanySetting();
         if ($company_setting_res->num_rows > 0) {
-            $company_setting = array();
+            $company_settings = array();
             while ($company_setting = mysqli_fetch_assoc($company_setting_res)) {
                 $company_setting['name'] = ucwords($company_setting['name']);
-
-//                $account_group['parent'] = '';
-//
-//                $parent_group_res = $this->accountgroupobj->getAccountGroup($account_group['parent_id']);
-//                if ($parent_group_res) {
-//                    if ($parent_group_res->num_rows > 0) {
-//                        while ($parent_group = $parent_group_res->fetch_assoc()) {
-//                            $account_group['parent'] = ucwords($parent_group['name']);
-//                            $grand_parent_group_res = $this->accountgroupobj->getAccountGroup($parent_group['parent_id']);
-//                            if ($grand_parent_group_res) {
-//                                if ($grand_parent_group_res->num_rows > 0) {
-//                                    while ($grand_parent_group = $grand_parent_group_res->fetch_assoc()) {
-//                                        $account_group['parent'] = ucwords($parent_group['name']) . '<br/><i>(' . $grand_parent_group['name'] . ')</i>';
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    } else {
-//                        $account_group['parent'] = '';
-//                    }
-//                } else {
-//                    $account_group['parent'] = '';
-//                }
-
-                $$company_setting['contact_person'] = ucwords($company_setting['contact_person']);
+                
+                $company_setting['contact_person'] = ucwords($company_setting['contact_person']);
 
                 if (!empty($company_setting['gst_type_id'])) {
-                    $gst_type_res = $this->gst_obj->getGstType($account_group['gst_type_id']);
+                    $gst_type_res = $this->gst_obj->getGstType($company_setting['gst_type_id']);
                     if ($gst_type_res->num_rows > 0) {
                         while ($gst_type = mysqli_fetch_assoc($gst_type_res)) {
                             $company_setting['gst_type'] = ucwords($gst_type['title']);
                         }
                     } else {
-                        $account_group['gst_type'] = '';
+                        $company_setting['gst_type'] = '';
                     }
                 } else {
-                    $account_group['gst_type'] = '';
+                    $company_setting['gst_type'] = '';
                 }
 
-                if (!empty($account_group['gst_state_code_id'])) {
-                    $gst_state_res = $this->gst_obj->getGstState($account_group['gst_state_code_id']);
+                if (!empty($company_setting['gst_state_code_id'])) {
+                    $gst_state_res = $this->gst_obj->getGstState($company_setting['gst_state_code_id']);
                     if ($gst_state_res->num_rows > 0) {
                         while ($gst_state = mysqli_fetch_assoc($gst_state_res)) {
-                            $account_group['state'] = ucwords($gst_state['state']);
+                            $company_setting['state'] = ucwords($gst_state['state']);
                         }
                     } else {
-                        $account_group['state'] = '';
+                        $company_setting['state'] = '';
                     }
                 } else {
-                    $account_group['state'] = '';
+                    $company_setting['state'] = '';
                 }
 
-                if (!empty($account_group['brand_ids'])) {
-                    $brand_ids = explode(',', $account_group['brand_ids']);
-                    $account_group_brands = array();
-
-                    foreach ($brand_ids as $brand_id) {
-                        $gst_brand_res = $this->brand_obj->getBrand($brand_id);
-                        if ($gst_brand_res->num_rows > 0) {
-                            while ($brand = mysqli_fetch_assoc($gst_brand_res)) {
-                                array_push($account_group_brands, ucwords($brand['name']));
-                            }
-                        }
-                    }
-
-                    if (!empty($account_group_brands)) {
-                        $account_group['brands'] = implode(', ', $account_group_brands);
-                    } else {
-                        $account_group['brands'] = '';
-                    }
-                } else {
-                    $account_group['brands'] = '';
-                }
-
-                $account_groups[] = $account_group;
+                $company_settings[] = $company_setting;
             }
-//            $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
-            $view_file = '/views/account_group_details.php';
+
+            $view_file = '/views/add_company_setting.php';
             require_once APP_DIR . '/views/layout.php';
         } else {
             header('location: home.php?controller=error&action=index');
@@ -244,7 +219,7 @@ class CompanysettingController {
     }
 
     public function update() {
-        $page_header = 'Update Account Group';
+//        $page_header = 'Update Account Group';
         $extra_js_files = $this->extra_js_files;
 
         $id = trim($_GET['id']);
@@ -252,16 +227,17 @@ class CompanysettingController {
         if (!empty($_POST)) {
             $errors = array();
 
-            $name = strtolower(trim($_POST['name']));
-
-            $groupExistsres = $this->accountgroupobj->checkNameExist($id, $name);
-            if ($groupExistsres) {
-                array_push($errors, 'Group name already exists. Please try with different name.');
-            }
+//            $name = strtolower(trim($_POST['name']));
+//
+//            $groupExistsres = $this->companysettingobj->checkNameExist($id, $name);
+//            if ($groupExistsres) {
+//                array_push($errors, 'Group name already exists. Please try with different name.');
+//            }
 
             if (empty($errors)) {
                 $id = trim($_POST['id']);
-                $parent_id = !empty($_POST['parent_id']) ? $_POST['parent_id'] : NULL;
+                $name = !empty($_POST['name']) ? $_POST['name'] : NULL;
+//                $parent_id = !empty($_POST['parent_id']) ? $_POST['parent_id'] : NULL;
                 $opening_balance = !empty($_POST['opening_balance']) ? $_POST['opening_balance'] : NULL;
                 $contact_person = !empty($_POST['contact_person']) ? $_POST['contact_person'] : NULL;
                 $area = !empty($_POST['area']) ? $_POST['area'] : NULL;
@@ -278,30 +254,31 @@ class CompanysettingController {
                 $pan = !empty($_POST['pan']) ? strtoupper(trim($_POST['pan'])) : NULL;
                 $gst_type_id = !empty($_POST['gst_type_id']) ? trim($_POST['gst_type_id']) : NULL;
                 $gstin = !empty($_POST['gstin']) ? strtoupper(trim($_POST['gstin'])) : NULL;
-                $brand_ids = !empty($_POST['brand_ids']) ? implode(',', $_POST['brand_ids']) : NULL;
+//                $brand_ids = !empty($_POST['brand_ids']) ? implode(',', $_POST['brand_ids']) : NULL;
 
-                $accountgroup = $this->accountgroupobj->update($id, $name, $parent_id, $opening_balance, $contact_person, $area, $city, $pincode, $gst_state_code_id, $email, $mobile1, $mobile2, $bank_name, $bank_branch, $ifsc_code, $bank_account_no, $pan, $gst_type_id, $gstin, $brand_ids);
-                if ($accountgroup) {
-                    header('location: home.php?controller=accountgroup&action=getall');
+                $company_setting = $this->companysettingobj->update($id, $name, $opening_balance, $contact_person, $area, $city, $pincode, $gst_state_code_id, $email, $mobile1, $mobile2, $bank_name, $bank_branch, $ifsc_code, $bank_account_no, $pan, $gst_type_id, $gstin);
+
+                if ($company_setting) {
+                    header('location: home.php?controller=companysetting&action=get');
                 } else {
                     array_push($errors, 'Something went wrong. Please try again later.');
                 }
             }
         }
 
-        $account_group_details = array();
+        $company_setting_details = array();
 
-        $account_group_res = $this->accountgroupobj->getAccountGroup($id);
-        if ($account_group_res->num_rows == 1) {
-            while ($account_group_detail = mysqli_fetch_assoc($account_group_res)) {
-                $account_group_details[] = $account_group_detail;
+        $company_setting_res = $this->companysettingobj->getCompanySetting();
+        if ($company_setting_res->num_rows == 1) {
+            while ($company_setting_detail = mysqli_fetch_assoc($company_setting_res)) {
+                $company_setting_details[] = $company_setting_detail;
             }
 
-            $account_groups_res = $this->accountgroupobj->getallExceptThis($id);
-            if ($account_groups_res->num_rows > 0) {
-                while ($account_group = $account_groups_res->fetch_assoc()) {
-                    $account_group['name'] = ucwords($account_group['name']);
-                    $account_groups[] = $account_group;
+            $company_setting_res = $this->companysettingobj->getall();
+            if ($company_setting_res->num_rows > 0) {
+                while ($company_setting = $company_setting_res->fetch_assoc()) {
+                    $company_setting['name'] = ucwords($company_setting['name']);
+                    $company_settings[] = $company_setting;
                 }
             }
 
@@ -321,16 +298,16 @@ class CompanysettingController {
                 }
             }
 
-            $brands_res = $this->brand_obj->getAll();
-            if ($brands_res->num_rows > 0) {
-                while ($brand = mysqli_fetch_assoc($brands_res)) {
-                    $brand['name'] = ucwords($brand['name']);
-                    $brands[] = $brand;
-                }
-            }
-
-            $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
-            $view_file = '/views/update_account_group.php';
+//            $brands_res = $this->brand_obj->getAll();
+//            if ($brands_res->num_rows > 0) {
+//                while ($brand = mysqli_fetch_assoc($brands_res)) {
+//                    $brand['name'] = ucwords($brand['name']);
+//                    $brands[] = $brand;
+//                }
+//            }
+//
+//            $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
+            $view_file = '/views/add_company_setting.php';
             require_once APP_DIR . '/views/layout.php';
         } else {
             header('location: home.php?controller=error&action=index');

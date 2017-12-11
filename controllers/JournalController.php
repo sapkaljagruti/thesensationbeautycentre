@@ -3,16 +3,13 @@
 class JournalController {
 
     public $journalobj;
-    public $accountobj;
+    public $accountgroupobj;
     public $ex_ins_staff_members_nots;
 
     public function __construct() {
 
         require_once 'models/Journal.php';
         $this->journalobj = new Journal();
-
-        require_once 'models/Account.php';
-        $this->accountobj = new Account();
 
         require_once 'models/AccountGroup.php';
         $this->accountgroupobj = new AccountGroup();
@@ -45,7 +42,7 @@ class JournalController {
         $res = array();
         $term = trim($_POST['term']);
 
-        $accounts_res = $this->accountobj->getAcsByTerm($term);
+        $accounts_res = $this->accountgroupobj->getNotDefaultLedgers($term);
 
         if ($accounts_res->num_rows > 0) {
             while ($account = $accounts_res->fetch_assoc()) {
@@ -63,7 +60,7 @@ class JournalController {
         $ledger_name = trim($_POST['ledger_name']);
         $exist = 1;
 
-        $accounts_res = $this->accountobj->checkLedgerNameExist($ledger_name);
+        $accounts_res = $this->accountgroupobj->checkLedgerNameExist($ledger_name);
         if ($accounts_res->num_rows <= 0) {
             $exist = 0;
         }
@@ -106,7 +103,7 @@ class JournalController {
         }
 
         $ledger_names = [];
-        $ledger_names_res = $this->accountobj->getContraLedgers();
+        $ledger_names_res = $this->accountgroupobj->getContraLedgers();
         if ($ledger_names_res->num_rows > 0) {
             while ($ledger_name = $ledger_names_res->fetch_assoc()) {
                 array_push($ledger_names, $ledger_name);

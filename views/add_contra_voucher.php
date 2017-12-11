@@ -97,13 +97,13 @@ if (isset($errors)) {
                             <label for="ledger_name" class="col-sm-2 control-label" id="ledger_name_label"> Account</label>
                             <div class="col-sm-2">
                                 <select class="form-control" id="ledger_name" name="ledger_name">
-                                    <option value="">Select Account</option>
+                                    <option value="" data-pid="0">Select Account</option>
                                     <?php
                                     if (isset($ledger_names)) {
                                         if (count($ledger_names) > 0) {
                                             foreach ($ledger_names as $ledger_name) {
                                                 ?>
-                                                <option value="<?php echo $ledger_name['id']; ?>"><?php echo ucwords($ledger_name['name']); ?></option>
+                                                <option data-pid="<?php echo $ledger_name['parent_id']; ?>" value="<?php echo $ledger_name['id']; ?>"><?php echo ucwords($ledger_name['name']); ?></option>
                                                 <?php
                                             }
                                         }
@@ -114,11 +114,24 @@ if (isset($errors)) {
                             </div>
                             <label for="amount" class="col-sm-2 control-label" id="amount_label">Amount</label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" id="amount" name="amount" placeholder="Amount" value="" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
+                                <input type="text" class="form-control decimal" id="amount" name="amount" placeholder="Amount" value="" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
                                 <span id="amount_help_block" class="help-block"></span>
                             </div>
                             <div class="col-sm-1">
                                 <button type="button" class="btn btn-block btn-info" id="proceed_particular"><i class="fa fa-plus"></i> Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="cheque_details_div" style="display: none;">
+                        <div class="form-group">
+                            <label for="cheque_date" class="col-sm-2 control-label" id="cheque_date_label">Cheque Date</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="cheque_date" name="cheque_date" placeholder="Cheque Date" value="<?php echo isset($_POST['cheque_date']) ? $_POST['cheque_date'] : ''; ?>">
+                                <span id="cheque_date_help_block" class="help-block"></span>
+                            </div>
+                            <label for="cheque_no" class="col-sm-2 control-label">Cheque No</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="cheque_no" name="cheque_no" placeholder="Cheque No" value="<?php echo isset($_POST['cheque_no']) ? $_POST['cheque_no'] : ''; ?>">
                             </div>
                         </div>
                     </div>

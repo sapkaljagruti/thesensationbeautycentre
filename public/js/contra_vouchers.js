@@ -16,6 +16,15 @@ function allowOnlyNumberWithDecimal(evt) {
     return true;
 }
 
+$(document).on('keypress', '.decimal', function (evt) {
+    var ele_val = $(this).val();
+    var decimal_index = ele_val.indexOf('.');
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (decimal_index != '-1' && charCode == 46) {
+        return false;
+    }
+});
+
 function showSuccess(msg, timeout) {
     $('.alert').removeClass('alert-danger');
     $('.alert').addClass('alert-success');
@@ -147,6 +156,7 @@ $(document).on('click', '#delete', function () {
 $(function () {
 
     $("#date").inputmask("dd-mm-yyyy", {"placeholder": "dd-mm-yyyy"});
+    $("#cheque_date").inputmask("dd-mm-yyyy", {"placeholder": "dd-mm-yyyy"});
     $('#delete_selected').attr('disabled', true);
 
     var t = $('#contra_vouchers_table').DataTable({
@@ -174,6 +184,15 @@ $(document).on('change', '#ledger_name', function () {
     var ledger_id = $(this).val();
     if ($('#tr_' + ledger_id).length) {
         $(this).val('');
+    } else {
+        var pid = $(this).find('option:selected').attr('data-pid');
+        $('#cheque_date').val('');
+        $('#cheque_no').val('');
+        if (pid != "0" && pid != "32") {
+            $('#cheque_details_div').fadeIn();
+        } else {
+            $('#cheque_details_div').fadeOut();
+        }
     }
 });
 
@@ -191,6 +210,9 @@ $(document).on('click', '#proceed_particular', function () {
 
     var ledger_id = $('#ledger_name').val();
     var ledger_name = $('#ledger_name').find('option:selected').text();
+
+    var cheque_no = '';
+    var cheque_date = '';
 
     if ($('#amount').val() == '') {
         $('#amount').css('border-color', '#dd4b39');
@@ -238,19 +260,55 @@ $(document).on('click', '#proceed_particular', function () {
         }
     }
 
+    var is_valid_cheque_date = isValidDate($('#cheque_date').val());
+    if ($.trim($('#cheque_date').val()) != '') {
+        if (!(is_valid_cheque_date)) {
+            $('#cheque_date_label').css('color', '#dd4b39');
+            $('#cheque_date').css('border-color', '#dd4b39');
+            $('#cheque_date_help_block').html('<font color="#dd4b39">Please enter valid date</font>');
+            proceed = 0;
+        } else {
+            $('#cheque_date_label').css('color', 'black');
+            $('#cheque_date').css('border-color', 'rgb(210, 214, 222)');
+            $('#cheque_date_help_block').html('');
+        }
+    } else {
+        $('#cheque_date_label').css('color', 'black');
+        $('#cheque_date').css('border-color', 'rgb(210, 214, 222)');
+        $('#cheque_date_help_block').html('');
+    }
+
     if (proceed != 0) {
         var table = $('#particulars_table').DataTable();
 
         var cr_td_val = '';
         var dr_td_val = '';
 
+        var from_to = '';
+
         if (entry_type == 'cr') {
+            from_to = 'to';
             cr_td_val = amount;
         } else if (entry_type == 'dr') {
+            from_to = 'from';
             dr_td_val = amount;
         }
 
         var rowNode = table.row.add([ledger_id, ledger_name, dr_td_val, cr_td_val]).draw().node();
+
+        var narration = $('#narration').val();
+
+        if ($.trim($('#cheque_no').val()) != '') {
+            cheque_no = ' Cheque No.: ' + $.trim($('#cheque_no').val());
+        }
+
+        if ($.trim($('#cheque_date').val()) != '') {
+            cheque_date = ' Cheque Date.: ' + $.trim($('#cheque_date').val());
+        }
+
+        var automatic_narration = ucwords(entry_type) + ' ' + amount + ' ' + from_to + ' ' + ledger_name + cheque_no + cheque_date + ', ';
+        narration = narration + automatic_narration;
+        $('#narration').val(narration);
 
         $(rowNode).attr('id', 'tr_' + ledger_id);
         $(rowNode).attr('data-type', entry_type);
@@ -342,6 +400,24 @@ $(document).on('submit', 'form', function () {
         $('#date_label').css('color', 'black');
         $('#date').css('border-color', 'rgb(210, 214, 222)');
         $('#date_help_block').html('');
+    }
+
+    var is_valid_cheque_date = isValidDate($('#cheque_date').val());
+    if ($.trim($('#cheque_date').val()) != '') {
+        if (!(is_valid_cheque_date)) {
+            $('#cheque_date_label').css('color', '#dd4b39');
+            $('#cheque_date').css('border-color', '#dd4b39');
+            $('#cheque_date_help_block').html('<font color="#dd4b39">Please enter valid date</font>');
+            proceed = 0;
+        } else {
+            $('#cheque_date_label').css('color', 'black');
+            $('#cheque_date').css('border-color', 'rgb(210, 214, 222)');
+            $('#cheque_date_help_block').html('');
+        }
+    } else {
+        $('#cheque_date_label').css('color', 'black');
+        $('#cheque_date').css('border-color', 'rgb(210, 214, 222)');
+        $('#cheque_date_help_block').html('');
     }
 
     if (!($('.particulars').length)) {

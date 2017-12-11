@@ -10,11 +10,12 @@ $controllers = array(
     'Brand' => ['getBrands', 'addBrand', 'getBrand', 'updateBrand', 'deleteBrand', 'checkNameExist'],
     'Customer' => ['getCustomers', 'getCustomer', 'addCustomer', 'updateCustomer', 'deleteCutomer'],
     'Staff' => ['getstaffmembers', 'addstaff', 'getstaffmember', 'updatestaff', 'deletestaff'],
-    'Accountgroup' => ['getall', 'get', 'add', 'getParentName', 'update', 'deleteacgroup', 'checkNameExist', 'getById', 'findSalesLedgerByTerm', 'findSalesLedgerByTerm'],
+    'Accountgroup' => ['getall', 'get', 'add', 'getParentName', 'update', 'deleteacgroup', 'checkNameExist', 'getById', 'findSalesLedgerByTerm', 'findPurchaseLedgerByTerm'],
     'Productcategory' => ['getcategories', 'addcategory', 'getcategory', 'updatecategory', 'deletecategory', 'checkNameExist'],
     'Product' => ['getproducts', 'getproduct', 'addproduct', 'updateproduct', 'deleteproduct', 'findProductByTerm', 'checkProductNameExist', 'checkQty', 'checkQtyForPurhase', 'checkQtyForSales'],
     'Party' => ['getall', 'add', 'update', 'get', 'delete', 'getPartyNameByTerm', 'getById', 'checkPartyNameExist'],
     'Purchase' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist', 'delete', 'update', 'printBill'],
+    'Purchasereturn' => ['getbills', 'add'],
     'Sale' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist', 'delete', 'printBill'],
     'Creditnotes' => ['getall', 'add', 'checkCreditNoteExist'],
     'Debitnotes' => ['getall', 'add', 'checkDebitNoteExist'],
@@ -73,6 +74,9 @@ if (array_key_exists($controller, $controllers)) {
             case 'Purchase':
                 $controller = new PurchaseController();
                 break;
+            case 'Purchasereturn':
+                $controller = new PurchaseReturnController();
+                break;
             case 'Sale':
                 $controller = new SaleController();
                 break;
@@ -88,8 +92,8 @@ if (array_key_exists($controller, $controllers)) {
             case 'Journal':
                 $controller = new JournalController();
                 break;
-            case 'Company_setting':
-                $controller = new Company_settingController();
+            case 'Companysetting':
+                $controller = new CompanysettingController();
                 break;
             case 'Profile':
                 $controller = new ProfileController();

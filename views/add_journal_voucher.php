@@ -102,7 +102,7 @@ if (isset($errors)) {
                             </div>
                             <label for="amount" class="col-sm-2 control-label" id="amount_label">Amount</label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" id="amount" name="amount" placeholder="Amount" value="" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
+                                <input type="text" class="form-control decimal" id="amount" name="amount" placeholder="Amount" value="" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
                                 <span id="amount_help_block" class="help-block"></span>
                             </div>
                             <div class="col-sm-1">

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2017 at 12:56 AM
+-- Generation Time: Dec 12, 2017 at 03:14 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -103,7 +103,11 @@ INSERT INTO `account_groups` (`id`, `parent_id`, `name`, `opening_balance`, `con
 (69, 44, 'salon party1', 0, 'jagruti', '', '', '', 24, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-11-18 10:50:28', '2017-11-23 17:24:22'),
 (70, 57, 'domestic sales', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-11-18 11:31:30', '2017-11-18 11:31:30'),
 (71, 44, 'patel trading co', 0, '', '', '', '', 0, '', '', '', 'bank Of Baroda', 'tithal road valsad', 'BARB0TITHAL', '121212121', '', 3, '', '', 0, 0, '2017-12-05 14:27:55', '2017-12-07 12:10:03'),
-(72, 40, 'beauty salon', 0, 'Mahi', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-08 14:27:54', '2017-12-08 14:27:54');
+(72, 40, 'beauty salon', 0, 'Mahi', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-08 14:27:54', '2017-12-08 14:27:54'),
+(73, 57, 'testsales', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-10 17:14:09', '2017-12-10 17:14:09'),
+(74, 32, 'cash', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-11 12:49:17', '2017-12-11 12:49:17'),
+(75, 29, 'bank of baroda account', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-11 12:56:52', '2017-12-11 12:56:52'),
+(76, 29, 'hdfc account', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-11 12:57:14', '2017-12-11 12:57:14');
 
 -- --------------------------------------------------------
 
@@ -223,7 +227,7 @@ CREATE TABLE `company_setting` (
 --
 
 INSERT INTO `company_setting` (`id`, `name`, `opening_balance`, `contact_person`, `area`, `city`, `pincode`, `gst_state_code_id`, `email`, `mobile1`, `mobile2`, `bank_name`, `bank_branch`, `ifsc_code`, `bank_account_no`, `pan`, `gst_type_id`, `gstin`, `is_default`, `is_deleted`, `created_at`, `updated_at`) VALUES
-(1, 'Capital Account', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 0, '', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 'Capital Account', 500, 'ABC', '', 'Valsad', '39601', 0, 'abc@mail.com', '78965413', '', '', '', '', '', '', 0, '', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -247,7 +251,9 @@ CREATE TABLE `contra_vouchers` (
 
 INSERT INTO `contra_vouchers` (`id`, `date`, `entry_data`, `total_amount`, `narration`, `created_at`, `updated_at`) VALUES
 (1, '2017-11-03', 'cr_4_500,dr_3_500', 500, '', '2017-11-03 15:41:33', '2017-11-03 15:41:33'),
-(2, '2017-11-06', 'cr_4_500,dr_3_200,dr_2_300', 500, '', '2017-11-06 11:54:48', '2017-11-06 11:54:48');
+(2, '2017-11-06', 'cr_4_500,dr_3_200,dr_2_300', 500, '', '2017-11-06 11:54:48', '2017-11-06 11:54:48'),
+(3, '2017-12-12', 'cr_76_500,dr_75_485,dr_74_15', 500, '', '2017-12-11 12:58:42', '2017-12-11 12:58:42'),
+(5, '2017-12-12', 'dr_76_500,cr_75_500', 500, 'Cr 500 to Bank Of Baroda Account, Dr 500 from Hdfc Account Cheque Date.: 04-04-2017,', '2017-12-11 16:45:01', '2017-12-11 16:45:01');
 
 -- --------------------------------------------------------
 
@@ -260,9 +266,10 @@ CREATE TABLE `credit_notes` (
   `credit_note_no` varchar(255) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `party_id` int(11) DEFAULT NULL,
-  `sales_invoice_data` longtext,
+  `sales_invoice_data` longtext COMMENT 'sales_ledger_id, amount',
   `narration` longtext,
   `total_amount` double DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -271,8 +278,9 @@ CREATE TABLE `credit_notes` (
 -- Dumping data for table `credit_notes`
 --
 
-INSERT INTO `credit_notes` (`id`, `credit_note_no`, `date`, `party_id`, `sales_invoice_data`, `narration`, `total_amount`, `created_at`, `updated_at`) VALUES
-(1, '123', '2017-11-02', 16, '1_600', '', 600, '2017-11-02 12:13:19', '2017-11-02 12:13:19');
+INSERT INTO `credit_notes` (`id`, `credit_note_no`, `date`, `party_id`, `sales_invoice_data`, `narration`, `total_amount`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(1, '123', '2017-11-02', 16, '1_600', '', 600, 0, '2017-11-02 12:13:19', '2017-11-02 12:13:19'),
+(3, '213', '2017-12-11', 71, '70_500', '', 500, 0, '2017-12-10 17:15:34', '2017-12-10 17:15:34');
 
 -- --------------------------------------------------------
 
@@ -320,9 +328,10 @@ CREATE TABLE `debit_notes` (
   `debit_note_no` varchar(255) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `party_id` int(11) DEFAULT NULL,
-  `purchase_invoice_data` longtext,
+  `purchase_invoice_data` longtext COMMENT 'purchase_ledger_id, amount',
   `narration` text,
   `total_amount` double DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -331,10 +340,8 @@ CREATE TABLE `debit_notes` (
 -- Dumping data for table `debit_notes`
 --
 
-INSERT INTO `debit_notes` (`id`, `debit_note_no`, `date`, `party_id`, `purchase_invoice_data`, `narration`, `total_amount`, `created_at`, `updated_at`) VALUES
-(1, '123', '2017-11-02', 16, '3_600', '', 600, '2017-11-02 13:08:41', '2017-11-02 13:08:41'),
-(2, '123', '2017-11-02', 16, '3_1200', '', 1200, '2017-11-02 13:09:32', '2017-11-02 13:09:32'),
-(3, '1234', '2017-11-02', 16, '3_600', '', 600, '2017-11-02 13:11:26', '2017-11-02 13:11:26');
+INSERT INTO `debit_notes` (`id`, `debit_note_no`, `date`, `party_id`, `purchase_invoice_data`, `narration`, `total_amount`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(4, '456', '2017-12-12', 71, '68_500', '', 500, 0, '2017-12-11 12:36:38', '2017-12-11 12:36:38');
 
 -- --------------------------------------------------------
 
@@ -445,7 +452,7 @@ INSERT INTO `gst_types` (`id`, `title`, `created_at`, `updated_at`) VALUES
 CREATE TABLE `journal_vouchers` (
   `id` int(11) UNSIGNED NOT NULL,
   `date` date DEFAULT NULL,
-  `entry_data` longtext,
+  `entry_data` longtext COMMENT 'cr_or_dr_type, accgrp_id, amount',
   `total_amount` double DEFAULT NULL,
   `narration` text,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -641,6 +648,35 @@ INSERT INTO `products` (`id`, `product_category_id`, `brand_id`, `product_code`,
 (5, 23, 9, '', 'sensation smoothing shampoo', 1182, 64, '399', '', '33049910', 'on_value', 'taxable', '14', '14', '0.00', '0.00', 0, '2017-10-26 16:07:58', '2017-12-06 16:29:26'),
 (6, 23, 9, '', 'sensation smoothing hair conditioner', 1161, 11, '400', '', '33049910', 'on_value', 'taxable', '14', '14', '0.00', '0.00', 0, '2017-10-26 18:20:12', '2017-12-08 18:40:47'),
 (13, 24, 9, '', 'magic toner', 150, 20, '300', '', '330330020', 'on_value', 'taxable', '0.00', '0.00', '0.00', '0.00', 0, '2017-11-15 17:59:51', '2017-11-22 15:22:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `purchase_return_vouchers`
+--
+
+CREATE TABLE `purchase_return_vouchers` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `date` date DEFAULT NULL,
+  `invoice_no` varchar(255) DEFAULT NULL,
+  `invoice_date` date DEFAULT NULL,
+  `purchase_voucher_id` int(11) DEFAULT NULL,
+  `products_data` longtext COMMENT 'product_id, target_account_id, product_name, hsn_code, mrp, qty, final_updated_qty, price, discount_percentage, discount_rs, cgst_percentage, cgst_rs, sgst_percentage, sgst_rs, igst_percentage, igst_rs, total_amount',
+  `total_qty` int(11) DEFAULT NULL,
+  `total_rate_per_unit` double DEFAULT NULL,
+  `total_discount_percentage` double DEFAULT NULL,
+  `total_discount_rs` double DEFAULT NULL,
+  `total_cgst_percentage` double DEFAULT NULL,
+  `total_cgst_rs` double DEFAULT NULL,
+  `total_sgst_percentage` double DEFAULT NULL,
+  `total_sgst_rs` double DEFAULT NULL,
+  `total_igst_percentage` double DEFAULT NULL,
+  `total_igst_rs` double DEFAULT NULL,
+  `total_bill_amount` double DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -952,6 +988,12 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `purchase_return_vouchers`
+--
+ALTER TABLE `purchase_return_vouchers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `purchase_types`
 --
 ALTER TABLE `purchase_types`
@@ -995,7 +1037,7 @@ ALTER TABLE `target_accounts`
 -- AUTO_INCREMENT for table `account_groups`
 --
 ALTER TABLE `account_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 --
 -- AUTO_INCREMENT for table `admins`
 --
@@ -1020,12 +1062,12 @@ ALTER TABLE `company_setting`
 -- AUTO_INCREMENT for table `contra_vouchers`
 --
 ALTER TABLE `contra_vouchers`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `credit_notes`
 --
 ALTER TABLE `credit_notes`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `customers`
 --
@@ -1035,7 +1077,7 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT for table `debit_notes`
 --
 ALTER TABLE `debit_notes`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `distributors`
 --
@@ -1091,6 +1133,11 @@ ALTER TABLE `product_images`
 --
 ALTER TABLE `products`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+--
+-- AUTO_INCREMENT for table `purchase_return_vouchers`
+--
+ALTER TABLE `purchase_return_vouchers`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `purchase_types`
 --

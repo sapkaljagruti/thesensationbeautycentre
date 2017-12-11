@@ -467,6 +467,24 @@ class AccountgroupController {
         }
         echo json_encode($res);
     }
+    
+    public function findPurchaseLedgerByTerm() {
+        $term = trim($_POST['term']);
+        $res = array();
+        $sale_ledgers_res = $this->accountgroupobj->findPurchaseLedgerByTerm($term);
+        if ($sale_ledgers_res->num_rows > 0) {
+            while ($sale_ledger = $sale_ledgers_res->fetch_assoc()) {
+                $res[] = [
+                    'id' => $sale_ledger['id'],
+                    'ledger_name' => $sale_ledger['name'],
+                    'invoice_no' => '123',
+//                    'invoice_date' => $sale_ledger['invoice_date'],
+//                    'total_amount' => $sale_ledger['total_amount']
+                ];
+            }
+        }
+        echo json_encode($res);
+    }
 
 }
 
