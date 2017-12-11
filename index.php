@@ -2,6 +2,8 @@
 
 @session_start();
 
+exit();
+
 
 $idletime = 3000; //after 60 seconds the user gets logged out
 
