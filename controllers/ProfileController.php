@@ -3,9 +3,6 @@
 class ProfileController {
 
     public $profileobj;
-//    public $gst_obj;
-//    public $brand_obj;
-//    public $ex_ins_staff_members_nots;  
 
     public function __construct() {
 
@@ -16,25 +13,54 @@ class ProfileController {
         $this->extra_js_files = array('plugins/datatables/jquery.dataTables.min.js', 'plugins/datatables/dataTables.bootstrap.min.js', 'plugins/select2/select2.full.js', 'js/account_groups.js');
     }
 
-    public function get() {
+    public function update() {
         $page_header = 'Profile';
         $extra_js_files = $this->extra_js_files;
 
+//        **Code starts**
 //        $id = trim($_GET['id']);
-        $profile_res = $this->profileobj->getProfile();
-        if ($profile_res->num_rows > 0) {
-            $profiles = array();
-            while ($profile = mysqli_fetch_assoc($profile_res)) {
-                $profile['fname'] = ucwords($profile['fname']);
-                $profile['lname'] = ucwords($profile['lname']);
-                $profile['email'] = ucwords($profile['email']);
-                $profile['mobile'] = ucwords($profile['mobile']);
-                $profile['username'] = ucwords($profile['username']);
-                
+        if (!empty($_POST)) {
+            $errors = array();
 
+//            $folder = "uploads/";
+//            $uploadfile=$folder.basename($_FILES['$profile_picture']['name']);
+//            $ftmp=$_FILES['$profile_picture']['tmp_name'];
+//            
+            $fname = strtolower(trim($_POST['fname']));
+
+            if (empty($errors)) {
+                $id = trim($_POST['id']);
+                $fname = !empty($_POST['fname']) ? $_POST['fname'] : NULL;
+                $lname = !empty($_POST['lname']) ? $_POST['lname'] : NULL;
+                $email = !empty($_POST['email']) ? $_POST['email'] : NULL;
+                $mobile = !empty($_POST['mobile']) ? $_POST['mobile'] : NULL;
+                $username = !empty($_POST['username']) ? $_POST['username'] : NULL;
+//                $profile_picture = !empty($_FILES['$profile_picture']) ? $_FILES['profile_picture'] : NULL;
+
+//                if(move_uploaded_file($ftmp, $uploadfile))
+//                {
+                $profile_upd = $this->profileobj->update($id, $fname, $lname, $email, $mobile, $username, $profile_picture);
+
+//                    $image=$_FILES['$profile_picture']['name'];
+//                    $img="uploads/".$image;
+//                    
+//                }
+
+                if ($profile_upd) {
+                    header('location: home.php?controller=profile&action=update');
+                } else {
+                    array_push($errors, 'Something went wrong. Please try again later.');
+                }
+            }
+        }
+
+        $profiles = array();
+
+        $profiles_res = $this->profileobj->getProfile($id);
+        if ($profiles_res->num_rows == 1) {
+            while ($profile = mysqli_fetch_assoc($profiles_res)) {
                 $profiles[] = $profile;
             }
-//            $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
             $view_file = '/views/add_profile.php';
             require_once APP_DIR . '/views/layout.php';
         } else {
@@ -42,103 +68,7 @@ class ProfileController {
         }
     }
 
-  
-    public function update() {
-        $page_header = 'Update Account Group';
-        $extra_js_files = $this->extra_js_files;
-
-        $id = trim($_GET['id']);
-
-        if (!empty($_POST)) {
-            $errors = array();
-
-            $name = strtolower(trim($_POST['name']));
-
-            $groupExistsres = $this->accountgroupobj->checkNameExist($id, $name);
-            if ($groupExistsres) {
-                array_push($errors, 'Group name already exists. Please try with different name.');
-            }
-
-            if (empty($errors)) {
-                $id = trim($_POST['id']);
-                $parent_id = !empty($_POST['parent_id']) ? $_POST['parent_id'] : NULL;
-                $opening_balance = !empty($_POST['opening_balance']) ? $_POST['opening_balance'] : NULL;
-                $contact_person = !empty($_POST['contact_person']) ? $_POST['contact_person'] : NULL;
-                $area = !empty($_POST['area']) ? $_POST['area'] : NULL;
-                $city = !empty($_POST['city']) ? $_POST['city'] : NULL;
-                $pincode = !empty($_POST['pincode']) ? $_POST['pincode'] : NULL;
-                $gst_state_code_id = !empty($_POST['gst_state_code_id']) ? $_POST['gst_state_code_id'] : NULL;
-                $email = !empty($_POST['email']) ? trim($_POST['email']) : NULL;
-                $mobile1 = !empty($_POST['mobile1']) ? trim($_POST['mobile1']) : NULL;
-                $mobile2 = !empty($_POST['mobile2']) ? trim($_POST['mobile2']) : NULL;
-                $bank_name = !empty($_POST['bank_name']) ? trim($_POST['bank_name']) : NULL;
-                $bank_branch = !empty($_POST['bank_branch']) ? trim($_POST['bank_branch']) : NULL;
-                $ifsc_code = !empty($_POST['ifsc_code']) ? trim($_POST['ifsc_code']) : NULL;
-                $bank_account_no = !empty($_POST['bank_account_no']) ? trim($_POST['bank_account_no']) : NULL;
-                $pan = !empty($_POST['pan']) ? strtoupper(trim($_POST['pan'])) : NULL;
-                $gst_type_id = !empty($_POST['gst_type_id']) ? trim($_POST['gst_type_id']) : NULL;
-                $gstin = !empty($_POST['gstin']) ? strtoupper(trim($_POST['gstin'])) : NULL;
-                $brand_ids = !empty($_POST['brand_ids']) ? implode(',', $_POST['brand_ids']) : NULL;
-
-                $accountgroup = $this->accountgroupobj->update($id, $name, $parent_id, $opening_balance, $contact_person, $area, $city, $pincode, $gst_state_code_id, $email, $mobile1, $mobile2, $bank_name, $bank_branch, $ifsc_code, $bank_account_no, $pan, $gst_type_id, $gstin, $brand_ids);
-                if ($accountgroup) {
-                    header('location: home.php?controller=accountgroup&action=getall');
-                } else {
-                    array_push($errors, 'Something went wrong. Please try again later.');
-                }
-            }
-        }
-
-        $account_group_details = array();
-
-        $account_group_res = $this->accountgroupobj->getAccountGroup($id);
-        if ($account_group_res->num_rows == 1) {
-            while ($account_group_detail = mysqli_fetch_assoc($account_group_res)) {
-                $account_group_details[] = $account_group_detail;
-            }
-
-            $account_groups_res = $this->accountgroupobj->getallExceptThis($id);
-            if ($account_groups_res->num_rows > 0) {
-                while ($account_group = $account_groups_res->fetch_assoc()) {
-                    $account_group['name'] = ucwords($account_group['name']);
-                    $account_groups[] = $account_group;
-                }
-            }
-
-            $gst_types_res = $this->gst_obj->getGstTypes();
-            if ($gst_types_res->num_rows > 0) {
-                while ($gst_type = mysqli_fetch_assoc($gst_types_res)) {
-                    $gst_type['title'] = ucwords($gst_type['title']);
-                    $gst_types[] = $gst_type;
-                }
-            }
-
-            $gst_states_res = $this->gst_obj->getGstStates();
-            if ($gst_states_res->num_rows > 0) {
-                while ($gst_state = mysqli_fetch_assoc($gst_states_res)) {
-                    $gst_state['state'] = ucwords($gst_state['state']);
-                    $gst_states[] = $gst_state;
-                }
-            }
-
-            $brands_res = $this->brand_obj->getAll();
-            if ($brands_res->num_rows > 0) {
-                while ($brand = mysqli_fetch_assoc($brands_res)) {
-                    $brand['name'] = ucwords($brand['name']);
-                    $brands[] = $brand;
-                }
-            }
-
-            $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
-            $view_file = '/views/update_account_group.php';
-            require_once APP_DIR . '/views/layout.php';
-        } else {
-            header('location: home.php?controller=error&action=index');
-        }
-    }
-
-   
-
+//        **Code ends**
 }
 
 ?>

@@ -22,7 +22,7 @@ $controllers = array(
     'Contra' => ['getall', 'add', 'checkDebitNoteExist'],
     'Journal' => ['getall', 'add', 'getAllAccounts', 'checkLedgerNameExist'],
     'Companysetting' => ['get'],
-    'Profile'=>['get'],
+    'Profile'=>['update'],
 );
 
 // check that the requested controller and action are both allowed
