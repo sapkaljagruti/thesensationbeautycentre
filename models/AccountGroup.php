@@ -96,6 +96,16 @@ class AccountGroup {
         return $group_res;
     }
 
+    public function findPurchaseLedgerByTerm($term) {
+        $group_res = $this->conn->query('SELECT * FROM account_groups WHERE name LIKE "%' . $term . '%" AND parent_id="58" ORDER BY id DESC');
+        return $group_res;
+    }
+
+    public function getContraLedgers() {
+        $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_default="0" AND is_deleted!="1" AND (parent_id="32" OR parent_id="29") ORDER BY id DESC');
+        return $account_groups;
+    }
+
 }
 
 ?>

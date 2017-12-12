@@ -36,6 +36,7 @@ if (isset($errors)) {
 </style>
 <!-- form start -->
 <form class="form-horizontal" method="post">
+    <input type="hidden" id="save_type" name="save_type" value="add"/>
     <div class="row">
         <div class="col-md-12">
             <div class="box box-default">
@@ -92,64 +93,109 @@ if (isset($errors)) {
                 <!-- /.box-header -->
                 <div class="box-body party_detail_form">
                     <div class="form-group">
-                        <label for="party_name" class="col-sm-2 control-label">Party Name</label>
+                        <label for="party_id" class="col-sm-2 control-label">Select Party</label>
                         <div class="col-sm-4">
-                            <select class="form-control" id="party_id" name="party_id" required="party_id">
+                            <select class="form-control" id="party_id" name="party_id" required="required">
                                 <option value="">Select Party</option>
                                 <?php
-                                if (isset($parties)) {
-                                    foreach ($parties as $party) {
+                                if (isset($not_default_ledgers)) {
+                                    foreach ($not_default_ledgers as $not_default_ledger) {
                                         if (isset($_POST['party_id'])) {
                                             $party_id = $_POST['party_id'];
                                         } else {
                                             $party_id = '0';
                                         }
-                                        if ($party_id == $party['party_id']) {
+                                        if ($party_id == $not_default_ledger['id']) {
                                             $party_selected = ' selected="selected"';
                                         } else {
                                             $party_selected = '';
                                         }
                                         ?>
-                                        <option value="<?php echo $party['id']; ?>"<?php echo $party_selected; ?>><?php echo $party['name']; ?></option>
+                                        <option value="<?php echo $not_default_ledger['id']; ?>"<?php echo $party_selected; ?>><?php echo $not_default_ledger['name']; ?></option>
                                         <?php
                                     }
                                 }
                                 ?>
                             </select>
                         </div>
-                        <label for="party_contact_person" class="col-sm-2 control-label">Contact Person</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="party_contact_person" name="party_contact_person" placeholder="Contact Person" value="<?php echo isset($_POST['party_contact_person']) ? $_POST['party_contact_person'] : ''; ?>" disabled="disabled">
+                    </div>
+                    <div class="form-group">
+                        <label for="party_name" class="col-sm-2 control-label" id="party_name_label">Party A/C Name</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="party_name" name="party_name" placeholder="Party A/C Name" value="<?php echo isset($_POST['party_name']) ? $_POST['party_name'] : ''; ?>"  disabled="disabled">
+                            <span id="party_name_help_block" class="help-block"></span>
+                        </div>
+                        <input type="hidden" id="is_valid_party_name" name="is_valid_party_name" value="<?php echo isset($_POST['is_valid_party_name']) ? $_POST['is_valid_party_name'] : '0'; ?>"/>
+                        <label for="party_parent_id" class="col-sm-2 control-label">Under Group</label>
+                        <div class="col-sm-2">
+                            <select id="party_parent_id" name="party_parent_id" class="form-control" disabled="disabled">
+                                <?php
+                                if (isset($_POST['party_parent_id'])) {
+                                    $parent_id = $_POST['party_parent_id'];
+                                } else {
+                                    $parent_id = '40';
+                                }
+                                if ($parent_id == '') {
+                                    $default_parent_id_selected = ' selected="selected"';
+                                } else {
+                                    $default_parent_id_selected = '';
+                                }
+                                ?>
+                                <option value=""<?php echo $default_parent_id_selected; ?> data-parent-id="0">Select group</option>
+                                <?php
+                                if (isset($account_groups)) {
+                                    foreach ($account_groups as $account_group) {
+                                        if ($parent_id != '' && $parent_id == $account_group['id']) {
+                                            $parent_id_selected = ' selected="selected"';
+                                        } else {
+                                            $parent_id_selected = '';
+                                        }
+                                        ?>
+                                        <option value="<?php echo $account_group['id']; ?>" data-parent-id="<?php echo $account_group['parent_id']; ?>"<?php echo $parent_id_selected; ?>><?php echo $account_group['name']; ?></option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
+                            <span id="group_parent"></span>
+                        </div>
+                        <label for="opening_balance" class="col-sm-2 control-label">Opening Balance</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control decimal" id="opening_balance" name="opening_balance" placeholder="0.00" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['opening_balance']) ? $_POST['opening_balance'] : ''; ?>" disabled="disabled">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="party_address" class="col-sm-2 control-label">Address</label>
+                        <label for="contact_person" class="col-sm-2 control-label">Contact Person</label>
                         <div class="col-sm-4">
-                            <textarea class="form-control" rows="3" placeholder="Address" id="party_address" name="party_address" disabled="disabled"><?php echo isset($_POST['party_address']) ? $_POST['party_address'] : ''; ?></textarea>
+                            <input type="text" class="form-control" id="contact_person" name="contact_person" placeholder="Contact Person" value="<?php echo isset($_POST['contact_person']) ? $_POST['contact_person'] : ''; ?>" disabled="disabled">
                         </div>
-                        <label for="party_email" class="col-sm-2 control-label">Email</label>
+                        <label for="email" class="col-sm-2 control-label">Email</label>
                         <div class="col-sm-4">
-                            <input type="party_email" class="form-control" id="party_email" name="party_email" placeholder="Email" value="<?php echo isset($_POST['party_email']) ? $_POST['party_email'] : ''; ?>" disabled="disabled">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="party_mobile1" class="col-sm-2 control-label">Mobile 1</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="party_mobile1" name="party_mobile1" placeholder="Enter Mobile No" maxlength="10" minlength="10" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['party_mobile1']) ? $_POST['party_mobile1'] : ''; ?>" disabled="disabled">
-                        </div>
-                        <label for="party_mobile2" class="col-sm-2 control-label">Mobile 2</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="party_mobile2" name="party_mobile2" placeholder="Enter Mobile No" maxlength="10" minlength="10" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['party_mobile2']) ? $_POST['party_mobile2'] : ''; ?>" disabled="disabled">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>" disabled="disabled">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="party_residence_no" class="col-sm-2 control-label">Residence No</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="party_residence_no" name="party_residence_no" placeholder="Enter Residence No" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['party_residence_no']) ? $_POST['party_residence_no'] : ''; ?>" disabled="disabled">
+                        <label for="area" class="col-sm-2 control-label">Area</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="area" name="area" placeholder="Area" value="<?php echo isset($_POST['area']) ? $_POST['area'] : ''; ?>" disabled="disabled">
                         </div>
-                        <label for="party_office_no" class="col-sm-2 control-label">Office No</label>
+                        <label for="city" class="col-sm-2 control-label">City</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="city" name="city" placeholder="City" value="<?php echo isset($_POST['city']) ? $_POST['city'] : ''; ?>" disabled="disabled">
+                        </div>
+                        <label for="pincode" class="col-sm-2 control-label">Pincode</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" value="<?php echo isset($_POST['pincode']) ? $_POST['pincode'] : ''; ?>" disabled="disabled">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile1" class="col-sm-2 control-label">Mobile 1</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="party_office_no" name="party_office_no" placeholder="Enter Office Contact No" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" value="<?php echo isset($_POST['party_office_no']) ? $_POST['party_office_no'] : ''; ?>" disabled="disabled">
+                            <input type="text" class="form-control" id="mobile1" name="mobile1" placeholder="Enter Mobile No" maxlength="10" minlength="10" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['mobile1']) ? $_POST['mobile1'] : ''; ?>" disabled="disabled">
+                        </div>
+                        <label for="mobile2" class="col-sm-2 control-label">Mobile 2</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="mobile2" name="mobile2" placeholder="Enter Mobile No" maxlength="10" minlength="10" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" value="<?php echo isset($_POST['mobile2']) ? $_POST['mobile2'] : ''; ?>" disabled="disabled">
                         </div>
                     </div>
                     <div class="form-group">
@@ -260,16 +306,15 @@ if (isset($errors)) {
                 <div class="box-body">
                     <div class="row">
                         <div class="form-group">
-                            <input type="hidden" name="purchase_voucher_id" id="purchase_voucher_id">
-                            <input type="hidden" name="purchase_party_id" id="purchase_party_id">
+                            <input type="hidden" name="purchase_ledger_id" id="purchase_ledger_id">
                             <label for="ledger_name" class="col-sm-2 control-label" id="ledger_name_label"> Particular</label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" id="ledger_name" name="ledger_name" placeholder="Purchase Ledger Name" value="<?php echo isset($_POST['ledger_name']) ? $_POST['ledger_name'] : ''; ?>" onkeypress="return enterKeyEvent(event)">
+                                <input type="text" class="form-control" id="ledger_name" name="ledger_name" placeholder="Sales Ledger Name" value="<?php echo isset($_POST['ledger_name']) ? $_POST['ledger_name'] : ''; ?>" onkeypress="return enterKeyEvent(event)">
                                 <span id="ledger_name_help_block" class="help-block"></span>
                             </div>
                             <label for="amount" class="col-sm-2 control-label" id="amount_label">Amount</label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" id="amount" name="amount" placeholder="Amount" value="<?php echo isset($_POST['amount']) ? $_POST['amount'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
+                                <input type="text" class="form-control decimal" id="amount" name="amount" placeholder="Amount" value="<?php echo isset($_POST['amount']) ? $_POST['amount'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
                                 <span id="amount_help_block" class="help-block"></span>
                             </div>
                             <div class="col-sm-2">

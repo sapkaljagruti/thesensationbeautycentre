@@ -12,14 +12,11 @@ class DebitNotesController {
         require_once 'models/DebitNotes.php';
         $this->debitnotesobj = new DebitNotes();
 
-        require_once 'models/PurchaseType.php';
-        $this->purchase_type_obj = new PurchaseType();
-
         require_once 'models/Gst.php';
         $this->gst_obj = new Gst();
 
-        require_once 'models/Party.php';
-        $this->partyobj = new Party();
+        require_once 'models/AccountGroup.php';
+        $this->accountgroupobj = new AccountGroup();
 
         require_once 'models/Staff.php';
         $this->staffobj = new Staff();
@@ -52,8 +49,14 @@ class DebitNotesController {
         if (!empty($_POST)) {
             $errors = array();
 
+            $debit_note_no = trim($_POST['debit_note_no']);
+
+            $checkDebitNoteExistRes = $this->debitnotesobj->checkDebitNoteExist(NULL, $debit_note_no);
+            if ($checkDebitNoteExistRes) {
+                array_push($errors, 'Debit Note no already exists. Please try again.');
+            }
+
             if (empty($errors)) {
-                $debit_note_no = trim($_POST['debit_note_no']);
                 $party_id = trim($_POST['party_id']);
                 $purchase_invoice_data = !empty($_POST['purchase_invoice_data']) ? trim($_POST['purchase_invoice_data']) : NULL;
                 $narration = $_POST['narration'];
@@ -76,14 +79,6 @@ class DebitNotesController {
             }
         }
 
-        $purchase_types_res = $this->purchase_type_obj->getTypes();
-        if ($purchase_types_res->num_rows > 0) {
-            while ($purchase_type = mysqli_fetch_assoc($purchase_types_res)) {
-                $purchase_type['title'] = ucwords($purchase_type['title']);
-                $purchase_types[] = $purchase_type;
-            }
-        }
-
         $gst_states_res = $this->gst_obj->getGstStates();
         if ($gst_states_res->num_rows > 0) {
             while ($gst_state = mysqli_fetch_assoc($gst_states_res)) {
@@ -100,11 +95,21 @@ class DebitNotesController {
             }
         }
 
-        $parties_res = $this->partyobj->getall();
-        if ($parties_res->num_rows > 0) {
-            while ($party = mysqli_fetch_assoc($parties_res)) {
-                $party['name'] = ucwords($party['name']);
-                $parties[] = $party;
+        $not_default_ledgers = array();
+        $not_default_ledgers_res = $this->accountgroupobj->getNotDefaultLedgers();
+        if ($not_default_ledgers_res->num_rows > 0) {
+            while ($not_default_ledger = mysqli_fetch_assoc($not_default_ledgers_res)) {
+                $not_default_ledger['name'] = ucwords($not_default_ledger['name']);
+                $not_default_ledgers[] = $not_default_ledger;
+            }
+        }
+
+        $account_groups = array();
+        $account_groups_res = $this->accountgroupobj->getall();
+        if ($account_groups_res->num_rows > 0) {
+            while ($account_group = $account_groups_res->fetch_assoc()) {
+                $account_group['name'] = ucwords($account_group['name']);
+                $account_groups[] = $account_group;
             }
         }
 
@@ -114,9 +119,10 @@ class DebitNotesController {
     }
 
     public function checkDebitNoteExist() {
+        $id = !empty(trim($_POST['id'])) ? trim($_POST['id']) : NULL;
         $debit_note_no = trim($_POST['debit_note_no']);
-        $debit_note = $this->debitnotesobj->checkDebitNoteExist($debit_note_no);
-        if ($debit_note) {
+        $debit_note_res = $this->debitnotesobj->checkDebitNoteExist($id, $debit_note_no);
+        if ($debit_note_res) {
             echo '1';
         } else {
             echo '0';

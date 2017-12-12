@@ -20,9 +20,14 @@ class DebitNotes {
         return $purchase_voucher;
     }
 
-    public function checkDebitNoteExist($debit_note_no) {
-        $debit_note = $this->conn->query('SELECT * FROM debit_notes WHERE debit_note_no="' . $debit_note_no . '"');
-        if ($debit_note->num_rows > 0) {
+    public function checkDebitNoteExist($id, $debit_note_no) {
+        if (empty($id)) {
+            $debit_note_res = $this->conn->query('SELECT * FROM debit_notes WHERE debit_note_no="' . $debit_note_no . '" AND is_deleted!="1"');
+        } else {
+            $debit_note_res = $this->conn->query('SELECT * FROM debit_notes WHERE debit_note_no="' . $debit_note_no . '" AND id!="' . $id . '" AND is_deleted!="1"');
+        }
+
+        if ($debit_note_res->num_rows > 0) {
             return TRUE;
         } else {
             return FALSE;

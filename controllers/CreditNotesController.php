@@ -54,8 +54,8 @@ class CreditNotesController {
 
             $credit_note_no = trim($_POST['credit_note_no']);
 
-            $invoiceExistsRes = $this->creditnotesobj->checkCreditNoteExist(NULL, $credit_note_no);
-            if ($invoiceExistsRes) {
+            $checkCreditNoteExistRes = $this->creditnotesobj->checkCreditNoteExist(NULL, $credit_note_no);
+            if ($checkCreditNoteExistRes) {
                 array_push($errors, 'Credit Note no already exists. Please try again.');
             }
 

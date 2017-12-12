@@ -3,7 +3,7 @@
 class ContraController {
 
     public $contraobj;
-    public $accountobj;
+    public $accountgroupobj;
     public $ex_ins_staff_members_nots;
 
     public function __construct() {
@@ -11,8 +11,8 @@ class ContraController {
         require_once 'models/Contra.php';
         $this->contraobj = new Contra();
 
-        require_once 'models/Account.php';
-        $this->accountobj = new Account();
+        require_once 'models/AccountGroup.php';
+        $this->accountgroupobj = new AccountGroup();
 
         require_once 'models/Staff.php';
         $this->staffobj = new Staff();
@@ -69,7 +69,7 @@ class ContraController {
         }
 
         $ledger_names = [];
-        $ledger_names_res = $this->accountobj->getContraLedgers();
+        $ledger_names_res = $this->accountgroupobj->getContraLedgers();
         if ($ledger_names_res->num_rows > 0) {
             while ($ledger_name = $ledger_names_res->fetch_assoc()) {
                 array_push($ledger_names, $ledger_name);

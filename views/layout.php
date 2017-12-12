@@ -72,6 +72,8 @@
                                         <li><a href="?controller=debitnotes&action=getall">Debit Note</a></li>
                                         <li><a href="?controller=contra&action=getall">Contra Voucher</a></li>
                                         <li><a href="?controller=journal&action=getall">Journal Voucher</a></li>
+                                        <li><a href="?controller=purchasereturn&action=getbills">Purchase Return Voucher</a></li>
+                                        <li><a href="?controller=salesreturn&action=getbills">Sales Return Voucher</a></li>
                                     </ul>
                                     <!--                                    <ul class="dropdown-menu">
                                                                             <li class="dropdown-submenu">
@@ -90,8 +92,16 @@
                                                                             </li>
                                                                         </ul>-->
                                 </li>
-                                <li>
-                                    <a href="#">Reports</a>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#">Customer Reports</a></li>
+                                        <li><a href="#">Staff Reports</a></li>
+                                        <li><a href="#">Brand Reports</a></li>
+                                        <li><a href="#">A/c Group Reports</a></li>
+                                        <li><a href="#">Stock Reports</a></li>
+                                        <li><a href="#">P/L Reports</a></li>
+                                    </ul>
                                 </li>
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings<span class="caret"></span></a>
@@ -102,11 +112,11 @@
                                     </ul>
                                 </li>
                             </ul>
-<!--                            <form class="navbar-form navbar-left" role="search">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
-                                </div>
-                            </form>-->
+                            <!--                            <form class="navbar-form navbar-left" role="search">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
+                                                            </div>
+                                                        </form>-->
                         </div>
                         <!-- /.navbar-collapse -->
                         <!-- Navbar Right Menu -->

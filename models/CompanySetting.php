@@ -10,8 +10,8 @@ class CompanySetting {
     }
 
 //    public function getall() {
-//        $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" ORDER BY id DESC');
-//        return $account_groups;
+//        $company_settings = $this->conn->query('SELECT * FROM company_settings WHERE is_deleted!="1" ORDER BY id DESC');
+//        return $company_settings;
 //    }
 //
 //    public function getNotDefaultLedgers() {
@@ -20,8 +20,8 @@ class CompanySetting {
 //    }
 //
 //    public function getallExceptThis($id) {
-//        $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" AND id!="' . $id . '" ORDER BY id DESC');
-//        return $account_groups;
+//        $company_settings = $this->conn->query('SELECT * FROM company_setting WHERE is_deleted!="1" AND id!="' . $id . '" ORDER BY id DESC');
+//        return $company_settings;
 //    }
 //
     public function getCompanySetting() {
@@ -49,7 +49,7 @@ class CompanySetting {
 //    }
 
     public function update($id, $name, $opening_balance, $contact_person, $area, $city, $pincode, $gst_state_code_id, $email, $mobile1, $mobile2, $bank_name, $bank_branch, $ifsc_code, $bank_account_no, $pan, $gst_type_id, $gstin) {
-        $company_setting = $this->conn->query('UPDATE $company_setting SET name="' . $name . '", opening_balance="' . $opening_balance . '", contact_person="' . $contact_person . '", area="' . $area . '", city="' . $city . '", pincode="' . $pincode . '", gst_state_code_id="' . $gst_state_code_id . '", email="' . $email . '", mobile1="' . $mobile1 . '", mobile2="' . $mobile2 . '", bank_name="' . $bank_name . '", bank_branch="' . $bank_branch . '", ifsc_code="' . $ifsc_code . '", bank_account_no="' . $bank_account_no . '", pan="' . $pan . '", gst_type_id="' . $gst_type_id . '", gstin="' . $gstin . '" WHERE id=' . $id);
+        $company_setting = $this->conn->query('UPDATE company_setting SET name="' . $name . '", opening_balance="' . $opening_balance . '", contact_person="' . $contact_person . '", area="' . $area . '", city="' . $city . '", pincode="' . $pincode . '", gst_state_code_id="' . $gst_state_code_id . '", email="' . $email . '", mobile1="' . $mobile1 . '", mobile2="' . $mobile2 . '", bank_name="' . $bank_name . '", bank_branch="' . $bank_branch . '", ifsc_code="' . $ifsc_code . '", bank_account_no="' . $bank_account_no . '", pan="' . $pan . '", gst_type_id="' . $gst_type_id . '", gstin="' . $gstin . '" WHERE id=' . $id);
         if ($company_setting === TRUE) {
             return $id;
         } else {
@@ -57,14 +57,14 @@ class CompanySetting {
         }
     }
 
-    public function deleteacgroup($id) {
-        $company_setting = $this->conn->query('UPDATE $company_setting SET is_deleted="1" WHERE id=' . $id);
-        if ($company_setting) {
-            return $id;
-        } else {
-            return FALSE;
-        }
-    }
+//    public function deleteacgroup($id) {
+//        $company_setting = $this->conn->query('UPDATE $company_setting SET is_deleted="1" WHERE id=' . $id);
+//        if ($company_setting) {
+//            return $id;
+//        } else {
+//            return FALSE;
+//        }
+//    }
 
 //    public function getAcGroupsByTerm($term) {
 //        $account_groups_res = $this->conn->query('SELECT * FROM account_groups WHERE name LIKE "%' . $term . '%"');
