@@ -106,8 +106,13 @@
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings<span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">User Roles</a></li>
-                                        <li><a href="#">Users</a></li>
+                                        <?php
+                                        if ($_SESSION['admin_id'] == '1') {
+                                            ?>
+                                            <li><a href="#">Users</a></li>
+                                            <?php
+                                        }
+                                        ?>
                                         <li><a href="?controller=companysetting&action=get">Company Settings</a></li>
                                     </ul>
                                 </li>
@@ -166,14 +171,14 @@
                                     <!-- Menu Toggle Button -->
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                         <!-- The user image in the navbar-->
-                                        <img src="public/images/user2-160x160.jpg" class="user-image" alt="User Image">
+                                        <img src="public/images/<?php echo $_SESSION['admin_profile_picture']; ?>" class="user-image" alt="User Image">
                                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
                                         <span class="hidden-xs"><?php echo ucwords($_SESSION['admin']); ?></span>
                                     </a>
                                     <ul class="dropdown-menu">
                                         <!-- The user image in the menu -->
                                         <li class="user-header">
-                                            <img src="public/images/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                            <img src="public/images/<?php echo $_SESSION['admin_profile_picture']; ?>" class="img-circle" alt="User Image">
 
                                             <p><?php echo ucwords($_SESSION['admin']); ?>
                                             </p>

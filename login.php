@@ -18,6 +18,15 @@ if (isset($_POST['username']) && !empty($_POST['username'])) {
         while ($admin = $admins->fetch_assoc()) {
             $_SESSION['admin'] = $admin['fname'] . ' ' . $admin['lname'];
             $_SESSION['admin_id'] = $admin['id'];
+            $_SESSION['can_view'] = $admin['can_view'];
+            $_SESSION['can_add'] = $admin['can_add'];
+            $_SESSION['can_update'] = $admin['can_update'];
+            $_SESSION['can_delete'] = $admin['can_delete'];
+            if (empty($admin['profile_picture'])) {
+                $_SESSION['admin_profile_picture'] = 'default_user_image.png';
+            } else {
+                $_SESSION['admin_profile_picture'] = $admin['profile_picture'];
+            }
         }
         $_SESSION['timestamp'] = time();
         header('location: index.php');

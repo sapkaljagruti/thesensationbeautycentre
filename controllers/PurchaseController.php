@@ -616,6 +616,49 @@ class PurchaseController {
         }
     }
 
+    public function filterBillForReturn() {
+        $vouchers = array();
+        $party_id = trim($_POST['party_id']);
+        $purchase_invoice_no = !empty(trim($_POST['purchase_invoice_no'])) ? trim($_POST['purchase_invoice_no']) : NULL;
+        $purchase_invoice_from_date = NULL;
+        $purchase_invoice_to_date = NULL;
+        if (!empty(trim($_POST['purchase_invoice_date_range']))) {
+            $purchase_invoice_date_range = trim($_POST['purchase_invoice_date_range']);
+            $purchase_invoice_date_range_arr = explode('-', $purchase_invoice_date_range);
+
+            $post_from_date = trim($purchase_invoice_date_range_arr[0]);
+            $post_from_date = str_replace('/', '-', $post_from_date);
+            $post_from_date = date('Y-m-d', strtotime($post_from_date));
+            $post_from_date = date_create($post_from_date);
+            $purchase_invoice_from_date = date_format($post_from_date, 'Y-m-d');
+
+            $post_to_date = trim($purchase_invoice_date_range_arr[1]);
+            $post_to_date = str_replace('/', '-', $post_to_date);
+            $post_to_date = date('Y-m-d', strtotime($post_to_date));
+            $post_to_date = date_create($post_to_date);
+            $purchase_invoice_to_date = date_format($post_to_date, 'Y-m-d');
+        }
+        $result = $this->purchaseobj->filterBillForReturn($party_id, $purchase_invoice_no, $purchase_invoice_from_date, $purchase_invoice_to_date);
+        if ($result->num_rows > 0) {
+            while ($res = mysqli_fetch_assoc($result)) {
+                $vouchers[] = $res;
+            }
+        }
+        echo json_encode($vouchers);
+    }
+
+    public function getFromInvoiceNo() {
+        $vouchers = array();
+        $invoice_no = trim($_POST['invoice_no']);
+        $result = $this->purchaseobj->getFromInvoiceNo($invoice_no);
+        if ($result->num_rows > 0) {
+            while ($res = mysqli_fetch_assoc($result)) {
+                $vouchers[] = $res;
+            }
+        }
+        echo json_encode($vouchers);
+    }
+
 }
 
 ?>

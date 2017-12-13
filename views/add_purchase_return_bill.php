@@ -1,8 +1,18 @@
+<link rel="stylesheet" href="public/plugins/jQueryUI/jquery-ui.css">
+<!-- daterange picker -->
+<link rel="stylesheet" href="public/plugins/daterangepicker/daterangepicker.css">
 <style>
-    #party_pan, #party_gstin {
-        text-transform: uppercase;
+    .loadinggif 
+    {
+        background:
+            url('public/images/loader.gif')
+            no-repeat
+            right center;
     }
+
+    .table-responsive { overflow-x: initial; }
 </style>
+
 <?php
 if (isset($errors)) {
     ?>
@@ -20,20 +30,6 @@ if (isset($errors)) {
     <?php
 }
 ?>
-
-<link rel="stylesheet" href="public/plugins/jQueryUI/jquery-ui.css">
-<style>
-    .loadinggif 
-    {
-        background:
-            url('public/images/loader.gif')
-            no-repeat
-            right center;
-    }
-</style>
-<style>
-    .table-responsive { overflow-x: initial; }
-</style>
 <!-- form start -->
 <form class="form-horizontal" method="post">
     <input type="hidden" id="save_type" name="save_type" value="add"/>
@@ -93,8 +89,11 @@ if (isset($errors)) {
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body party_detail_form">
+                    <div class="form-group" id="purchase_bill_error_div" style="display: none;">
+                        <label for="purchase_bill_error" class="col-sm-2 control-label" id="purchase_bill_error"></label>
+                    </div>
                     <div class="form-group">
-                        <label for="party_id" class="col-sm-2 control-label">Select Party</label>
+                        <label for="party_id" class="col-sm-2 control-label" id="party_id_label">Select Party</label>
                         <div class="col-sm-4">
                             <select class="form-control" id="party_id" name="party_id">
                                 <option value="">Select Party</option>
@@ -118,6 +117,7 @@ if (isset($errors)) {
                                 }
                                 ?>
                             </select>
+                            <span id="party_id_help_block" class="help-block"></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -127,12 +127,18 @@ if (isset($errors)) {
                         </div>
                         <label for="purchase_invoice_date_range" class="col-sm-2 control-label">Invoice Date Range</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="purchase_invoice_date_range" name="purchase_invoice_date_range" placeholder="Invoice Date Range" value="<?php echo isset($_POST['purchase_invoice_date_range']) ? $_POST['purchase_invoice_date_range'] : ''; ?>">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control" id="purchase_invoice_date_range" name="purchase_invoice_date_range" placeholder="Invoice Date Range" value="<?php echo isset($_POST['purchase_invoice_date_range']) ? $_POST['purchase_invoice_date_range'] : ''; ?>">
+                            </div>
+                            <!-- /.input group -->
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-4">
-                            <button type="button" class="btn btn-block btn-info" id="proceed_product">Search For Bill</button>
+                            <button type="button" class="btn btn-block btn-info" id="proceed_purchase_bill">Search For Bill</button>
                         </div>
                     </div>
                 </div>
@@ -159,84 +165,22 @@ if (isset($errors)) {
                 <div class="box-body">
                     <div class="form-group">
                         <div class="col-sm-2">
-                            <select class="form-control" id="target_account_id" name="target_account_id">
-                                <?php
-                                if (isset($target_accounts)) {
-                                    foreach ($target_accounts as $target_account) {
-                                        ?>
-                                        <option value="<?php echo $target_account['id']; ?>"><?php echo $target_account['name']; ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
+                            <select class="form-control" id="p_invoice_no" name="p_invoice_no">
+                                <option value="">Select Invoice No</option>
                             </select>
                         </div>
+                        <input type="hidden" id="purchase_voucher_id" name="purchase_voucher_id" value=""/>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Product Name" value="<?php echo isset($_POST['product_name']) ? $_POST['product_name'] : ''; ?>" onkeypress="return productEnterKeyEvent(event)">
-                            <span id="product_name_help_block" class="help-block"></span>
-                        </div>
-                        <input type="hidden" name="product_id" id="product_id">
-                        <input type="hidden" name="hsn_code" id="hsn_code">
-                        <input type="hidden" name="qty1" id="qty1">
-                        <input type="hidden" name="qty2" id="qty2">
-                        <div class="col-sm-2">
-                            <input type="text" class="form-control decimal" id="mrp" name="mrp" placeholder="MRP" value="<?php echo isset($_POST['mrp']) ? $_POST['mrp'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
-                            <span id="mrp_help_block" class="help-block"></span>
+                            <select class="form-control" id="product_id" name="product_id">
+                                <option value="">Select Product</option>
+                            </select>
+                            <span id="product_id_help_block" class="help-block"></span>
                         </div>
                         <div class="col-sm-2">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="product_qty" name="product_qty" placeholder="Quantity" value="<?php echo isset($_POST['product_qty']) ? $_POST['product_qty'] : ''; ?>" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
-                                <span class="input-group-addon" id="product_qty_addon">Nos</span>
-                            </div>
-                            <span id="product_qty_help_block" class="help-block"></span>
+                            <input type="text" class="form-control" id="qty" name="qty" placeholder="Quantity" value="<?php echo isset($_POST['qty']) ? $_POST['qty'] : ''; ?>" min="1" max="5" onkeypress="return allowOnlyNumber(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
+                            <span id="qty_help_block" class="help-block"></span>
                         </div>
-                        <div class="col-sm-2">
-                            <input type="text" class="form-control decimal" id="price" name="price" placeholder="Product Price" value="<?php echo isset($_POST['price']) ? $_POST['price'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
-                            <span id="price_help_block" class="help-block"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <input type="radio" name="discount" value="percentage" id="discount_percentage">
-                                </span>
-                                <input type="text" class="form-control decimal" id="discount_rate" name="discount_rate" placeholder="Discount Rate" value="<?php echo isset($_POST['discount_rate']) ? $_POST['discount_rate'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
-                                <span class="input-group-addon" id="discount_rate_addon">%</span>
-                            </div>
-                            <span id="product_qty_help_block" class="help-block"></span>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <input type="radio" name="discount" value="rs" id="discount_rs">
-                                </span>
-                                <input type="text" class="form-control decimal" id="discount_price" name="discount_price" placeholder="Discount Price" value="<?php echo isset($_POST['discount_price']) ? $_POST['discount_price'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
-                                <span class="input-group-addon" id="discount_rate_addon">Rs</span>
-                            </div>
-                            <span id="product_qty_help_block" class="help-block"></span>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="input-group">
-                                <input type="text" class="form-control decimal" id="cgst" name="cgst" placeholder="CGST" value="<?php echo isset($_POST['cgst']) ? $_POST['cgst'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
-                                <span class="input-group-addon" id="cgst_addon">%</span>
-                            </div>
-                            <span id="cgst_help_block" class="help-block"></span>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="input-group">
-                                <input type="text" class="form-control decimal" id="sgst" name="sgst" placeholder="SGST" value="<?php echo isset($_POST['sgst']) ? $_POST['sgst'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off">
-                                <span class="input-group-addon" id="sgst_addon">%</span>
-                            </div>
-                            <span id="cgst_help_block" class="help-block"></span>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="input-group">
-                                <input type="text" class="form-control decimal" id="igst" name="igst" placeholder="IGST" value="<?php echo isset($_POST['igst']) ? $_POST['igst'] : ''; ?>" onkeypress="return allowOnlyNumberWithDecimal(event)" oncopy="return false;" onpaste="return false;" autocomplete="off" disabled="disabled">
-                                <span class="input-group-addon" id="igst_addon">%</span>
-                            </div>
-                            <span id="cgst_help_block" class="help-block"></span>
-                        </div>
+                        <input type="hidden" id="purchase_qty" name="purchase_qty" value=""/>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-block btn-info" id="proceed_product"><i class="fa fa-plus"></i> Add</button>
                         </div>

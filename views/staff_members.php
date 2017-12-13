@@ -13,9 +13,15 @@
         <!-- /.box -->
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a class="btn btn-app" href="?controller=staff&action=addstaff">
-                    <i class="fa fa-plus"></i> New
-                </a>
+                <?php
+                if ($_SESSION['can_add'] == '1') {
+                    ?>
+                    <a class="btn btn-app" href="?controller=staff&action=addstaff">
+                        <i class="fa fa-plus"></i> New
+                    </a>
+                    <?php
+                }
+                ?>
                 <button class="btn btn-app" id="delete_selected">
                     <i class="fa fa-trash-o"></i> Delete Selected
                 </button>

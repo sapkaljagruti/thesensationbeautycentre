@@ -18,7 +18,7 @@ class ProfileController {
         $extra_js_files = $this->extra_js_files;
 
 //        **Code starts**
-//        $id = trim($_GET['id']);
+        $id = $_SESSION['admin_id'];
         if (!empty($_POST)) {
             $errors = array();
 
@@ -36,7 +36,6 @@ class ProfileController {
                 $mobile = !empty($_POST['mobile']) ? $_POST['mobile'] : NULL;
                 $username = !empty($_POST['username']) ? $_POST['username'] : NULL;
 //                $profile_picture = !empty($_FILES['$profile_picture']) ? $_FILES['profile_picture'] : NULL;
-
 //                if(move_uploaded_file($ftmp, $uploadfile))
 //                {
                 $profile_upd = $this->profileobj->update($id, $fname, $lname, $email, $mobile, $username, $profile_picture);

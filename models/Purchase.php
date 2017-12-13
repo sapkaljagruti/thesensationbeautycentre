@@ -71,6 +71,23 @@ class Purchase {
         }
     }
 
+    public function filterBillForReturn($party_id, $purchase_invoice_no = NULL, $purchase_invoice_from_date = NULL, $purchase_invoice_to_date = NULL) {
+        $query = 'SELECT * FROM purchase_vouchers WHERE is_deleted!="1" AND party_id="' . $party_id . '"';
+        if (!empty($purchase_invoice_no)) {
+            $query .= ' AND invoice_no="' . $purchase_invoice_no . '"';
+        }
+        if (!empty($purchase_invoice_from_date) && !empty($purchase_invoice_to_date)) {
+            $query .= ' AND invoice_date>="' . $purchase_invoice_from_date . '" AND invoice_date<="' . $purchase_invoice_to_date . '"';
+        }
+        $purchase_voucher = $this->conn->query($query);
+        return $purchase_voucher;
+    }
+
+    public function getFromInvoiceNo($invoice_no) {
+        $purchase_voucher = $this->conn->query('SELECT * FROM purchase_vouchers WHERE is_deleted!="1" AND invoice_no="' . $invoice_no . '"');
+        return $purchase_voucher;
+    }
+
 }
 
 ?>

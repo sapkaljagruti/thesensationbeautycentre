@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 12, 2017 at 03:14 AM
+-- Generation Time: Dec 13, 2017 at 07:21 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -127,6 +127,10 @@ CREATE TABLE `admins` (
   `last_login_ip` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `last_login_at` datetime DEFAULT NULL,
   `current_login_ips` text COLLATE utf8_unicode_ci,
+  `can_view` tinyint(1) DEFAULT '0',
+  `can_add` tinyint(1) NOT NULL DEFAULT '0',
+  `can_update` tinyint(1) NOT NULL DEFAULT '0',
+  `can_delete` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -135,8 +139,8 @@ CREATE TABLE `admins` (
 -- Dumping data for table `admins`
 --
 
-INSERT INTO `admins` (`id`, `fname`, `lname`, `email`, `mobile`, `username`, `password`, `profile_picture`, `last_login_ip`, `last_login_at`, `current_login_ips`, `created_at`, `updated_at`) VALUES
-(1, 'lakhan', 'sen', 'lakhan.vapi@gmail.com', 9727612000, 'lakhansen', '1f406e5ff9b178e9c506e363bf1716ad', NULL, NULL, NULL, NULL, '2017-09-11 11:33:02', '2017-10-24 11:17:29');
+INSERT INTO `admins` (`id`, `fname`, `lname`, `email`, `mobile`, `username`, `password`, `profile_picture`, `last_login_ip`, `last_login_at`, `current_login_ips`, `can_view`, `can_add`, `can_update`, `can_delete`, `created_at`, `updated_at`) VALUES
+(1, 'lakhan', 'sen', 'lakhan.vapi@gmail.com', 9727612000, 'lakhansen', '1f406e5ff9b178e9c506e363bf1716ad', NULL, NULL, NULL, NULL, 1, 0, 1, 1, '2017-09-11 11:33:02', '2017-12-12 19:02:15');
 
 -- --------------------------------------------------------
 
@@ -646,7 +650,7 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `product_category_id`, `brand_id`, `product_code`, `name`, `qty1`, `qty2`, `price`, `description`, `hsn_code`, `calculation_type`, `taxability`, `cgst`, `sgst`, `integrated_tax`, `cess`, `is_deleted`, `created_at`, `updated_at`) VALUES
 (5, 23, 9, '', 'sensation smoothing shampoo', 1182, 64, '399', '', '33049910', 'on_value', 'taxable', '14', '14', '0.00', '0.00', 0, '2017-10-26 16:07:58', '2017-12-06 16:29:26'),
-(6, 23, 9, '', 'sensation smoothing hair conditioner', 1161, 11, '400', '', '33049910', 'on_value', 'taxable', '14', '14', '0.00', '0.00', 0, '2017-10-26 18:20:12', '2017-12-08 18:40:47'),
+(6, 23, 9, '', 'sensation smoothing hair conditioner', 1136, 11, '400', '', '33049910', 'on_value', 'taxable', '14', '14', '0.00', '0.00', 0, '2017-10-26 18:20:12', '2017-12-12 19:26:19'),
 (13, 24, 9, '', 'magic toner', 150, 20, '300', '', '330330020', 'on_value', 'taxable', '0.00', '0.00', '0.00', '0.00', 0, '2017-11-15 17:59:51', '2017-11-22 15:22:55');
 
 -- --------------------------------------------------------
@@ -677,6 +681,13 @@ CREATE TABLE `purchase_return_vouchers` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchase_return_vouchers`
+--
+
+INSERT INTO `purchase_return_vouchers` (`id`, `date`, `invoice_no`, `invoice_date`, `purchase_voucher_id`, `products_data`, `total_qty`, `total_rate_per_unit`, `total_discount_percentage`, `total_discount_rs`, `total_cgst_percentage`, `total_cgst_rs`, `total_sgst_percentage`, `total_sgst_rs`, `total_igst_percentage`, `total_igst_rs`, `total_bill_amount`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(1, '2017-12-13', '123', '2017-02-12', 14, '6_1_sensation smoothing hair conditioner_33049910_400_25_1136_350_0.00_0.00_14_1960.00_14_1960.00_0.00_0.00_12670.00', 25, 350, 0, 0, 14, 1960, 14, 1960, 0, 0, 12670, 0, '2017-12-12 19:26:19', '2017-12-12 19:26:19');
 
 -- --------------------------------------------------------
 
@@ -738,7 +749,7 @@ INSERT INTO `purchase_vouchers` (`id`, `date`, `purchase_ledger_id`, `invoice_no
 (8, '2017-12-06', 68, '1234', '2014-03-12', 2, 71, '6_1_sensation smoothing hair conditioner_33049910_350_50_1562_250_0.00_0.00_18_2250.00_18_2250.00_0.00_0.00_17000.00', 50, 250, 0, 0, 18, 2250, 18, 2250, 0, 0, 17000, 0, '2017-12-05 14:27:55', '2017-12-05 15:13:14'),
 (9, '2017-12-06', 68, '123', '2014-03-12', 1, 71, '6_2_sensation smoothing hair conditioner_33049910_800_5_11_250_0.00_0.00_0.00_0.00_0.00_0.00_0.00_0.00_1250.00', 5, 250, 0, 0, 0, 0, 0, 0, 0, 0, 1250, 0, '2017-12-05 15:03:33', '2017-12-05 15:18:59'),
 (10, '2017-12-06', 68, '12345', '2017-07-12', 2, 69, '5_2_sensation smoothing shampoo_33049910_800_2_64_250_0.00_0.00_12_60.00_12_60.00_0.00_0.00_620.00', 2, 250, 0, 0, 12, 60, 12, 60, 0, 0, 620, 0, '2017-12-05 15:25:19', '2017-12-05 15:25:19'),
-(11, '2017-12-06', 68, '12456', '2016-07-12', 2, 69, '6_1_sensation smoothing hair conditioner_33049910_900_10_1572_250_0.00_0.00_12_300.00_0.00_0.00_0.00_0.00_2800.00', 10, 250, 0, 0, 12, 300, 0, 0, 0, 0, 2800, 1, '2017-12-05 15:28:22', '2017-12-07 14:07:33'),
+(11, '2017-12-06', 68, '12456', '2017-07-12', 2, 69, '6_1_sensation smoothing hair conditioner_33049910_900_10_1572_250_0.00_0.00_12_300.00_0.00_0.00_0.00_0.00_2800.00', 10, 250, 0, 0, 12, 300, 0, 0, 0, 0, 2800, 0, '2017-12-05 15:28:22', '2017-12-12 15:30:07'),
 (12, '2017-12-07', 68, '456', '2012-05-11', 2, 71, '6_1_sensation smoothing hair conditioner_33049910_1000_25_1597_600_0.00_0.00_18_2700.00_18_2700.00_0.00_0.00_20400.00,5_1_sensation smoothing shampoo_33049910_1000_52_1176_600_0.00_0.00_0.00_0.00_0.00_0.00_0.00_0.00_31200.00', 77, 1200, 0, 0, 18, 2700, 18, 2700, 0, 0, 51600, 0, '2017-12-06 15:01:55', '2017-12-06 15:01:55'),
 (13, '2017-12-07', 68, '2323', '1992-06-22', 2, 71, '6_1_sensation smoothing hair conditioner_33049910_80_24_1621_45.45_0.00_0.00_14_152.71_14_152.71_0.00_0.00_1396.22,5_1_sensation smoothing shampoo_33049910_399_6_1182_226.71_0.00_0.00_14_190.44_14_190.44_0.00_0.00_1741.13', 30, 272.16, 0, 0, 28, 343.15, 28, 343.15, 0, 0, 3137.35, 0, '2017-12-06 16:29:26', '2017-12-06 16:29:26'),
 (14, '2017-12-09', 68, '232', '2017-06-22', 2, 71, '6_1_sensation smoothing hair conditioner_33049910_400_40_1661_350_0.00_0.00_14_1960.00_14_1960.00_0.00_0.00_17920.00', 40, 350, 0, 0, 14, 1960, 14, 1960, 0, 0, 17920, 0, '2017-12-08 15:14:59', '2017-12-08 15:14:59');
@@ -1137,7 +1148,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `purchase_return_vouchers`
 --
 ALTER TABLE `purchase_return_vouchers`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `purchase_types`
 --

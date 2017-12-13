@@ -14,15 +14,16 @@ $controllers = array(
     'Productcategory' => ['getcategories', 'addcategory', 'getcategory', 'updatecategory', 'deletecategory', 'checkNameExist'],
     'Product' => ['getproducts', 'getproduct', 'addproduct', 'updateproduct', 'deleteproduct', 'findProductByTerm', 'checkProductNameExist', 'checkQty', 'checkQtyForPurhase', 'checkQtyForSales'],
     'Party' => ['getall', 'add', 'update', 'get', 'delete', 'getPartyNameByTerm', 'getById', 'checkPartyNameExist'],
-    'Purchase' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist', 'delete', 'update', 'printBill'],
-    'Purchasereturn' => ['getbills', 'add'],
+    'Purchase' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist', 'delete', 'update', 'printBill', 'filterBillForReturn', 'getFromInvoiceNo'],
+    'Purchasereturn' => ['getbills', 'add', 'checkInovieExist'],
     'Sale' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist', 'delete', 'printBill'],
     'Creditnotes' => ['getall', 'add', 'checkCreditNoteExist'],
     'Debitnotes' => ['getall', 'add', 'checkDebitNoteExist'],
     'Contra' => ['getall', 'add', 'checkDebitNoteExist'],
     'Journal' => ['getall', 'add', 'getAllAccounts', 'checkLedgerNameExist'],
     'Companysetting' => ['get'],
-    'Profile'=>['update'],
+    'Profile' => ['get'],
+    'Profile' => ['update'],
 );
 
 // check that the requested controller and action are both allowed
