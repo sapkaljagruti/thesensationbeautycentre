@@ -88,6 +88,16 @@ class Purchase {
         return $purchase_voucher;
     }
 
+    public function getThisMonthPurchases($this_month, $this_year) {
+        $purchase_voucher = $this->conn->query('SELECT * FROM purchase_vouchers WHERE is_deleted!="1" AND MONTH(invoice_date)="' . $this_month . '" AND YEAR(invoice_date)="' . $this_year . '"');
+        return $purchase_voucher;
+    }
+
+    public function getCustomPurchases($start_date, $end_date) {
+        $purchase_voucher = $this->conn->query('SELECT * FROM purchase_vouchers WHERE is_deleted!="1" AND invoice_date>="' . $start_date . '" AND invoice_date<="' . $end_date . '"');
+        return $purchase_voucher;
+    }
+
 }
 
 ?>

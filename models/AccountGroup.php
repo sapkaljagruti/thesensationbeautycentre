@@ -15,6 +15,11 @@ class AccountGroup {
         return $account_groups;
     }
 
+    public function getAllOrderByName() {
+        $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" ORDER BY name ASC');
+        return $account_groups;
+    }
+
     public function getNotDefaultLedgers() {
         $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" AND is_default=0 ORDER BY id DESC');
         return $account_groups;
@@ -22,6 +27,11 @@ class AccountGroup {
 
     public function getallExceptThis($id) {
         $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" AND id!="' . $id . '" ORDER BY id DESC');
+        return $account_groups;
+    }
+    
+    public function getallExceptThisOrderByName($id) {
+        $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" AND id!="' . $id . '" ORDER BY name ASC');
         return $account_groups;
     }
 

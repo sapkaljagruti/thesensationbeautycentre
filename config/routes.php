@@ -16,14 +16,16 @@ $controllers = array(
     'Party' => ['getall', 'add', 'update', 'get', 'delete', 'getPartyNameByTerm', 'getById', 'checkPartyNameExist'],
     'Purchase' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist', 'delete', 'update', 'printBill', 'filterBillForReturn', 'getFromInvoiceNo'],
     'Purchasereturn' => ['getbills', 'add', 'checkInovieExist'],
-    'Sale' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist', 'delete', 'printBill'],
+    'Sale' => ['getbills', 'checkInovieExist', 'add', 'findLedgerByTerm', 'checkLedgerNameExist', 'delete', 'printBill', 'filterBillForReturn', 'getFromInvoiceNo'],
+    'Salesreturn' => ['getbills', 'add', 'checkInovieExist'],
     'Creditnotes' => ['getall', 'add', 'checkCreditNoteExist'],
     'Debitnotes' => ['getall', 'add', 'checkDebitNoteExist'],
     'Contra' => ['getall', 'add', 'checkDebitNoteExist'],
     'Journal' => ['getall', 'add', 'getAllAccounts', 'checkLedgerNameExist'],
     'Companysetting' => ['get'],
-    'Profile' => ['get'],
     'Profile' => ['update'],
+    'Users' => ['getUsers', 'getUser', 'addUsers', 'updateUsers', 'deleteUsers'],
+    'Reports' => ['getStockReports', 'getPLReports', 'getCustomPLReports'],
 );
 
 // check that the requested controller and action are both allowed
@@ -81,6 +83,9 @@ if (array_key_exists($controller, $controllers)) {
             case 'Sale':
                 $controller = new SaleController();
                 break;
+            case 'Salesreturn':
+                $controller = new SalesReturnController();
+                break;
             case 'Creditnotes':
                 $controller = new CreditNotesController();
                 break;
@@ -98,6 +103,12 @@ if (array_key_exists($controller, $controllers)) {
                 break;
             case 'Profile':
                 $controller = new ProfileController();
+                break;
+            case 'Users':
+                $controller = new UsersController();
+                break;
+            case 'Reports':
+                $controller = new ReportsController();
                 break;
         }
 

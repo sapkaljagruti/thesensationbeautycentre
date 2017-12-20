@@ -371,6 +371,49 @@ class SaleController {
         }
     }
 
+    public function filterBillForReturn() {
+        $vouchers = array();
+        $party_id = trim($_POST['party_id']);
+        $sales_invoice_no = !empty(trim($_POST['sales_invoice_no'])) ? trim($_POST['sales_invoice_no']) : NULL;
+        $sales_invoice_from_date = NULL;
+        $sales_invoice_to_date = NULL;
+        if (!empty(trim($_POST['sales_invoice_date_range']))) {
+            $sales_invoice_date_range = trim($_POST['sales_invoice_date_range']);
+            $sales_invoice_date_range_arr = explode('-', $sales_invoice_date_range);
+
+            $post_from_date = trim($sales_invoice_date_range_arr[0]);
+            $post_from_date = str_replace('/', '-', $post_from_date);
+            $post_from_date = date('Y-m-d', strtotime($post_from_date));
+            $post_from_date = date_create($post_from_date);
+            $sales_invoice_from_date = date_format($post_from_date, 'Y-m-d');
+
+            $post_to_date = trim($sales_invoice_date_range_arr[1]);
+            $post_to_date = str_replace('/', '-', $post_to_date);
+            $post_to_date = date('Y-m-d', strtotime($post_to_date));
+            $post_to_date = date_create($post_to_date);
+            $sales_invoice_to_date = date_format($post_to_date, 'Y-m-d');
+        }
+        $result = $this->saleobj->filterBillForReturn($party_id, $sales_invoice_no, $sales_invoice_from_date, $sales_invoice_to_date);
+        if ($result->num_rows > 0) {
+            while ($res = mysqli_fetch_assoc($result)) {
+                $vouchers[] = $res;
+            }
+        }
+        echo json_encode($vouchers);
+    }
+
+    public function getFromInvoiceNo() {
+        $vouchers = array();
+        $invoice_no = trim($_POST['invoice_no']);
+        $result = $this->saleobj->getFromInvoiceNo($invoice_no);
+        if ($result->num_rows > 0) {
+            while ($res = mysqli_fetch_assoc($result)) {
+                $vouchers[] = $res;
+            }
+        }
+        echo json_encode($vouchers);
+    }
+
 }
 
 ?>

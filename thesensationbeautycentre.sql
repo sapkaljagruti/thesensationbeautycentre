@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 13, 2017 at 07:21 PM
+-- Generation Time: Dec 20, 2017 at 08:03 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -140,7 +140,7 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `fname`, `lname`, `email`, `mobile`, `username`, `password`, `profile_picture`, `last_login_ip`, `last_login_at`, `current_login_ips`, `can_view`, `can_add`, `can_update`, `can_delete`, `created_at`, `updated_at`) VALUES
-(1, 'lakhan', 'sen', 'lakhan.vapi@gmail.com', 9727612000, 'lakhansen', '1f406e5ff9b178e9c506e363bf1716ad', NULL, NULL, NULL, NULL, 1, 0, 1, 1, '2017-09-11 11:33:02', '2017-12-12 19:02:15');
+(1, 'lakhan', 'sen', 'lakhan.vapi@gmail.com', 9727612000, 'lakhansen', '1f406e5ff9b178e9c506e363bf1716ad', NULL, NULL, NULL, NULL, 1, 1, 1, 1, '2017-09-11 11:33:02', '2017-12-18 14:16:34');
 
 -- --------------------------------------------------------
 
@@ -650,7 +650,7 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `product_category_id`, `brand_id`, `product_code`, `name`, `qty1`, `qty2`, `price`, `description`, `hsn_code`, `calculation_type`, `taxability`, `cgst`, `sgst`, `integrated_tax`, `cess`, `is_deleted`, `created_at`, `updated_at`) VALUES
 (5, 23, 9, '', 'sensation smoothing shampoo', 1182, 64, '399', '', '33049910', 'on_value', 'taxable', '14', '14', '0.00', '0.00', 0, '2017-10-26 16:07:58', '2017-12-06 16:29:26'),
-(6, 23, 9, '', 'sensation smoothing hair conditioner', 1136, 11, '400', '', '33049910', 'on_value', 'taxable', '14', '14', '0.00', '0.00', 0, '2017-10-26 18:20:12', '2017-12-12 19:26:19'),
+(6, 23, 9, '', 'sensation smoothing hair conditioner', 1076, 11, '400', '', '33049910', 'on_value', 'taxable', '14', '14', '0.00', '0.00', 0, '2017-10-26 18:20:12', '2017-12-18 16:24:09'),
 (13, 24, 9, '', 'magic toner', 150, 20, '300', '', '330330020', 'on_value', 'taxable', '0.00', '0.00', '0.00', '0.00', 0, '2017-11-15 17:59:51', '2017-11-22 15:22:55');
 
 -- --------------------------------------------------------
@@ -687,7 +687,8 @@ CREATE TABLE `purchase_return_vouchers` (
 --
 
 INSERT INTO `purchase_return_vouchers` (`id`, `date`, `invoice_no`, `invoice_date`, `purchase_voucher_id`, `products_data`, `total_qty`, `total_rate_per_unit`, `total_discount_percentage`, `total_discount_rs`, `total_cgst_percentage`, `total_cgst_rs`, `total_sgst_percentage`, `total_sgst_rs`, `total_igst_percentage`, `total_igst_rs`, `total_bill_amount`, `is_deleted`, `created_at`, `updated_at`) VALUES
-(1, '2017-12-13', '123', '2017-02-12', 14, '6_1_sensation smoothing hair conditioner_33049910_400_25_1136_350_0.00_0.00_14_1960.00_14_1960.00_0.00_0.00_12670.00', 25, 350, 0, 0, 14, 1960, 14, 1960, 0, 0, 12670, 0, '2017-12-12 19:26:19', '2017-12-12 19:26:19');
+(1, '2017-12-13', '123', '2017-02-12', 14, '6_1_sensation smoothing hair conditioner_33049910_400_25_1136_350_0.00_0.00_14_1960.00_14_1960.00_0.00_0.00_12670.00', 25, 350, 0, 0, 14, 1960, 14, 1960, 0, 0, 12670, 0, '2017-12-12 19:26:19', '2017-12-12 19:26:19'),
+(2, '2017-12-14', '1234', '2017-12-12', 14, '6_1_sensation smoothing hair conditioner_33049910_400_20_1116_350_0.00_0.00_14_1960.00_14_1960.00_0.00_0.00_10920.00', 20, 350, 0, 0, 14, 1960, 14, 1960, 0, 0, 10920, 0, '2017-12-13 10:37:14', '2017-12-13 10:37:14');
 
 -- --------------------------------------------------------
 
@@ -746,7 +747,7 @@ CREATE TABLE `purchase_vouchers` (
 --
 
 INSERT INTO `purchase_vouchers` (`id`, `date`, `purchase_ledger_id`, `invoice_no`, `invoice_date`, `purchase_type_id`, `party_id`, `products_data`, `total_qty`, `total_rate_per_unit`, `total_discount_percentage`, `total_discount_rs`, `total_cgst_percentage`, `total_cgst_rs`, `total_sgst_percentage`, `total_sgst_rs`, `total_igst_percentage`, `total_igst_rs`, `total_bill_amount`, `is_deleted`, `created_at`, `updated_at`) VALUES
-(8, '2017-12-06', 68, '1234', '2014-03-12', 2, 71, '6_1_sensation smoothing hair conditioner_33049910_350_50_1562_250_0.00_0.00_18_2250.00_18_2250.00_0.00_0.00_17000.00', 50, 250, 0, 0, 18, 2250, 18, 2250, 0, 0, 17000, 0, '2017-12-05 14:27:55', '2017-12-05 15:13:14'),
+(8, '2017-12-06', 68, '1234', '2017-12-12', 2, 71, '6_1_sensation smoothing hair conditioner_33049910_350_50_1562_250_0.00_0.00_18_2250.00_18_2250.00_0.00_0.00_17000.00', 50, 250, 0, 0, 18, 2250, 18, 2250, 0, 0, 17000, 0, '2017-12-05 14:27:55', '2017-12-14 13:58:43'),
 (9, '2017-12-06', 68, '123', '2014-03-12', 1, 71, '6_2_sensation smoothing hair conditioner_33049910_800_5_11_250_0.00_0.00_0.00_0.00_0.00_0.00_0.00_0.00_1250.00', 5, 250, 0, 0, 0, 0, 0, 0, 0, 0, 1250, 0, '2017-12-05 15:03:33', '2017-12-05 15:18:59'),
 (10, '2017-12-06', 68, '12345', '2017-07-12', 2, 69, '5_2_sensation smoothing shampoo_33049910_800_2_64_250_0.00_0.00_12_60.00_12_60.00_0.00_0.00_620.00', 2, 250, 0, 0, 12, 60, 12, 60, 0, 0, 620, 0, '2017-12-05 15:25:19', '2017-12-05 15:25:19'),
 (11, '2017-12-06', 68, '12456', '2017-07-12', 2, 69, '6_1_sensation smoothing hair conditioner_33049910_900_10_1572_250_0.00_0.00_12_300.00_0.00_0.00_0.00_0.00_2800.00', 10, 250, 0, 0, 12, 300, 0, 0, 0, 0, 2800, 0, '2017-12-05 15:28:22', '2017-12-12 15:30:07'),
@@ -811,7 +812,45 @@ CREATE TABLE `sale_vouchers` (
 --
 
 INSERT INTO `sale_vouchers` (`id`, `date`, `sales_ledger_id`, `invoice_no`, `invoice_date`, `sales_type_id`, `party_id`, `products_data`, `total_qty`, `total_rate_per_unit`, `total_discount_percentage`, `total_discount_rs`, `total_cgst_percentage`, `total_cgst_rs`, `total_sgst_percentage`, `total_sgst_rs`, `total_igst_percentage`, `total_igst_rs`, `total_bill_amount`, `is_deleted`, `created_at`, `updated_at`) VALUES
-(1, '2017-12-09', 70, '123', '2017-05-12', 2, 72, '6_1_sensation smoothing hair conditioner_33049910_400_500_1161_0.00_0.00_18_36000.00_18_36000.00_0.00_0.00_272000.00', 500, 400, 0, 0, 18, 36000, 18, 36000, 0, 0, 272000, 0, '2017-12-08 18:40:47', '2017-12-08 18:53:44');
+(1, '2017-12-09', 70, '123', '2017-12-12', 2, 72, '6_1_sensation smoothing hair conditioner_33049910_400_500_1161_0.00_0.00_18_36000.00_18_36000.00_0.00_0.00_272000.00', 500, 400, 0, 0, 18, 36000, 18, 36000, 0, 0, 272000, 0, '2017-12-08 18:40:47', '2017-12-14 13:59:06'),
+(2, '2017-12-19', 73, '2323', '2017-12-20', 2, 71, '6_1_sensation smoothing hair conditioner_33049910_350_20_1096_0.00_50.00_0.00_0.00_0.00_0.00_0.00_0.00_6950.00', 20, 350, 0, 50, 0, 0, 0, 0, 0, 0, 6950, 0, '2017-12-18 16:21:06', '2017-12-18 16:21:06'),
+(3, '2017-12-19', 70, '566', '2017-05-20', 2, 72, '6_1_sensation smoothing hair conditioner_33049910_400_20_1076_0.00_50.00_0.00_0.00_0.00_0.00_0.00_0.00_7950.00', 20, 400, 0, 50, 0, 0, 0, 0, 0, 0, 7950, 0, '2017-12-18 16:24:09', '2017-12-18 16:24:09');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sales_return_vouchers`
+--
+
+CREATE TABLE `sales_return_vouchers` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `date` date DEFAULT NULL,
+  `invoice_no` varchar(255) DEFAULT NULL,
+  `invoice_date` date DEFAULT NULL,
+  `sales_voucher_id` int(11) DEFAULT NULL,
+  `products_data` longtext COMMENT 'product_id, target_account_id, product_name, hsn_code, mrp, qty, discount_percentage, discount_rs, cgst_percentage, cgst_rs, sgst_percentage, sgst_rs, igst_percentage, igst_rs, total_amount',
+  `total_qty` int(11) DEFAULT NULL,
+  `total_rate_per_unit` double DEFAULT NULL,
+  `total_discount_percentage` double DEFAULT NULL,
+  `total_discount_rs` double DEFAULT NULL,
+  `total_cgst_percentage` double DEFAULT NULL,
+  `total_cgst_rs` double DEFAULT NULL,
+  `total_sgst_percentage` double DEFAULT NULL,
+  `total_sgst_rs` double DEFAULT NULL,
+  `total_igst_percentage` double DEFAULT NULL,
+  `total_igst_rs` double DEFAULT NULL,
+  `total_bill_amount` double DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sales_return_vouchers`
+--
+
+INSERT INTO `sales_return_vouchers` (`id`, `date`, `invoice_no`, `invoice_date`, `sales_voucher_id`, `products_data`, `total_qty`, `total_rate_per_unit`, `total_discount_percentage`, `total_discount_rs`, `total_cgst_percentage`, `total_cgst_rs`, `total_sgst_percentage`, `total_sgst_rs`, `total_igst_percentage`, `total_igst_rs`, `total_bill_amount`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(1, '2017-12-14', '123', '2017-05-12', 1, '6_1_sensation smoothing hair conditioner_33049910_400_100_0.00_0.00_18_36000.00_18_36000.00_0.00_0.00_112000.00', 100, 400, 0, 0, 18, 36000, 18, 36000, 0, 0, 112000, 0, '2017-12-13 12:08:50', '2017-12-13 12:08:50');
 
 -- --------------------------------------------------------
 
@@ -1029,6 +1068,12 @@ ALTER TABLE `sale_vouchers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `sales_return_vouchers`
+--
+ALTER TABLE `sales_return_vouchers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `staff_members`
 --
 ALTER TABLE `staff_members`
@@ -1148,7 +1193,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `purchase_return_vouchers`
 --
 ALTER TABLE `purchase_return_vouchers`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `purchase_types`
 --
@@ -1168,6 +1213,11 @@ ALTER TABLE `sale_types`
 -- AUTO_INCREMENT for table `sale_vouchers`
 --
 ALTER TABLE `sale_vouchers`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `sales_return_vouchers`
+--
+ALTER TABLE `sales_return_vouchers`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `staff_members`

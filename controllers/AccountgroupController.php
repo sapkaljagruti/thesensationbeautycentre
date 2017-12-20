@@ -206,7 +206,7 @@ class AccountgroupController {
             }
         }
 
-        $account_groups_res = $this->accountgroupobj->getall();
+        $account_groups_res = $this->accountgroupobj->getAllOrderByName();
         if ($account_groups_res->num_rows > 0) {
             while ($account_group = $account_groups_res->fetch_assoc()) {
                 $account_group['name'] = ucwords($account_group['name']);
@@ -297,7 +297,7 @@ class AccountgroupController {
                 $account_group_details[] = $account_group_detail;
             }
 
-            $account_groups_res = $this->accountgroupobj->getallExceptThis($id);
+            $account_groups_res = $this->accountgroupobj->getallExceptThisOrderByName($id);
             if ($account_groups_res->num_rows > 0) {
                 while ($account_group = $account_groups_res->fetch_assoc()) {
                     $account_group['name'] = ucwords($account_group['name']);

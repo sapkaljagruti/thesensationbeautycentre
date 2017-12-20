@@ -4,6 +4,7 @@ class ProductController {
 
     public $productobj;
     public $productcategoryobj;
+    public $brandobj;
     public $staffobj;
     public $ex_ins_staff_members_nots;
 

@@ -62,6 +62,33 @@ class Sale {
         }
     }
 
+    public function filterBillForReturn($party_id, $sales_invoice_no = NULL, $sales_invoice_from_date = NULL, $sales_invoice_to_date = NULL) {
+        $query = 'SELECT * FROM sale_vouchers WHERE is_deleted!="1" AND party_id="' . $party_id . '"';
+        if (!empty($sales_invoice_no)) {
+            $query .= ' AND invoice_no="' . $sales_invoice_no . '"';
+        }
+        if (!empty($sales_invoice_from_date) && !empty($sales_invoice_to_date)) {
+            $query .= ' AND invoice_date>="' . $sales_invoice_from_date . '" AND invoice_date<="' . $sales_invoice_to_date . '"';
+        }
+        $sale_vouchers = $this->conn->query($query);
+        return $sale_vouchers;
+    }
+
+    public function getFromInvoiceNo($invoice_no) {
+        $sale_vouchers = $this->conn->query('SELECT * FROM sale_vouchers WHERE is_deleted!="1" AND invoice_no="' . $invoice_no . '"');
+        return $sale_vouchers;
+    }
+
+    public function getThisMonthSales($this_month, $this_year) {
+        $sale_vouchers = $this->conn->query('SELECT * FROM sale_vouchers WHERE is_deleted!="1" AND MONTH(invoice_date)="' . $this_month . '" AND YEAR(invoice_date)="' . $this_year . '"');
+        return $sale_vouchers;
+    }
+
+    public function getCustomSales($start_date, $end_date) {
+        $sale_vouchers = $this->conn->query('SELECT * FROM sale_vouchers WHERE is_deleted!="1" AND invoice_date>="' . $start_date . '" AND invoice_date<="' . $end_date . '"');
+        return $sale_vouchers;
+    }
+
 }
 
 ?>

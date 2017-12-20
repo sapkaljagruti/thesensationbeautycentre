@@ -97,6 +97,11 @@ class Product {
         }
     }
 
+    public function getProdcutsByCat($product_category_id) {
+        $products_res = $this->conn->query('SELECT * FROM products WHERE is_deleted!="1" AND product_category_id="' . $product_category_id . '" ORDER BY id DESC');
+        return $products_res;
+    }
+
 }
 
 ?>

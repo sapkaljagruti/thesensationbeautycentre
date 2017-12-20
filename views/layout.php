@@ -11,7 +11,7 @@
         <!-- Font Awesome -->
         <link href="public/css/font-awesome.min.css" rel="stylesheet">
         <!-- Ionicons -->
-        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
         <!-- Theme style -->
         <link href="public/css/admin.css" rel="stylesheet">
         <link href="public/css/skin-black-light.min.css" rel="stylesheet">
@@ -95,12 +95,12 @@
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">Customer Reports</a></li>
-                                        <li><a href="#">Staff Reports</a></li>
-                                        <li><a href="#">Brand Reports</a></li>
-                                        <li><a href="#">A/c Group Reports</a></li>
-                                        <li><a href="#">Stock Reports</a></li>
-                                        <li><a href="#">P/L Reports</a></li>
+                                        <li><a href="?controller=customer&action=getCustomers">Customer Reports</a></li>
+                                        <li><a href="?controller=staff&action=getstaffmembers">Staff Reports</a></li>
+                                        <li><a href="?controller=brand&action=getBrands">Brand Reports</a></li>
+                                        <li><a href="?controller=accountgroup&action=getall">A/c Group Reports</a></li>
+                                        <li><a href="?controller=reports&action=getStockReports">Stock Reports</a></li>
+                                        <li><a href="?controller=reports&action=getPLReports">P/L Reports</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
@@ -109,11 +109,11 @@
                                         <?php
                                         if ($_SESSION['admin_id'] == '1') {
                                             ?>
-                                            <li><a href="#">Users</a></li>
+                                            <li><a href="?controller=users&action=getUsers">Users</a></li>
                                             <?php
                                         }
                                         ?>
-                                        <li><a href="?controller=companysetting&action=get">Company Settings</a></li>
+                                        <!--<li><a href="?controller=companysetting&action=get">Company Settings</a></li>-->
                                     </ul>
                                 </li>
                             </ul>
