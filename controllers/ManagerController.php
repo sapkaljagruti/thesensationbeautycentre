@@ -4,6 +4,7 @@ class ManagerController {
 
     public $managerobj;
     public $ex_ins_staff_members_nots;
+    public $extra_js_files;
 
     public function __construct() {
         require_once 'models/Manager.php';
@@ -20,11 +21,14 @@ class ManagerController {
                 $this->ex_ins_staff_members_nots[] = $ex_ins_staff_members;
             }
         }
+        
+        $this->extra_js_files = array('plugins/datatables/jquery.dataTables.min.js', 'plugins/datatables/dataTables.bootstrap.min.js', 'js/managers.js');
     }
 
     public function getManagers() {
         $page_header = 'Managers';
-        $extra_js_files = array('plugins/datatables/jquery.dataTables.min.js', 'plugins/datatables/dataTables.bootstrap.min.js', 'js/managers.js');
+        $extra_js_files = $this->extra_js_files;
+        
         $managers = $this->managerobj->getAll();
         $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
         $view_file = '/views/managers.php';

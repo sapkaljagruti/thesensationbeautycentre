@@ -2,6 +2,7 @@
 
 class BrandController {
 
+    public $extra_js_files;
     public $brandobj;
     public $ex_ins_staff_members_nots;
 
@@ -21,11 +22,13 @@ class BrandController {
                 $this->ex_ins_staff_members_nots[] = $ex_ins_staff_members;
             }
         }
+        $this->extra_js_files = array('plugins/datatables/jquery.dataTables.min.js', 'plugins/datatables/dataTables.bootstrap.min.js', 'js/brands.js');
     }
 
     public function getBrands() {
         $page_header = 'Brands';
-        $extra_js_files = array('plugins/datatables/jquery.dataTables.min.js', 'plugins/datatables/dataTables.bootstrap.min.js', 'js/brands.js');
+        $extra_js_files = $this->extra_js_files;
+        
         $brands = $this->brandobj->getAll();
         $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
         $view_file = '/views/brands.php';

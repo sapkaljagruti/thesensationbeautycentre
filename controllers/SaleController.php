@@ -7,6 +7,7 @@ class SaleController {
     public $gst_obj;
     public $productobj;
     public $ex_ins_staff_members_nots;
+    public $extra_js_files;
 
     public function __construct() {
 

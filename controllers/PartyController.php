@@ -6,6 +6,7 @@ class PartyController {
     public $gst_obj;
     public $brand_obj;
     public $ex_ins_staff_members_nots;
+    public $extra_js_files;
 
     public function __construct() {
 

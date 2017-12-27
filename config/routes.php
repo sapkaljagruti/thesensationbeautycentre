@@ -23,9 +23,9 @@ $controllers = array(
     'Contra' => ['getall', 'add', 'checkDebitNoteExist'],
     'Journal' => ['getall', 'add', 'getAllAccounts', 'checkLedgerNameExist'],
     'Companysetting' => ['get'],
-    'Profile' => ['update'],
+    'Profile' => ['update', 'changePassword'],
     'Users' => ['getUsers', 'getUser', 'addUsers', 'updateUsers', 'deleteUsers'],
-    'Reports' => ['getStockReports', 'getPLReports', 'getCustomPLReports'],
+    'Reports' => ['getStockReports', 'getPLReports', 'getCustomPLReports', 'getprofitlossreports'],
 );
 
 // check that the requested controller and action are both allowed

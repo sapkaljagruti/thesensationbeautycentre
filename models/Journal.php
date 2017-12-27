@@ -29,6 +29,11 @@ class Journal {
         }
     }
 
+    public function getCustomVouchers($start_date, $end_date) {
+        $journal_voucher = $this->conn->query('SELECT * FROM journal_vouchers WHERE is_deleted!="1" AND date>="' . $start_date . '" AND date<="' . $end_date . '"');
+        return $journal_voucher;
+    }
+
 }
 
 ?>

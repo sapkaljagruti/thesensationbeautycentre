@@ -8,8 +8,11 @@ class ReportsController {
     public $targetaccountobj;
     public $purchaseobj;
     public $saleobj;
+    public $accountgroupobj;
+    public $journalobj;
     public $staffobj;
     public $ex_ins_staff_members_nots;
+    public $extra_js_files;
 
     public function __construct() {
 
@@ -30,6 +33,12 @@ class ReportsController {
 
         require_once 'models/Sale.php';
         $this->saleobj = new Sale();
+
+        require_once 'models/AccountGroup.php';
+        $this->accountgroupobj = new AccountGroup();
+
+        require_once 'models/Journal.php';
+        $this->journalobj = new Journal();
 
         require_once 'models/Staff.php';
         $this->staffobj = new Staff();
@@ -228,6 +237,226 @@ class ReportsController {
         }
 
         $view_file = '/views/pl_reports.php';
+        require_once APP_DIR . '/views/layout.php';
+    }
+
+    public function getprofitlossreports() {
+        $page_header = 'Profit/Loss Reports';
+        array_push($this->extra_js_files, 'plugins/input-mask/jquery.inputmask.js', 'plugins/input-mask/jquery.inputmask.date.extensions.js', 'plugins/input-mask/jquery.inputmask.extensions.js', 'js/profitloss_reports.js');
+        if (in_array('js/pl_reports.js', $this->extra_js_files)) {
+            unset($this->extra_js_files['js/stock_reports.js']);
+        }
+        $extra_js_files = $this->extra_js_files;
+
+        $today = date('Y-m-d');
+        $curr_year = date('Y');
+
+        $start_date = $curr_year . '-04-01';
+        $end_date = $today;
+
+        $start_date_to_print = '01-Apr-' . $curr_year;
+        $end_date_to_print = date('d-M-Y');
+
+        $total_sales_amount = 0;
+        $getCustomSales = $this->saleobj->getCustomSales($start_date, $end_date);
+        if ($getCustomSales->num_rows > 0) {
+            while ($sales_voucher = $getCustomSales->fetch_assoc()) {
+                if ($sales_voucher['is_deleted'] != 1) {
+                    $products_data_arr = explode(',', $sales_voucher['products_data']);
+                    foreach ($products_data_arr as $product) {
+                        $product_arr = explode('_', $product);
+                        $target_account_id = $product_arr[1];
+                        $product_total_amount = $product_arr[15];
+
+                        if ($target_account_id == '1') { //Asha Account
+                            $total_sales_amount += $product_total_amount;
+                        }
+                    }
+                }
+            }
+        }
+
+        $total_sales_amount = number_format((float) $total_sales_amount, 2, '.', '');
+
+        $total_purchase_amount = 0;
+        $purchase_res = $this->purchaseobj->getCustomPurchases($start_date, $end_date);
+        if ($purchase_res->num_rows > 0) {
+            while ($purchase_voucher = $purchase_res->fetch_assoc()) {
+                if ($purchase_voucher['is_deleted'] != 1) {
+                    $products_data_arr = explode(',', $purchase_voucher['products_data']);
+                    foreach ($products_data_arr as $product) {
+                        $product_arr = explode('_', $product);
+                        $target_account_id = $product_arr[1];
+                        $product_total_amount = $product_arr[16];
+
+                        if ($target_account_id == '1') { //Asha Account
+                            $total_purchase_amount += $product_total_amount;
+                        }
+                    }
+                }
+            }
+        }
+
+        $total_purchase_amount = number_format((float) $total_purchase_amount, 2, '.', '');
+
+        $total_direct_expenses = 0;
+        $direct_expense_ids = array();
+
+        $direct_expenses_res = $this->accountgroupobj->getDirectExpensesAccountGroups();
+        if ($direct_expenses_res->num_rows > 0) {
+            while ($direct_expense = $direct_expenses_res->fetch_assoc()) {
+                if ($direct_expense['is_deleted'] != 1) {
+                    $direct_expense_id = $direct_expense['id'];
+                    array_push($direct_expense_ids, $direct_expense_id);
+                }
+            }
+        }
+
+        $total_direct_incomes = 0;
+        $direct_income_ids = array();
+
+        $direct_incomes_res = $this->accountgroupobj->getDirectIncomesAccountGroups();
+        if ($direct_incomes_res->num_rows > 0) {
+            while ($direct_income = $direct_incomes_res->fetch_assoc()) {
+                if ($direct_income['is_deleted'] != 1) {
+                    $direct_income_id = $direct_income['id'];
+                    array_push($direct_income_ids, $direct_income_id);
+                }
+            }
+        }
+
+
+        $total_indirect_expenses = 0;
+        $indirect_expense_ids = array();
+
+        $indirect_expenses_res = $this->accountgroupobj->getIndirectExpensesAccountGroups();
+        if ($indirect_expenses_res->num_rows > 0) {
+            while ($indirect_expense = $indirect_expenses_res->fetch_assoc()) {
+                if ($indirect_expense['is_deleted'] != 1) {
+                    $indirect_expense_id = $indirect_expense['id'];
+                    array_push($indirect_expense_ids, $indirect_expense_id);
+                }
+            }
+        }
+
+        $total_indirect_incomes = 0;
+        $indirect_income_ids = array();
+
+        $indirect_incomes_res = $this->accountgroupobj->getIndirectIncomesAccountGroups();
+        if ($indirect_incomes_res->num_rows > 0) {
+            while ($indirect_income = $indirect_incomes_res->fetch_assoc()) {
+                if ($indirect_income['is_deleted'] != 1) {
+                    $indirect_income_id = $indirect_income['id'];
+                    array_push($indirect_income_ids, $indirect_income_id);
+                }
+            }
+        }
+
+        $journal_vouchers_res = $this->journalobj->getCustomVouchers($start_date, $end_date);
+        if ($journal_vouchers_res->num_rows > 0) {
+            while ($journal_voucher = $journal_vouchers_res->fetch_assoc()) {
+                if ($journal_voucher['is_deleted'] != 1) {
+                    $entry_data_err = explode(',', $journal_voucher['entry_data']);
+                    foreach ($entry_data_err as $entry) {
+                        $entry_arr = explode('_', $entry);
+                        $jd_type = $entry_arr[0];
+                        $jd_id = $entry_arr[1];
+                        $jd_amount = $entry_arr[2];
+
+                        if (in_array($jd_id, $direct_expense_ids)) {
+                            if ($jd_type == 'cr') {
+                                $total_direct_expenses += $jd_amount;
+                            } elseif ($jd_type == 'dr') {
+                                $total_direct_expenses -= $jd_amount;
+                            }
+                        }
+
+                        if (in_array($jd_id, $direct_income_ids)) {
+                            if ($jd_type == 'cr') {
+                                $total_direct_incomes += $jd_amount;
+                            } elseif ($jd_type == 'dr') {
+                                $total_direct_incomes -= $jd_amount;
+                            }
+                        }
+
+                        if (in_array($jd_id, $indirect_expense_ids)) {
+                            if ($jd_type == 'cr') {
+                                $total_indirect_expenses += $jd_amount;
+                            } elseif ($jd_type == 'dr') {
+                                $total_indirect_expenses -= $jd_amount;
+                            }
+                        }
+
+                        if (in_array($jd_id, $indirect_income_ids)) {
+                            if ($jd_type == 'cr') {
+                                $total_indirect_incomes += $jd_amount;
+                            } elseif ($jd_type == 'dr') {
+                                $total_indirect_incomes -= $jd_amount;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $total_direct_expenses = number_format((float) $total_direct_expenses, 2, '.', '');
+
+        $total_direct_incomes = number_format((float) $total_direct_incomes, 2, '.', '');
+
+        $total_left = $total_purchase_amount + $total_direct_expenses;
+        $total_right = $total_sales_amount + $total_direct_incomes;
+
+        $profit_loss = '';
+        $profit_loss_amt = '';
+
+        if ($total_left > $total_right) {
+            $equal_amount = $total_left;
+            $equal_amount = number_format((float) $equal_amount, 2, '.', '');
+
+            $profit_loss = ' Loss';
+            $profit_loss_amt = $total_left - $total_right;
+
+            $profit_loss_amt = number_format((float) $profit_loss_amt, 2, '.', '');
+        } else if ($total_left < $total_right) {
+            $equal_amount = $total_right;
+            $equal_amount = number_format((float) $equal_amount, 2, '.', '');
+
+            $profit_loss = ' Profit';
+            $profit_loss_amt = $total_right - $total_left;
+
+            $profit_loss_amt = number_format((float) $profit_loss_amt, 2, '.', '');
+        }
+
+        $total_indirect_expenses = number_format((float) $total_indirect_expenses, 2, '.', '');
+
+        $total_indirect_incomes = number_format((float) $total_indirect_incomes, 2, '.', '');
+
+        $new_total_right = $profit_loss_amt + $total_indirect_incomes;
+        $new_total_right = number_format((float) $new_total_right, 2, '.', '');
+
+        $net_profit_loss = '';
+        $new_profit_loss_amt = '';
+
+        if ($total_indirect_incomes > $new_total_right) {
+            $new_equal_amount = $total_indirect_incomes;
+            $new_equal_amount = number_format((float) $new_equal_amount, 2, '.', '');
+
+            $net_profit_loss = ' Loss';
+            $new_profit_loss_amt = $total_indirect_incomes - $new_total_right;
+
+            $new_profit_loss_amt = number_format((float) $new_profit_loss_amt, 2, '.', '');
+        } else if ($total_indirect_incomes < $new_total_right) {
+            $new_equal_amount = $new_total_right;
+            $new_equal_amount = number_format((float) $new_equal_amount, 2, '.', '');
+
+            $net_profit_loss = ' Profit';
+            $new_profit_loss_amt = $new_total_right - $total_indirect_expenses;
+
+            $new_profit_loss_amt = number_format((float) $new_profit_loss_amt, 2, '.', '');
+        }
+
+        $view_file = '/views/profitloss_reports.php';
+
         require_once APP_DIR . '/views/layout.php';
     }
 

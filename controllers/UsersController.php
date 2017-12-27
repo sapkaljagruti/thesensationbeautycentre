@@ -3,6 +3,7 @@
 class UsersController {
 
     public $usersobj;
+    public $extra_js_files;
 
     public function __construct() {
 

@@ -4,6 +4,7 @@ class ProductcategoryController {
 
     public $productcategoryobj;
     public $ex_ins_staff_members_nots;
+    public $extra_js_files;
 
     public function __construct() {
 

@@ -2,6 +2,7 @@
 
 class BranchController {
 
+    public $extra_js_files;
     public $managerobj;
     public $branchobj;
     public $ex_ins_staff_members_nots;
@@ -12,7 +13,7 @@ class BranchController {
 
         require_once 'models/Branch.php';
         $this->branchobj = new Branches();
-        
+
         require_once 'models/Staff.php';
         $this->staffobj = new Staff();
 
@@ -24,11 +25,14 @@ class BranchController {
                 $this->ex_ins_staff_members_nots[] = $ex_ins_staff_members;
             }
         }
+
+        $this->extra_js_files = array('plugins/datatables/jquery.dataTables.min.js', 'plugins/datatables/dataTables.bootstrap.min.js', 'js/branches.js', 'plugins/jQueryUI/jquery-ui.js');
     }
 
     public function getBranches() {
         $page_header = 'Branches';
-        $extra_js_files = array('plugins/datatables/jquery.dataTables.min.js', 'plugins/datatables/dataTables.bootstrap.min.js', 'js/branches.js', 'plugins/jQueryUI/jquery-ui.js');
+        $extra_js_files = $this->extra_js_files;
+        
         $rows = array();
         $branches = $this->branchobj->getAll();
         if (($branches)) {
@@ -47,7 +51,7 @@ class BranchController {
                 }
             }
         }
-        
+
         $ex_ins_staff_members_nots = $this->ex_ins_staff_members_nots;
         $view_file = '/views/branches.php';
         require_once APP_DIR . '/views/layout.php';

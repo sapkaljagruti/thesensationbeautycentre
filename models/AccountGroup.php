@@ -29,7 +29,7 @@ class AccountGroup {
         $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" AND id!="' . $id . '" ORDER BY id DESC');
         return $account_groups;
     }
-    
+
     public function getallExceptThisOrderByName($id) {
         $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_deleted!="1" AND id!="' . $id . '" ORDER BY name ASC');
         return $account_groups;
@@ -114,6 +114,40 @@ class AccountGroup {
     public function getContraLedgers() {
         $account_groups = $this->conn->query('SELECT * FROM account_groups WHERE is_default="0" AND is_deleted!="1" AND (parent_id="32" OR parent_id="29") ORDER BY id DESC');
         return $account_groups;
+    }
+
+    public function updateOpeningBalance($id, $opening_balance, $change_type) {
+        if ($change_type == 'cr') {
+            $account_group = $this->conn->query('UPDATE account_groups SET opening_balance=opening_balance+' . $opening_balance . ' WHERE id=' . $id);
+        } else if ($change_type == 'dr') {
+            $account_group = $this->conn->query('UPDATE account_groups SET opening_balance=opening_balance-' . $opening_balance . ' WHERE id=' . $id);
+        }
+
+        if ($account_group) {
+            return $id;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function getDirectExpensesAccountGroups() {
+        $account_group = $this->conn->query('SELECT * FROM account_groups WHERE parent_id="61"');
+        return $account_group;
+    }
+
+    public function getDirectIncomesAccountGroups() {
+        $account_group = $this->conn->query('SELECT * FROM account_groups WHERE parent_id="59"');
+        return $account_group;
+    }
+    
+    public function getIndirectExpensesAccountGroups() {
+        $account_group = $this->conn->query('SELECT * FROM account_groups WHERE parent_id="62"');
+        return $account_group;
+    }
+    
+    public function getIndirectIncomesAccountGroups() {
+        $account_group = $this->conn->query('SELECT * FROM account_groups WHERE parent_id="60"');
+        return $account_group;
     }
 
 }

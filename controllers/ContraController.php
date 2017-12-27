@@ -5,6 +5,7 @@ class ContraController {
     public $contraobj;
     public $accountgroupobj;
     public $ex_ins_staff_members_nots;
+    public $extra_js_files;
 
     public function __construct() {
 
@@ -61,6 +62,16 @@ class ContraController {
                 $contra_voucher = $this->contraobj->addContraVoucher($date, $entry_data, $total_amount, $narration);
 
                 if ($contra_voucher) {
+                    $entry_data_arr = explode(',', $entry_data);
+                    foreach ($entry_data_arr as $entry) {
+                        $entry_arr = explode('_', $entry);
+                        $entry_type = $entry_arr[0];
+                        $entry_id = $entry_arr[1];
+                        $entry_amount = $entry_arr[2];
+                        
+                        $update_balance_res = $this->accountgroupobj->updateOpeningBalance($entry_id, $entry_amount, $entry_type);
+                    }
+
                     header('location: home.php?controller=contra&action=getall');
                 } else {
                     array_push($errors, 'Something went wrong. Please try again later.');

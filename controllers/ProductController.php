@@ -7,6 +7,7 @@ class ProductController {
     public $brandobj;
     public $staffobj;
     public $ex_ins_staff_members_nots;
+    public $extra_js_files;
 
     public function __construct() {
 

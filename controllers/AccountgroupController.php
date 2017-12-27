@@ -2,6 +2,7 @@
 
 class AccountgroupController {
 
+    public $extra_js_files;
     public $accountgroupobj;
     public $gst_obj;
     public $brand_obj;

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 20, 2017 at 08:03 PM
+-- Generation Time: Dec 27, 2017 at 04:59 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -104,10 +104,13 @@ INSERT INTO `account_groups` (`id`, `parent_id`, `name`, `opening_balance`, `con
 (70, 57, 'domestic sales', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-11-18 11:31:30', '2017-11-18 11:31:30'),
 (71, 44, 'patel trading co', 0, '', '', '', '', 0, '', '', '', 'bank Of Baroda', 'tithal road valsad', 'BARB0TITHAL', '121212121', '', 3, '', '', 0, 0, '2017-12-05 14:27:55', '2017-12-07 12:10:03'),
 (72, 40, 'beauty salon', 0, 'Mahi', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-08 14:27:54', '2017-12-08 14:27:54'),
-(73, 57, 'testsales', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-10 17:14:09', '2017-12-10 17:14:09'),
-(74, 32, 'cash', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-11 12:49:17', '2017-12-11 12:49:17'),
-(75, 29, 'bank of baroda account', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-11 12:56:52', '2017-12-11 12:56:52'),
-(76, 29, 'hdfc account', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-11 12:57:14', '2017-12-11 12:57:14');
+(73, 57, 'testsales', 0, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 1, '2017-12-10 17:14:09', '2017-12-26 13:44:42'),
+(74, 32, 'cash', -550, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-11 12:49:17', '2017-12-26 15:57:47'),
+(75, 29, 'bank of baroda account', -450, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-11 12:56:52', '2017-12-26 15:15:18'),
+(76, 29, 'hdfc account', -249680, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-11 12:57:14', '2017-12-26 18:25:53'),
+(78, 61, 'test direct expense', 500, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-26 15:57:15', '2017-12-26 15:57:47'),
+(79, 60, 'test indirect income', 500, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-26 17:30:28', '2017-12-26 17:30:48'),
+(80, 62, 'test indirect expenses', 249680, '', '', '', '', 0, '', '', '', '', '', '', '', '', 3, '', '', 0, 0, '2017-12-26 18:20:06', '2017-12-26 18:25:53');
 
 -- --------------------------------------------------------
 
@@ -120,7 +123,7 @@ CREATE TABLE `admins` (
   `fname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `lname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `mobile` bigint(20) NOT NULL,
+  `mobile` bigint(20) DEFAULT NULL,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `profile_picture` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -140,7 +143,7 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `fname`, `lname`, `email`, `mobile`, `username`, `password`, `profile_picture`, `last_login_ip`, `last_login_at`, `current_login_ips`, `can_view`, `can_add`, `can_update`, `can_delete`, `created_at`, `updated_at`) VALUES
-(1, 'lakhan', 'sen', 'lakhan.vapi@gmail.com', 9727612000, 'lakhansen', '1f406e5ff9b178e9c506e363bf1716ad', NULL, NULL, NULL, NULL, 1, 1, 1, 1, '2017-09-11 11:33:02', '2017-12-18 14:16:34');
+(1, 'lakhan', 'sen', 'lakhan.vapi@gmail.com', 9727612000, 'lakhansen', '1f406e5ff9b178e9c506e363bf1716ad', 'product_1_1829_img1.jpg', NULL, NULL, NULL, 1, 1, 1, 1, '2017-09-11 11:33:02', '2017-12-21 12:20:34');
 
 -- --------------------------------------------------------
 
@@ -242,7 +245,7 @@ INSERT INTO `company_setting` (`id`, `name`, `opening_balance`, `contact_person`
 CREATE TABLE `contra_vouchers` (
   `id` int(11) UNSIGNED NOT NULL,
   `date` date DEFAULT NULL,
-  `entry_data` longtext,
+  `entry_data` longtext COMMENT 'cr_or_dr_type, accgrp_id, amount',
   `total_amount` double DEFAULT NULL,
   `narration` text,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -257,7 +260,8 @@ INSERT INTO `contra_vouchers` (`id`, `date`, `entry_data`, `total_amount`, `narr
 (1, '2017-11-03', 'cr_4_500,dr_3_500', 500, '', '2017-11-03 15:41:33', '2017-11-03 15:41:33'),
 (2, '2017-11-06', 'cr_4_500,dr_3_200,dr_2_300', 500, '', '2017-11-06 11:54:48', '2017-11-06 11:54:48'),
 (3, '2017-12-12', 'cr_76_500,dr_75_485,dr_74_15', 500, '', '2017-12-11 12:58:42', '2017-12-11 12:58:42'),
-(5, '2017-12-12', 'dr_76_500,cr_75_500', 500, 'Cr 500 to Bank Of Baroda Account, Dr 500 from Hdfc Account Cheque Date.: 04-04-2017,', '2017-12-11 16:45:01', '2017-12-11 16:45:01');
+(5, '2017-12-12', 'dr_76_500,cr_75_500', 500, 'Cr 500 to Bank Of Baroda Account, Dr 500 from Hdfc Account Cheque Date.: 04-04-2017,', '2017-12-11 16:45:01', '2017-12-11 16:45:01'),
+(6, '2017-12-27', 'cr_76_500,dr_75_450,dr_74_50', 500, 'Cr 500 to Hdfc Account, Dr 450 from Bank Of Baroda Account, Dr 50 from Cash,', '2017-12-26 15:15:18', '2017-12-26 15:15:18');
 
 -- --------------------------------------------------------
 
@@ -459,6 +463,7 @@ CREATE TABLE `journal_vouchers` (
   `entry_data` longtext COMMENT 'cr_or_dr_type, accgrp_id, amount',
   `total_amount` double DEFAULT NULL,
   `narration` text,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -467,8 +472,13 @@ CREATE TABLE `journal_vouchers` (
 -- Dumping data for table `journal_vouchers`
 --
 
-INSERT INTO `journal_vouchers` (`id`, `date`, `entry_data`, `total_amount`, `narration`, `created_at`, `updated_at`) VALUES
-(2, '2017-11-06', 'cr_4_500,dr_3_500', 500, '', '2017-11-06 13:01:25', '2017-11-06 13:01:25');
+INSERT INTO `journal_vouchers` (`id`, `date`, `entry_data`, `total_amount`, `narration`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(2, '2017-11-06', 'cr_4_500,dr_3_500', 500, '', 0, '2017-11-06 13:01:25', '2017-11-06 13:01:25'),
+(3, '2017-12-27', 'cr_78_500,dr_74_500', 500, '', 0, '2017-12-26 15:57:47', '2017-12-26 15:57:47'),
+(4, '2017-12-27', 'cr_79_500,dr_76_500', 500, '', 0, '2017-12-26 17:30:48', '2017-12-26 17:30:48'),
+(5, '2017-12-27', 'cr_80_500,dr_76_500', 500, '', 0, '2017-12-26 18:22:57', '2017-12-26 18:22:57'),
+(6, '2017-12-27', 'cr_80_248680,dr_76_248680', 248680, '', 0, '2017-12-26 18:24:23', '2017-12-26 18:24:23'),
+(7, '2017-12-27', 'cr_80_500,dr_76_500', 500, '', 0, '2017-12-26 18:25:53', '2017-12-26 18:25:53');
 
 -- --------------------------------------------------------
 
@@ -747,7 +757,7 @@ CREATE TABLE `purchase_vouchers` (
 --
 
 INSERT INTO `purchase_vouchers` (`id`, `date`, `purchase_ledger_id`, `invoice_no`, `invoice_date`, `purchase_type_id`, `party_id`, `products_data`, `total_qty`, `total_rate_per_unit`, `total_discount_percentage`, `total_discount_rs`, `total_cgst_percentage`, `total_cgst_rs`, `total_sgst_percentage`, `total_sgst_rs`, `total_igst_percentage`, `total_igst_rs`, `total_bill_amount`, `is_deleted`, `created_at`, `updated_at`) VALUES
-(8, '2017-12-06', 68, '1234', '2017-12-12', 2, 71, '6_1_sensation smoothing hair conditioner_33049910_350_50_1562_250_0.00_0.00_18_2250.00_18_2250.00_0.00_0.00_17000.00', 50, 250, 0, 0, 18, 2250, 18, 2250, 0, 0, 17000, 0, '2017-12-05 14:27:55', '2017-12-14 13:58:43'),
+(8, '2017-12-06', 68, '1234', '2017-12-12', 2, 71, '6_1_sensation smoothing hair conditioner_33049910_350_50_1562_250_0.00_0.00_18_2250.00_18_2250.00_0.00_0.00_17000.00', 50, 250, 0, 0, 18, 2250, 18, 2250, 0, 0, 17000, 0, '2017-12-05 14:27:55', '2017-12-26 14:37:36'),
 (9, '2017-12-06', 68, '123', '2014-03-12', 1, 71, '6_2_sensation smoothing hair conditioner_33049910_800_5_11_250_0.00_0.00_0.00_0.00_0.00_0.00_0.00_0.00_1250.00', 5, 250, 0, 0, 0, 0, 0, 0, 0, 0, 1250, 0, '2017-12-05 15:03:33', '2017-12-05 15:18:59'),
 (10, '2017-12-06', 68, '12345', '2017-07-12', 2, 69, '5_2_sensation smoothing shampoo_33049910_800_2_64_250_0.00_0.00_12_60.00_12_60.00_0.00_0.00_620.00', 2, 250, 0, 0, 12, 60, 12, 60, 0, 0, 620, 0, '2017-12-05 15:25:19', '2017-12-05 15:25:19'),
 (11, '2017-12-06', 68, '12456', '2017-07-12', 2, 69, '6_1_sensation smoothing hair conditioner_33049910_900_10_1572_250_0.00_0.00_12_300.00_0.00_0.00_0.00_0.00_2800.00', 10, 250, 0, 0, 12, 300, 0, 0, 0, 0, 2800, 0, '2017-12-05 15:28:22', '2017-12-12 15:30:07'),
@@ -814,7 +824,7 @@ CREATE TABLE `sale_vouchers` (
 INSERT INTO `sale_vouchers` (`id`, `date`, `sales_ledger_id`, `invoice_no`, `invoice_date`, `sales_type_id`, `party_id`, `products_data`, `total_qty`, `total_rate_per_unit`, `total_discount_percentage`, `total_discount_rs`, `total_cgst_percentage`, `total_cgst_rs`, `total_sgst_percentage`, `total_sgst_rs`, `total_igst_percentage`, `total_igst_rs`, `total_bill_amount`, `is_deleted`, `created_at`, `updated_at`) VALUES
 (1, '2017-12-09', 70, '123', '2017-12-12', 2, 72, '6_1_sensation smoothing hair conditioner_33049910_400_500_1161_0.00_0.00_18_36000.00_18_36000.00_0.00_0.00_272000.00', 500, 400, 0, 0, 18, 36000, 18, 36000, 0, 0, 272000, 0, '2017-12-08 18:40:47', '2017-12-14 13:59:06'),
 (2, '2017-12-19', 73, '2323', '2017-12-20', 2, 71, '6_1_sensation smoothing hair conditioner_33049910_350_20_1096_0.00_50.00_0.00_0.00_0.00_0.00_0.00_0.00_6950.00', 20, 350, 0, 50, 0, 0, 0, 0, 0, 0, 6950, 0, '2017-12-18 16:21:06', '2017-12-18 16:21:06'),
-(3, '2017-12-19', 70, '566', '2017-05-20', 2, 72, '6_1_sensation smoothing hair conditioner_33049910_400_20_1076_0.00_50.00_0.00_0.00_0.00_0.00_0.00_0.00_7950.00', 20, 400, 0, 50, 0, 0, 0, 0, 0, 0, 7950, 0, '2017-12-18 16:24:09', '2017-12-18 16:24:09');
+(3, '2017-12-19', 70, '566', '2017-05-20', 2, 72, '6_1_sensation smoothing hair conditioner_33049910_400_20_1076_0.00_50.00_0.00_0.00_0.00_0.00_0.00_0.00_7950.00', 20, 400, 0, 50, 0, 0, 0, 0, 0, 0, 7950, 0, '2017-12-18 16:24:09', '2017-12-26 14:37:57');
 
 -- --------------------------------------------------------
 
@@ -1093,7 +1103,7 @@ ALTER TABLE `target_accounts`
 -- AUTO_INCREMENT for table `account_groups`
 --
 ALTER TABLE `account_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 --
 -- AUTO_INCREMENT for table `admins`
 --
@@ -1118,7 +1128,7 @@ ALTER TABLE `company_setting`
 -- AUTO_INCREMENT for table `contra_vouchers`
 --
 ALTER TABLE `contra_vouchers`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `credit_notes`
 --
@@ -1153,7 +1163,7 @@ ALTER TABLE `gst_types`
 -- AUTO_INCREMENT for table `journal_vouchers`
 --
 ALTER TABLE `journal_vouchers`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `managers`
 --

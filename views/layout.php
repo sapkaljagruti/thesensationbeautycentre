@@ -100,7 +100,7 @@
                                         <li><a href="?controller=brand&action=getBrands">Brand Reports</a></li>
                                         <li><a href="?controller=accountgroup&action=getall">A/c Group Reports</a></li>
                                         <li><a href="?controller=reports&action=getStockReports">Stock Reports</a></li>
-                                        <li><a href="?controller=reports&action=getPLReports">P/L Reports</a></li>
+                                        <li><a href="?controller=reports&action=getprofitlossreports">P/L Reports - I</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
